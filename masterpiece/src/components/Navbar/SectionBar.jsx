@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import { React, useState } from "react";
 import {
   TETabs,
   TETabsContent,
   TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
+import { HeroSection } from "../../pages/HomePage/HeroSection";
+
 
 export default function SectionBar() {
   const [basicActive, setBasicActive] = useState("tab1");
@@ -68,7 +70,7 @@ export default function SectionBar() {
       </div>
 
       <TETabsContent>
-        <TETabsPane show={basicActive === "tab1"}>Tab 1 content</TETabsPane>
+        <TETabsPane show={basicActive === "tab1"}><HeroSection/> </TETabsPane>
         <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
         <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
         <TETabsPane show={basicActive === "tab4"}>Tab 4 content</TETabsPane>
