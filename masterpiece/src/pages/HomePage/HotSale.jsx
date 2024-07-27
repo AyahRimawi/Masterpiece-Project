@@ -7,10 +7,10 @@ import shirts from "../../assets/shirts.png";
 export function HotSale() {
   return (
     <>
-      <div className="grid grid-cols-6 gap-4 md:mt-10">
+      <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6 md:mt-10">
         {/* circule 1 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden bg-gradient-to-b from-[#6713D2] via-[#9419B4] to-[#CC208E] ">
+          <div className="w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden bg-gradient-to-b from-[#6713D2] via-[#9419B4] to-[#CC208E] ">
             <p className="md:text-3xl text-[#F7FA4A] font-bold mt-2 text-center">
               HOT SALE
             </p>
@@ -24,7 +24,7 @@ export function HotSale() {
         </div>
         {/* circule 2 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="bg-gradient-to-r w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
             <img
               src={shirts}
               alt="3D Effect"
@@ -43,7 +43,7 @@ export function HotSale() {
         </div>
         {/* circule 3 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="bg-gradient-to-r w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
             <img
               src={hat}
               alt="3D Effect"
@@ -59,7 +59,7 @@ export function HotSale() {
         </div>
         {/* circule 4 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="bg-gradient-to-r w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
             <img
               src={short}
               alt="3D Effect"
@@ -75,7 +75,7 @@ export function HotSale() {
         </div>
         {/* circule 5 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="bg-gradient-to-r w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
             <img
               src={trouser}
               alt="3D Effect"
@@ -91,7 +91,7 @@ export function HotSale() {
         </div>
         {/* circule 6 */}
         <div className="flex flex-col items-center gap-5 group mx-2 cursor-pointer">
-          <div className="bg-gradient-to-r w-44 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r w-24 sm:w-52 md:w-32 aspect-square flex items-center justify-center rounded-full shadow-lg overflow-hidden">
             <img
               src={dress}
               alt="3D Effect"

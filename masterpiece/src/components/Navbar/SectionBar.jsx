@@ -7,7 +7,7 @@ import {
 } from "tw-elements-react";
 import { HeroSection } from "../../pages/HomePage/HeroSection";
 import { HotSale } from "../../pages/HomePage/HotSale";
-
+import { ShopNow } from "../../pages/HomePage/ShopNow";
 
 export default function SectionBar() {
   const [basicActive, setBasicActive] = useState("tab1");
@@ -73,7 +73,8 @@ export default function SectionBar() {
       <TETabsContent>
         <TETabsPane show={basicActive === "tab1"}>
           <HeroSection />
-        <HotSale/>
+          <HotSale />
+          <ShopNow/>
         </TETabsPane>
         <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
         <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
