@@ -10,6 +10,8 @@ import { HotSale } from "../../pages/HomePage/HotSale";
 import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
 import { Dress } from "../../pages/HomePage/Dress";
+import { Payment } from "../../pages/HomePage/Payment";
+
 
 export default function SectionBar() {
   const [basicActive, setBasicActive] = useState("tab1");
@@ -26,6 +28,13 @@ export default function SectionBar() {
       <div className="overflow-x-auto">
         <TETabs>
           <div className="flex flex-nowrap w-full shadow-lg dark:bg-neutral-700 ">
+            <TETabsItem
+              onClick={() => handleBasicClick("tab0")}
+              active={basicActive === "tab0"}
+              className="flex-shrink-0 px-4 py-2 text-center"
+            >
+              Home
+            </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab1")}
               active={basicActive === "tab1"}
@@ -73,13 +82,15 @@ export default function SectionBar() {
       </div>
 
       <TETabsContent>
-        <TETabsPane show={basicActive === "tab1"}>
+        <TETabsPane show={basicActive === "tab0"}>
           <HeroSection />
           <HotSale />
           <ShopNow />
           <Sections />
-          <Dress/>
+          <Dress />
+          <Payment />
         </TETabsPane>
+        <TETabsPane show={basicActive === "tab1"}>Tab 1 content</TETabsPane>
         <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
         <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
         <TETabsPane show={basicActive === "tab4"}>Tab 4 content</TETabsPane>
