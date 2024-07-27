@@ -9,6 +9,7 @@ import { HeroSection } from "../../pages/HomePage/HeroSection";
 import { HotSale } from "../../pages/HomePage/HotSale";
 import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
+import { Dress } from "../../pages/HomePage/Dress";
 
 export default function SectionBar() {
   const [basicActive, setBasicActive] = useState("tab1");
@@ -76,7 +77,8 @@ export default function SectionBar() {
           <HeroSection />
           <HotSale />
           <ShopNow />
-          <Sections/>
+          <Sections />
+          <Dress/>
         </TETabsPane>
         <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
         <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
