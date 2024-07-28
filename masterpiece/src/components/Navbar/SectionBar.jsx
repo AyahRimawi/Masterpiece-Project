@@ -11,6 +11,7 @@ import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
 import { Dress } from "../../pages/HomePage/Dress";
 import { Payment } from "../../pages/HomePage/Payment";
+import { SalesCard } from "../../pages/Card/SalesCard";
 
 
 export default function SectionBar() {
@@ -90,7 +91,9 @@ export default function SectionBar() {
           <Dress />
           <Payment />
         </TETabsPane>
-        <TETabsPane show={basicActive === "tab1"}>Tab 1 content</TETabsPane>
+        <TETabsPane show={basicActive === "tab1"}>
+          <SalesCard />
+        </TETabsPane>
         <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
         <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
         <TETabsPane show={basicActive === "tab4"}>Tab 4 content</TETabsPane>
