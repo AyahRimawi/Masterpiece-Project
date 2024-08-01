@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import TrackOrder from "../components/Navbar/TrackOrder";
 import SearchBar from "../components/Navbar/SearchBar";
 import FooterBar from "../components/Footer/FooterBar";
@@ -21,42 +22,33 @@ const ProductPage = () => {
       <SearchBar />
       <div className="flex flex-col justify-between lg:flex-row gap-16 lg:items-center md:mr-16 ml-16 mt-8 mb-8">
         <div className="flex flex-col gap-4 lg:w-2/4">
-          <img
+          <motion.img
+            key={activeImg} // This ensures the animation resets when the image changes
             src={activeImg}
-            alt=""
+            alt="Active product"
             className="w-full h-full aspect-square object-fit rounded-xl"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
           />
           <div className="flex flex-row justify-between h-24">
-            <img
-              src={images.img1}
-              alt=""
-              className="w-24 h-24 rounded-md cursor-pointer object-fit"
-              onClick={() => setActiveImage(images.img1)}
-            />
-            <img
-              src={images.img2}
-              alt=""
-              className="w-24 h-24 rounded-md cursor-pointer object-fit"
-              onClick={() => setActiveImage(images.img2)}
-            />
-            <img
-              src={images.img3}
-              alt=""
-              className="w-24 h-24 rounded-md cursor-pointer object-fit"
-              onClick={() => setActiveImage(images.img3)}
-            />
-            {/* <img
-              src={images.img4}
-              alt=""
-              className="w-24 h-24 rounded-md cursor-pointer object-fit"
-              onClick={() => setActiveImage(images.img4)}
-            /> */}
+            {Object.values(images).map((image, index) => (
+              <motion.img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index + 1}`}
+                className="w-24 h-24 rounded-md cursor-pointer object-fit"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => setActiveImage(image)}
+              />
+            ))}
           </div>
         </div>
         {/* ABOUT */}
         <div className="flex flex-col gap-6 lg:w-2/4">
           <div>
-            <span className=" text-[#193db0] font-semibold">
+            <span className="text-[#193db0] font-semibold">
               Floral Print Skirt
             </span>
             <h1 className="text-3xl font-bold">Rose Skirt</h1>
@@ -73,7 +65,7 @@ const ProductPage = () => {
             <div className="flex flex-row items-center">
               <button
                 className="bg-gray-200 py-2 px-5 rounded-lg text-[#193db0] text-3xl"
-                onClick={() => setAmount((prev) => prev - 1)}
+                onClick={() => setAmount((prev) => Math.max(prev - 1, 1))}
               >
                 -
               </button>
