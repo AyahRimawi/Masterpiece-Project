@@ -30,50 +30,50 @@ export default function SectionBar() {
         <TETabs>
           <div className="flex flex-nowrap w-full shadow-lg dark:bg-neutral-700 ">
             <TETabsItem
-              onClick={() => handleBasicClick("tab0")}
-              active={basicActive === "tab0"}
-              className="flex-shrink-0 px-4 py-2 text-center"
-            >
-              Home
-            </TETabsItem>
-            <TETabsItem
               onClick={() => handleBasicClick("tab1")}
               active={basicActive === "tab1"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
-              WOMEN
+              Home
             </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab2")}
               active={basicActive === "tab2"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
-              MEN
+              WOMEN
             </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab3")}
               active={basicActive === "tab3"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
-              KIDS
+              MEN
             </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab4")}
               active={basicActive === "tab4"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
-              BABY
+              KIDS
             </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab5")}
               active={basicActive === "tab5"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
-              DRESSES
+              BABY
             </TETabsItem>
             <TETabsItem
               onClick={() => handleBasicClick("tab6")}
               active={basicActive === "tab6"}
+              className="flex-shrink-0 px-4 py-2 text-center"
+            >
+              DRESSES
+            </TETabsItem>
+            <TETabsItem
+              onClick={() => handleBasicClick("tab7")}
+              active={basicActive === "tab7"}
               className="flex-shrink-0 px-4 py-2 text-center text-red-500 font-bold border-b-0"
             >
               SALE%
@@ -83,7 +83,7 @@ export default function SectionBar() {
       </div>
 
       <TETabsContent>
-        <TETabsPane show={basicActive === "tab0"}>
+        <TETabsPane show={basicActive === "tab1"}>
           <HeroSection />
           <HotSale />
           <ShopNow />
@@ -91,14 +91,29 @@ export default function SectionBar() {
           <Dress />
           <Payment />
         </TETabsPane>
-        <TETabsPane show={basicActive === "tab1"}>
+        <TETabsPane show={basicActive === "tab2"}>
           <SalesCard />
         </TETabsPane>
-        <TETabsPane show={basicActive === "tab2"}>Tab 2 content</TETabsPane>
-        <TETabsPane show={basicActive === "tab3"}>Tab 3 content</TETabsPane>
-        <TETabsPane show={basicActive === "tab4"}>Tab 4 content</TETabsPane>
-        <TETabsPane show={basicActive === "tab5"}>Tab 5 content</TETabsPane>
-        <TETabsPane show={basicActive === "tab6"}>Tab 6 content</TETabsPane>
+        <TETabsPane show={basicActive === "tab3"}>
+          {" "}
+          <SalesCard />
+        </TETabsPane>
+        <TETabsPane show={basicActive === "tab4"}>
+          {" "}
+          <SalesCard />
+        </TETabsPane>
+        <TETabsPane show={basicActive === "tab5"}>
+          {" "}
+          <SalesCard />
+        </TETabsPane>
+        <TETabsPane show={basicActive === "tab6"}>
+          {" "}
+          <SalesCard />
+        </TETabsPane>
+        <TETabsPane show={basicActive === "tab7"}>
+          {" "}
+          <SalesCard />
+        </TETabsPane>
       </TETabsContent>
     </div>
   );

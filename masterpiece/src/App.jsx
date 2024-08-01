@@ -1,18 +1,18 @@
 import './App.css'
-import FooterBar from './components/Footer/FooterBar';
-import SearchBar from './components/Navbar/SearchBar'
-import SectionBar from './components/Navbar/SectionBar'
-import TrackOrder from './components/Navbar/TrackOrder'
+import{Route, Routes} from 'react-router-dom'
+import ProductPage from './pages/ProductPage';
+import { Home } from './pages/HomePage/Home';
 
 function App() {
 
   return (
     <>
-      <TrackOrder />
-      <SearchBar />
-      <SectionBar />
-      <br></br>
-      <FooterBar />
+      {/* Routes */}
+      <Routes>
+        <Route path='/Home' element= {<Home/>} />
+        <Route path="/ProductPage" element={<ProductPage />} />
+      </Routes>
+      {/* Routes */}
     </>
   );
 }

@@ -12,6 +12,8 @@ import dress1 from "../../assets/dress1.png";
 import love1 from "../../assets/love1.png";
 import addToCart from "../../assets/addToCart.png";
 
+import { Link } from "react-router-dom";
+
 export function SalesCard() {
   return (
     <>
@@ -107,48 +109,52 @@ export function SalesCard() {
       {/* </Card> */}
       {/* --------------------------------------------------------------------------- */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 ml-8 mr-8 justify-items-center ">
-        <Card className="w-full max-w-[15rem] shadow-lg">
-          <CardHeader floated={false} color="blue-gray">
-            <img src={dress1} alt="ui/ux review check" />
-            <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-            <IconButton
-              color="red"
-              variant="text"
-              className="!absolute top-3 right-2 rounded-full"
-            >
-              <img
-                className="object-cover"
-                src={love1}
-                alt="ui/ux review check"
-              />
-            </IconButton>
-          </CardHeader>
-          <CardBody>
-            <div className="mb-3 flex items-center justify-between">
-              <Typography
-                variant="h5"
-                color="blue-gray"
-                className="font-medium"
+        {/* <Link to="/ProductPage"> */}
+        <a href="/ProductPage" target="_blank" rel="noopener noreferrer">
+          <Card className="w-full max-w-[15rem] shadow-lg">
+            <CardHeader floated={false} color="blue-gray">
+              <img src={dress1} alt="ui/ux review check" />
+              <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+              <IconButton
+                color="red"
+                variant="text"
+                className="!absolute top-3 right-2 rounded-full"
               >
-                Summer Short Dress
-              </Typography>
-            </div>
-            <div className="group flex flex-wrap justify-between items-center gap-3">
-              <Tooltip content="Price">
-                <span className="cursor-pointer rounded-full text-2xl p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                  $ 30
-                </span>
-              </Tooltip>
-              <Tooltip content="Add To Cart">
                 <img
-                  className="object-fit w-10"
-                  src={addToCart}
+                  className="object-cover"
+                  src={love1}
                   alt="ui/ux review check"
                 />
-              </Tooltip>
-            </div>
-          </CardBody>
-        </Card>
+              </IconButton>
+            </CardHeader>
+            <CardBody>
+              <div className="mb-3 flex items-center justify-between">
+                <Typography
+                  variant="h5"
+                  color="blue-gray"
+                  className="font-medium"
+                >
+                  Summer Short Dress
+                </Typography>
+              </div>
+              <div className="group flex flex-wrap justify-between items-center gap-3">
+                <Tooltip content="Price">
+                  <span className="cursor-pointer rounded-full text-2xl p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                    $ 30
+                  </span>
+                </Tooltip>
+                <Tooltip content="Add To Cart">
+                  <img
+                    className="object-fit w-10"
+                    src={addToCart}
+                    alt="ui/ux review check"
+                  />
+                </Tooltip>
+              </div>
+            </CardBody>
+          </Card>
+          {/* </Link> */}
+        </a>
 
         <Card className="w-full max-w-[15rem] shadow-lg ">
           <CardHeader floated={false} color="blue-gray">
