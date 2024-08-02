@@ -13,6 +13,7 @@ import addToCart from "../../assets/addToCart.png";
 
 const ProductCard = ({ image, name, price }) => (
   <Card className="w-full max-w-[15rem] shadow-lg">
+    {/* --------- CardHeader -------- */}
     <CardHeader floated={false} color="blue-gray" className="relative">
       <img src={image} alt={name} className="w-full h-full object-cover" />
       <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60" />
@@ -24,6 +25,9 @@ const ProductCard = ({ image, name, price }) => (
         <img className="object-cover" src={love1} alt="Favorite" />
       </IconButton>
     </CardHeader>
+    {/* --------- CardHeader -------- */}
+
+    {/* --------- CardBody -------- */}
     <CardBody>
       <div className="mb-3 flex items-center justify-between">
         <Typography variant="h5" color="blue-gray" className="font-medium">
@@ -41,6 +45,7 @@ const ProductCard = ({ image, name, price }) => (
         </Tooltip>
       </div>
     </CardBody>
+    {/* --------- CardBody -------- */}
   </Card>
 );
 
