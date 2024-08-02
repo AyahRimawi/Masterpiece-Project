@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // استخدمناها لتنقل بين الصفحات ولاحظ useNavigate بتكون ال from تبعتها هي router لأنها اساسا عبارة عن تنقل
 import { useNavigate } from "react-router-dom";
+import PersonalInfo from "./PersonalInfo";
+import OrdersInfo from "./OrdersInfo";
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
@@ -172,13 +174,15 @@ const ProfilePage = () => {
               </div>
             </div>
             {/* ---------------------------------------------------------------------------- */}
+            {/* Sidebar end*/}
+            {/* -------------------------------- */}
             {/* Main Content */}
             <div className="md:w-3/4 p-4 md:p-8">
               <h1 className="text-2xl md:text-3xl font-bold text-[#193db0] mb-6">
                 {sections.find((s) => s.id === activeSection).name}
               </h1>
-              {activeSection === "personal" && <PersonalInfo />}
-              {activeSection === "orders" && <OrdersInfo />}
+              {activeSection === "personal" && <PersonalInfo/>}
+              {activeSection === "orders" && <OrdersInfo/>}
               {/* Add other sections here */}
             </div>
           </div>
@@ -187,129 +191,4 @@ const ProfilePage = () => {
     </div>
   );
 };
-
-const PersonalInfo = () => {
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Full Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Email Address
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="dob"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Date of Birth
-          </label>
-          <input
-            type="date"
-            id="dob"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-          />
-        </div>
-      </div>
-      <div>
-        <button
-          type="submit"
-          className="bg-[#193db0] text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-colors"
-        >
-          Save Changes
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const OrdersInfo = () => {
-  const orders = [
-    { id: 1, date: "2023-05-01", total: 150.99, status: "Delivered" },
-    { id: 2, date: "2023-04-15", total: 89.99, status: "Processing" },
-    { id: 3, date: "2023-03-30", total: 200.5, status: "Shipped" },
-  ];
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Order ID
-            </th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date
-            </th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Total
-            </th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td className="px-4 py-2 whitespace-nowrap">{order.id}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{order.date}</td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                ${order.total.toFixed(2)}
-              </td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    order.status === "Delivered"
-                      ? "bg-green-100 text-green-800"
-                      : order.status === "Processing"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-blue-100 text-blue-800"
-                  }`}
-                >
-                  {order.status}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
 export default ProfilePage;
