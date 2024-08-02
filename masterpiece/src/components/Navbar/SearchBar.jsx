@@ -2,8 +2,7 @@ import user from "../../assets/user.png";
 import love from "../../assets/love.png";
 import shoppingCart from "../../assets/shoppingCart.png";
 import { Link } from "react-router-dom";
-import ProfilePage from "../../pages/ProfilePage";
-
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 
 const SearchBar = () => {
   return (

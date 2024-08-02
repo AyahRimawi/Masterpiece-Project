@@ -15,19 +15,19 @@ const ProductPage = () => {
   const [amount, setAmount] = useState(1);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-white min-h-screen">
       <TrackOrder />
       <SearchBar />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8 sm:py-16">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="md:flex">
+          <div className="flex flex-col lg:flex-row">
             {/* Image Section */}
-            <div className="md:w-1/2 p-8">
+            <div className="lg:w-1/2 p-4 sm:p-8">
               <motion.img
                 key={activeImg}
                 src={activeImg}
                 alt="Active product"
-                className="w-full h-96 object-fit rounded-lg shadow-md"
+                className="w-full h-64 sm:h-96 object-fit rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -38,7 +38,7 @@ const ProductPage = () => {
                     key={index}
                     src={image}
                     alt={`Thumbnail ${index + 1}`}
-                    className={`w-20 h-20 rounded-md cursor-pointer object-fit ${
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md cursor-pointer object-fit ${
                       activeImg === image ? "ring-2 ring-[#193db0]" : ""
                     }`}
                     whileHover={{ scale: 1.05 }}
@@ -50,12 +50,12 @@ const ProductPage = () => {
             </div>
 
             {/* Product Details Section */}
-            <div className="md:w-1/2 p-8">
+            <div className="lg:w-1/2 p-4 sm:p-8">
               <div className="mb-4">
                 <span className="text-[#193db0] font-semibold text-sm uppercase tracking-wide">
                   Floral Print Skirt
                 </span>
-                <h1 className="text-4xl font-bold mt-2 text-gray-800">
+                <h1 className="text-3xl sm:text-4xl font-bold mt-2 text-gray-800">
                   Rose Skirt
                 </h1>
               </div>
@@ -67,7 +67,7 @@ const ProductPage = () => {
                 casual outings and special occasions.
               </p>
               <div className="flex items-center mb-6">
-                <span className="text-3xl font-bold text-gray-800">
+                <span className="text-2xl sm:text-3xl font-bold text-gray-800">
                   JD 17.99
                 </span>
                 <span className="ml-2 text-sm text-green-500 font-semibold">
@@ -77,14 +77,14 @@ const ProductPage = () => {
               <div className="flex items-center mb-6">
                 <div className="flex items-center border rounded-lg overflow-hidden">
                   <button
-                    className="px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    className="px-3 sm:px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                     onClick={() => setAmount((prev) => Math.max(prev - 1, 1))}
                   >
                     -
                   </button>
-                  <span className="px-4 py-2 border-x">{amount}</span>
+                  <span className="px-3 sm:px-4 py-2 border-x">{amount}</span>
                   <button
-                    className="px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    className="px-3 sm:px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                     onClick={() => setAmount((prev) => prev + 1)}
                   >
                     +
