@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
+import SizePage from "./SizePage";
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
@@ -181,8 +182,10 @@ const ProfilePage = () => {
               <h1 className="text-2xl md:text-3xl font-bold text-[#193db0] mb-6">
                 {sections.find((s) => s.id === activeSection).name}
               </h1>
-              {activeSection === "personal" && <PersonalInfo/>}
-              {activeSection === "orders" && <OrdersInfo/>}
+              {activeSection === "personal" && <PersonalInfo />}
+              {activeSection === "orders" && <OrdersInfo />}
+              {activeSection === "sizes" && <SizePage/>}
+
               {/* Add other sections here */}
             </div>
           </div>
