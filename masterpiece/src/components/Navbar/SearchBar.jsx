@@ -1,6 +1,8 @@
 import user from "../../assets/user.png";
 import love from "../../assets/love.png";
 import shoppingCart from "../../assets/shoppingCart.png";
+import { Link } from "react-router-dom";
+
 
 const SearchBar = () => {
   return (
@@ -71,19 +73,21 @@ const SearchBar = () => {
               />
             </a>
           </li>
-          <li>
-            <a
-              className="flex items-center text-gray-600 hover:text-gray-900"
-              href="#"
-            >
-              <img
-                src={shoppingCart}
-                className="w-7 h-7 md:w-9 md:h-9"
-                alt="Shopping Cart"
-                loading="lazy"
-              />
-            </a>
-          </li>
+          <Link to={"/CartItem"}>
+            <li>
+              <a
+                className="flex items-center text-gray-600 hover:text-gray-900"
+                href="#"
+              >
+                <img
+                  src={shoppingCart}
+                  className="w-7 h-7 md:w-9 md:h-9"
+                  alt="Shopping Cart"
+                  loading="lazy"
+                />
+              </a>
+            </li>
+          </Link>
         </ul>
       </div>
     </nav>
