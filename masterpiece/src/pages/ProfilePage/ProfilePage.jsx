@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // استخدمناها لتنقل بين الصفحات ولاحظ useNavigate بتكون ال from تبعتها هي router لأنها اساسا عبارة عن تنقل
 import { useNavigate } from "react-router-dom";
 import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
 import SizePage from "./SizePage";
+import AddressPage from "./AddressPage";
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
@@ -14,6 +15,17 @@ const ProfilePage = () => {
   //  عند عرض الزر، سيتحقق التعبير الشرطي من قيمة isSidebarOpen ويجد أنها false. لذا، سيتم عرض النص "Open Menu" على الزر:
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // -----------------------------------------------------------------------
+  
+  const [userName, setUserName] = useState("Aya Rimawi"); // Default name
+
+  useEffect(() => {
+    // Fetch user name from localStorage
+    const savedName = JSON.parse(
+      localStorage.getItem("personalInfo") || "{}"
+    ).name;
+    if (savedName) setUserName(savedName);
+  }, []);
+  // ------------------------------------------------
   // اقسام ال section داخل ال sidebar يتم ترتيب البيانات داخل array واعطاء كل قسم منهم:
   // id يعبر معرف لكل قسم ويكون هو ما يميز كل قسم
   // name هو اسم القسم الي رح يبين الsection
@@ -83,7 +95,7 @@ const ProfilePage = () => {
                 />
               </div>
               <h2 className="text-[#193db0] text-xl font-bold mb-4 text-center">
-                Aya Rimawi
+                {userName}
               </h2>
               {/* =========================== */}
               {/* nav استخدمنا لأنو لما نحكي عن قسم في تنقل ال best انك تستخدم nav لأنو بال seo يساعد بتحليل وتفسير روابط التنقل */}
@@ -184,7 +196,8 @@ const ProfilePage = () => {
               </h1>
               {activeSection === "personal" && <PersonalInfo />}
               {activeSection === "orders" && <OrdersInfo />}
-              {activeSection === "sizes" && <SizePage/>}
+              {activeSection === "sizes" && <SizePage />}
+              {activeSection === "addresses" && <AddressPage />}
 
               {/* Add other sections here */}
             </div>
