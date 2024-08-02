@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import TrackOrder from "../../components/Navbar/TrackOrder";
+import SearchBar from "../../components/Navbar/SearchBar";
+import FooterBar from "../../components/Footer/FooterBar";
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => (
   <div className="flex justify-between items-center border-b border-gray-200 py-4">
@@ -75,27 +78,32 @@ const Cart = () => {
     0
   );
 
-  return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-[#193db0]">Your Cart</h1>
-      {items.map((item) => (
-        <CartItem
-          key={item.id}
-          item={item}
-          onRemove={removeItem}
-          onUpdateQuantity={updateQuantity}
-        />
-      ))}
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold text-[#193db0]">
-          Total: ${total.toFixed(2)}
-        </h2>
-        <button className="mt-4 bg-[#193db0] text-white px-6 py-2 rounded hover:bg-opacity-90 transition-colors">
-          Checkout
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <>
+            <TrackOrder />
+            <SearchBar/>
+        <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
+          <h1 className="text-3xl font-bold mb-8 text-[#193db0]">Your Cart</h1>
+          {items.map((item) => (
+            <CartItem
+              key={item.id}
+              item={item}
+              onRemove={removeItem}
+              onUpdateQuantity={updateQuantity}
+            />
+          ))}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-[#193db0]">
+              Total: ${total.toFixed(2)}
+            </h2>
+            <button className="mt-4 bg-[#193db0] text-white px-6 py-2 rounded hover:bg-opacity-90 transition-colors">
+              Checkout
+            </button>
+          </div>
+            </div>
+            <FooterBar/>
+      </>
+    );
 };
 
 export default Cart;
