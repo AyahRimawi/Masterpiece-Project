@@ -2,6 +2,7 @@ import user from "../../assets/user.png";
 import love from "../../assets/love.png";
 import shoppingCart from "../../assets/shoppingCart.png";
 import { Link } from "react-router-dom";
+import ProfilePage from "../../pages/ProfilePage";
 
 
 const SearchBar = () => {
@@ -52,12 +53,14 @@ const SearchBar = () => {
               className="flex items-center text-gray-600 hover:text-gray-900"
               href="#"
             >
-              <img
-                src={user}
-                className="w-7 h-7 md:w-9 md:h-9"
-                alt="User Avatar"
-                loading="lazy"
-              />
+              <Link to={"/ProfilePage"}>
+                <img
+                  src={user}
+                  className="w-7 h-7 md:w-9 md:h-9"
+                  alt="User Avatar"
+                  loading="lazy"
+                />
+              </Link>{" "}
             </a>
           </li>
           <li>
