@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import TrackOrder from "../components/Navbar/TrackOrder";
-import SearchBar from "../components/Navbar/SearchBar";
-import FooterBar from "../components/Footer/FooterBar";
+import SearchBar from "../../components/Navbar/SearchBar";
+import FooterBar from "../../components/Footer/FooterBar";
+import TrackOrder from "../../components/Navbar/TrackOrder";
 
 const ProductPage = () => {
   const [images, setImages] = useState({
@@ -16,7 +16,7 @@ const ProductPage = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <TrackOrder />
+      <TrackOrder/>
       <SearchBar />
       <div className="container mx-auto px-4 py-8 sm:py-16">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
