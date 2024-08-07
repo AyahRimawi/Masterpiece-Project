@@ -20,7 +20,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => (
       />
       <div>
         <h3 className="text-lg font-semibold text-[#193db0]">{item.name}</h3>
-        <p className="text-[#193db0] font-medium">${item.price.toFixed(2)}</p>
+        <p className="text-[#193db0] font-medium">JD {item.price.toFixed(2)}</p>
       </div>
     </div>
     <div className="flex items-center">
@@ -68,17 +68,17 @@ const Cart = () => {
     {
       id: 1,
       name: "Product 1",
-      price: 19.99,
+      price: 17.99,
       quantity: 2,
-      image: "https://via.placeholder.com/150",
+      image: "https://i.imgur.com/6xGVorA_d.webp?maxwidth=760&fidelity=grand",
     },
-    {
-      id: 2,
-      name: "Product 2",
-      price: 29.99,
-      quantity: 1,
-      image: "https://via.placeholder.com/150",
-    },
+    // {
+    //   id: 2,
+    //   name: "Product 2",
+    //   price: 29.99,
+    //   quantity: 1,
+    //   image: "https://via.placeholder.com/150",
+    // },
   ]);
 
   const removeItem = (id) => {
@@ -128,7 +128,7 @@ const Cart = () => {
           </AnimatePresence>
           <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold text-[#193db0] mb-4 md:mb-0">
-              Total: ${total.toFixed(2)}
+              Total: JD{total.toFixed(2)}
             </h2>
             <motion.button
               whileHover={{ scale: 1.05 }}

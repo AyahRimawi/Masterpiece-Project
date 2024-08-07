@@ -1,10 +1,22 @@
+// SearchBar.js
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import user from "../../assets/user.png";
 import love from "../../assets/love.png";
 import shoppingCart from "../../assets/shoppingCart.png";
-import { Link } from "react-router-dom";
-import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import AuthForm from "../../auth/AuthPopup";
 
 const SearchBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const togglePopup = () => setIsOpen(!isOpen);
+
+  const handleLogin = () => {
+    // هنا يمكنك إضافة أي منطق إضافي بعد تسجيل الدخول
+    navigate("/ProfilePage");
+    setIsOpen(false);
+  };
   return (
     <nav className="relative flex flex-wrap items-center justify-between p-4 bg-white">
       <div className="flex flex-col md:flex-row items-center justify-between w-full">
@@ -48,19 +60,17 @@ const SearchBar = () => {
         {/* Right elements */}
         <ul className="flex items-center space-x-4 mt-4 md:mt-0 mr-6 gap-12">
           <li>
-            <a
+            <button
               className="flex items-center text-gray-600 hover:text-gray-900"
-              href="#"
+              onClick={togglePopup}
             >
-              <Link to={"/ProfilePage"}>
-                <img
-                  src={user}
-                  className="w-7 h-7 md:w-9 md:h-9"
-                  alt="User Avatar"
-                  loading="lazy"
-                />
-              </Link>{" "}
-            </a>
+              <img
+                src={user}
+                className="w-7 h-7 md:w-9 md:h-9 cursor-pointer"
+                alt="User Avatar"
+                loading="lazy"
+              />
+            </button>
           </li>
           <li>
             <a
@@ -75,8 +85,8 @@ const SearchBar = () => {
               />
             </a>
           </li>
-          <Link to={"/CartItem"}>
-            <li>
+          <li>
+            <Link to="/Cart">
               <a
                 className="flex items-center text-gray-600 hover:text-gray-900"
                 href="#"
@@ -88,10 +98,11 @@ const SearchBar = () => {
                   loading="lazy"
                 />
               </a>
-            </li>
-          </Link>
+            </Link>
+          </li>
         </ul>
       </div>
+      <AuthForm isOpen={isOpen} onClose={togglePopup} onLogin={handleLogin} />
     </nav>
   );
 };

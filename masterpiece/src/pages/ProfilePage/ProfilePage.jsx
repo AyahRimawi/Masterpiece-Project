@@ -5,6 +5,7 @@ import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
 import SizePage from "./SizePage";
 import AddressPage from "./AddressPage";
+import PaymentPage from "./PaymentPage";
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
@@ -164,7 +165,8 @@ const ProfilePage = () => {
                   </button>
                   <button
                     // هون الحدث الاكبر للانتقال ما بين صفحة ال profile الى صفحة home
-                    onClick={handleLogout}
+                    // onClick={handleLogout}
+                    onClick={handleHomeNavigation}
                     className="flex-1 p-3 rounded flex items-center justify-center text-gray-600 hover:bg-gray-200"
                   >
                     <svg
@@ -198,6 +200,7 @@ const ProfilePage = () => {
               {activeSection === "orders" && <OrdersInfo />}
               {activeSection === "sizes" && <SizePage />}
               {activeSection === "addresses" && <AddressPage />}
+              {activeSection === "payment" && <PaymentPage />}
 
               {/* Add other sections here */}
             </div>

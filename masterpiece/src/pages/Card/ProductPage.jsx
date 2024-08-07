@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import SearchBar from "../../components/Navbar/SearchBar";
 import FooterBar from "../../components/Footer/FooterBar";
 import TrackOrder from "../../components/Navbar/TrackOrder";
+import { useNavigate } from "react-router-dom";
 
 const ProductPage = () => {
   const [images, setImages] = useState({
@@ -13,10 +14,14 @@ const ProductPage = () => {
 
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
+    const navigate = useNavigate();
 
+  const handleNavigation = () => {
+    navigate("/Cart");
+  };
   return (
     <div className="bg-white min-h-screen">
-      <TrackOrder/>
+      <TrackOrder />
       <SearchBar />
       <div className="container mx-auto px-4 py-8 sm:py-16">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -91,7 +96,10 @@ const ProductPage = () => {
                   </button>
                 </div>
               </div>
-              <button className="w-full bg-[#193db0] text-white font-semibold py-3 rounded-lg hover:bg-[#142d80] transition-colors">
+              <button
+                onClick={handleNavigation}
+                className="w-full bg-[#193db0] text-white font-semibold py-3 rounded-lg hover:bg-[#142d80] transition-colors"
+              >
                 Add to Cart
               </button>
               <div className="mt-6 text-sm text-gray-500">
