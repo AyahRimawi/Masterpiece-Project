@@ -1,27 +1,24 @@
-// PaymentCard.js
-import React from "react";
-
 const PaymentCard = ({ onClose }) => {
   return (
-    <div className="relative w-[400px] h-[260px] bg-white bg-opacity-20 backdrop-blur-md rounded-lg shadow-[0_8px_32px_rgba(31,38,135,0.37)] overflow-hidden flex flex-col p-6">
+    <div className="relative w-[400px] h-[260px] bg-transparent backdrop-blur-md rounded-lg shadow-[0_8px_32px_rgba(31,38,135,0.37)] overflow-hidden flex flex-col p-6">
       {/* Card content */}
       <div className="flex flex-col h-full justify-between">
         <div className="flex flex-col gap-4">
           <input
             type="text"
             placeholder="Card Number"
-            className="text-2xl font-medium bg-white bg-opacity-20 border-b border-white placeholder-gray-300 outline-none w-full rounded-md py-2 px-3"
+            className="text-2xl font-medium bg-transparent border-b border-white placeholder-gray-300 outline-none w-full rounded-md py-2 px-3"
           />
           <div className="flex gap-4">
             <input
               type="text"
               placeholder="Card Holder"
-              className="text-lg font-medium bg-white bg-opacity-20 border-b border-white placeholder-gray-300 outline-none flex-1 rounded-md py-2 px-3"
+              className="text-lg font-medium bg-transparent border-b border-white placeholder-gray-300 outline-none flex-1 rounded-md py-2 px-3"
             />
             <input
               type="text"
               placeholder="MM/YY"
-              className="text-lg font-medium bg-white bg-opacity-20 border-b border-white placeholder-gray-300 outline-none w-24 rounded-md py-2 px-3"
+              className="text-lg font-medium bg-transparent border-b border-white placeholder-gray-300 outline-none w-24 rounded-md py-2 px-3"
             />
           </div>
         </div>
@@ -61,6 +58,5 @@ const PaymentCard = ({ onClose }) => {
     </div>
   );
 };
-
 
 export default PaymentCard;
