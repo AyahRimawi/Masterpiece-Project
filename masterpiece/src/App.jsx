@@ -9,13 +9,14 @@ import PaymentCard from "./pages/Card/PaymentCard";
 function App() {
   return (
     <>
-      <PaymentCard/>
+      {/* <PaymentCard/> */}
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ProductPage" element={<ProductPage />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
+        <Route path="/PaymentCard" element={<PaymentCard />} />
       </Routes>
       {/* Routes */}
     </>

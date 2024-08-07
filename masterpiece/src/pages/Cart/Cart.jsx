@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TrackOrder from "../../components/Navbar/TrackOrder";
 import SearchBar from "../../components/Navbar/SearchBar";
 import FooterBar from "../../components/Footer/FooterBar";
+import Modal from "../Card/Confirmation";
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => (
   <motion.div
@@ -28,7 +29,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => (
         <button
           onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
           className="text-[#193db0] px-3 py-1 hover:bg-[#193db0] hover:text-white transition-colors"
-          disabled={item.quantity <= 1} // Disable if quantity is 1
+          disabled={item.quantity <= 1}
         >
           -
         </button>
@@ -72,14 +73,10 @@ const Cart = () => {
       quantity: 2,
       image: "https://i.imgur.com/6xGVorA_d.webp?maxwidth=760&fidelity=grand",
     },
-    // {
-    //   id: 2,
-    //   name: "Product 2",
-    //   price: 29.99,
-    //   quantity: 1,
-    //   image: "https://via.placeholder.com/150",
-    // },
+    // Add more items here if needed
   ]);
+
+  const [isModalOpen, setModalOpen] = useState(false); // State to control the modal visibility
 
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
@@ -133,14 +130,18 @@ const Cart = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setModalOpen(true)} // Open the modal
               className="bg-[#193db0] text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors text-lg font-medium"
             >
-              Proceed to Checkout
+              Checkout
             </motion.button>
           </div>
         </div>
       </div>
       <FooterBar />
+
+      {/* Modal Component */}
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
 };
