@@ -1,4 +1,26 @@
-const PaymentCard = ({ onClose }) => {
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import ThankYouCard from "./ThankYouCard";
+import { Link } from "react-router-dom";
+
+const PaymentCard = ({ onClose, onConfirm }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
+
+  const handleConfirmClick = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleFinalConfirm = () => {
+    onConfirm(); // إذا كانت هذه الدالة تقوم بشيء آخر، تأكد من أنها تعمل بشكل صحيح
+    setShowConfirmation(false); // إغلاق نافذة التأكيد
+    setShowThankYou(true); // عرض بطاقة الشكر
+  };
+
+  if (showThankYou) {
+    return <ThankYouCard />;
+  }
+
   return (
     <div className="relative w-[400px] h-[260px] bg-transparent backdrop-blur-md rounded-lg shadow-[0_8px_32px_rgba(31,38,135,0.37)] overflow-hidden flex flex-col p-6">
       {/* Card content */}
@@ -23,7 +45,7 @@ const PaymentCard = ({ onClose }) => {
           </div>
         </div>
         <div className="flex items-end justify-between mt-4">
-          <p className="text-sm font-medium text-white">Expiry Date</p>
+          <p className="text-sm font-medium text-white"></p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -48,13 +70,55 @@ const PaymentCard = ({ onClose }) => {
           </svg>
         </div>
       </div>
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
-      >
-        Close
-      </button>
+      {/* Buttons */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-4">
+        <button
+          onClick={onClose}
+          className="px-6 py-2 bg-gray-500 text-white font-semibold rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
+        >
+          Close
+        </button>
+        <button
+          onClick={handleConfirmClick}
+          className="px-6 py-2 bg-[#193db0] text-white font-semibold rounded-md shadow-md hover:bg-[#174b8b] transition-colors duration-300"
+        >
+          Confirm
+        </button>
+      </div>
+
+      {/* Confirmation Popup */}
+      {showConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-70 z-50">
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white p-6 rounded-lg shadow-lg w-96"
+          >
+            <h2 className="text-2xl font-semibold text-[#193db0] mb-4">
+              Confirm Payment
+            </h2>
+            <p className="text-gray-700 mb-6">Are you sure?</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <Link to={"/ThankYouCard"}>
+                <button
+                  onClick={handleFinalConfirm}
+                  className="px-4 py-2 bg-[#193db0] text-white rounded-lg hover:bg-[#174b8b]"
+                >
+                  Yes
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

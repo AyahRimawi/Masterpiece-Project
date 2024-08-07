@@ -87,7 +87,7 @@ const AddressPage = () => {
               className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#193db0] focus:ring focus:ring-blue-200 transition duration-200"
               required
             />
-            <input
+            {/* <input
               type="text"
               name="state"
               value={newAddress.state}
@@ -95,8 +95,8 @@ const AddressPage = () => {
               placeholder="State"
               className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#193db0] focus:ring focus:ring-blue-200 transition duration-200"
               required
-            />
-            <input
+            /> */}
+            {/* <input
               type="text"
               name="zipCode"
               value={newAddress.zipCode}
@@ -104,7 +104,7 @@ const AddressPage = () => {
               placeholder="Zip Code"
               className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#193db0] focus:ring focus:ring-blue-200 transition duration-200"
               required
-            />
+            /> */}
             <input
               type="text"
               name="country"
