@@ -48,6 +48,33 @@ exports.getProductById = async (req, res) => {
 //* ------------------------
 
 //TODOO ------------------------
+exports.getProductsByUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // التحقق مما إذا كان المستخدم يحاول الوصول إلى منتجاته الخاصة
+    const isOwnProducts = userId === req.user.id;
+
+    // إذا كان المستخدم يحاول الوصول إلى منتجات مستخدم آخر، تحقق من أنه مسؤول
+    if (!isOwnProducts && req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to view these products" });
+    }
+
+    const products = await Product.find({
+      seller: userId,
+      isDeleted: false, // نستثني المنتجات المحذوفة
+    }).populate("seller", "name");
+
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+//* ------------------------
+
+//TODOO ------------------------
 exports.softDeleteProduct = async (req, res) => {
   try {
     const product = await Product.findOne({

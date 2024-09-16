@@ -8,18 +8,15 @@ const auth = require("../Middleware/auth");
 router.post("/addProduct", auth, productController.addProduct);
 router.get("/getAllProducts", productController.getAllProducts);
 router.get("/getProductById/:id", productController.getProductById);
+router.get("/getProductsByUser/:userId", auth, productController.getProductsByUser);
+
 router.put("/softDeleteProduct/:id", auth, productController.softDeleteProduct);
 router.put("/restoreProduct/:id", auth, productController.restoreProduct);
 
 router.put("/updateProduct/:id", auth, productController.updateProduct);
-router.get(
-  "/getProductsByCategory/:category",
-  productController.getProductsByCategory
-);
-router.get(
-  "/getProductsBySubCategory/:subCategory",
-  productController.getProductsBySubCategory
-);
+
+router.get("/getProductsByCategory/:category", productController.getProductsByCategory);
+router.get("/getProductsBySubCategory/:subCategory", productController.getProductsBySubCategory);
 
 module.exports = router;
 
@@ -45,14 +42,17 @@ module.exports = router;
 
 // * مع العلم لازم تحط بال header كلمة cookies وتكون مسجل دخول عشان ال token
 ////////////////////////
-
 //? getAllProducts .. GET
 //* http://localhost:8080/api/product/getAllProducts
 
 ////////////////////////
-
 //? getProductById .. GET
 //* http://localhost:8080/api/product/getProductById/{productId}
+
+////////////////////////
+//? getProductsByUser .. GET
+//* http://localhost:8080/api/product/getProductsByUser/{userId}
+
 
 ////////////////////////
 

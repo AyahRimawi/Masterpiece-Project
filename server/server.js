@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 // ============
 const userRoutes = require("./Routes/userRouters");
 const productRoutes = require("./Routes/productRouters");
+// const orderRouters = require("./Routes/orderRouters");
 // ============
 
 const app = express();
@@ -26,6 +27,7 @@ connectDB();
 // -------Routes-----------
 app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
+// app.use("/api/order", orderRouters);
 
 // -----------------------------
 
