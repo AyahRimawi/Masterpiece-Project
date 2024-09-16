@@ -3,10 +3,11 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
-  sku: { type: String, unique: true }, // رقم المنتج
+  shein_code: { type: String, unique: true }, // رقم المنتج
   price: { type: Number, required: true },
   sizes: [{ type: String }], // أحجام مختلفة
   colors: [{ type: String }], // ألوان مختلفة
+  overviewPicture: { type: String, required: true },
   images: [{ type: String }], // روابط للصور
   quantity: { type: Number, required: true },
   category: {
@@ -40,6 +41,13 @@ const productSchema = new mongoose.Schema({
   adminFeedback: { type: String }, // ملاحظات الإدارة
   ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }], // التقييمات
   averageRating: { type: Number, default: 0 }, // معدل التقييم
+  paymentStatus: {
+    type: String,
+    enum: ["Pending", "Paid"],
+    default: "Pending", // يبدأ كـ 'Pending' حتى يتم تأكيد الدفع
+  },
+  isDeleted: { type: Boolean, default: false }, // حقل جديد للحذف الناعم
+  deletedAt: { type: Date }, // تاريخ الحذف الناعم
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

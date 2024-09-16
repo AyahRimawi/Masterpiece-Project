@@ -15,9 +15,25 @@ module.exports = router;
 /////////
 //? register .. POST
 //* http://localhost:8080/api/users/register
+
+// {
+//   "name": "John Doe",
+//   "email": "johndoe@example.com",
+//   "password": "password123",
+//   "address": "123 Main St",
+//   "phone": "123-456-7890"
+// }
+
 ////////
 //? login .. POST
 //* http://localhost:8080/api/users/login
+
+// {
+//   "email": "johndoe@example.com",
+//   "password": "password123"
+// }
+
+
 ////////
 //? logout .. POST
 //* http://localhost:8080/api/users/logout
