@@ -6,10 +6,20 @@ import OrdersInfo from "./OrdersInfo";
 import SizePage from "./SizePage";
 import AddressPage from "./AddressPage";
 import PaymentPage from "./PaymentPage";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../../Redux/AuthRedux/authThunks";
+
+
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
 const ProfilePage = () => {
+  // ---------
+    const dispatch = useDispatch();
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // -------------
+
   // هون القصد انو اول section مفعل عند الدخول على الصفحة هو ال personal
   const [activeSection, setActiveSection] = useState("personal");
   // هون تطبق الحالة الافتراضية وهي العادة انو يكون ال sidebar مغلق لأنو مو دائما بحاجة انو يكون مفتوح
@@ -55,9 +65,10 @@ const ProfilePage = () => {
     navigate("/");
   };
   // ============ handleLogout ============
-  const handleLogout = () => {
-    console.log("Logging out...");
-  };
+ const handleLogout = () => {
+   dispatch(logoutUser());
+   navigate("/");
+ };
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -165,8 +176,8 @@ const ProfilePage = () => {
                   </button>
                   <button
                     // هون الحدث الاكبر للانتقال ما بين صفحة ال profile الى صفحة home
-                    // onClick={handleLogout}
-                    onClick={handleHomeNavigation}
+                    onClick={handleLogout}
+                    // onClick={handleHomeNavigation}
                     className="flex-1 p-3 rounded flex items-center justify-center text-gray-600 hover:bg-gray-200"
                   >
                     <svg

@@ -6,10 +6,13 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import DetailsPage from "./pages/DetailsPage/DetailsPage";
 import PaymentCard from "./pages/Card/PaymentCard";
 import ThankYouCard from "./pages/Card/ThankYouCard";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <>
+      <ToastContainer />
+
       {/* <PaymentCard/> */}
       {/* Routes */}
       <Routes>
