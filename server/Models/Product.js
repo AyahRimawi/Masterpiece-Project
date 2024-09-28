@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
-  shein_code: { type: String, unique: true }, // رقم المنتج
+  shein_code: { type: String}, // رقم المنتج
   price: { type: Number, required: true },
   sizes: [{ type: String }], // أحجام مختلفة
   colors: [{ type: String }], // ألوان مختلفة

@@ -11,7 +11,14 @@ import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
 import { Dress } from "../../pages/HomePage/Dress";
 import { Payment } from "../../pages/HomePage/Payment";
-import { SalesCard } from "../../pages/Card/SalesCard";
+import {
+  WomenCard,
+  MenCard,
+  KidsCard,
+  BabyCard,
+  DressesCard,
+  SaleCard,
+} from "../../pages/ProductPage/CategoryComponents/CategoryComponents";
 
 
 export default function SectionBar() {
@@ -83,6 +90,7 @@ export default function SectionBar() {
       </div>
 
       <TETabsContent>
+        {/* -------HOME-------- */}
         <TETabsPane show={basicActive === "tab1"}>
           <HeroSection />
           <HotSale />
@@ -91,29 +99,36 @@ export default function SectionBar() {
           <Dress />
           <Payment />
         </TETabsPane>
+        {/* ---------WOMEN--------- */}
         <TETabsPane show={basicActive === "tab2"}>
-          <SalesCard />
+          <WomenCard />
         </TETabsPane>
+        {/* --------MEN------- */}
         <TETabsPane show={basicActive === "tab3"}>
           {" "}
-          <SalesCard />
+          <MenCard />
         </TETabsPane>
+        {/* -------KIDS-------- */}
         <TETabsPane show={basicActive === "tab4"}>
           {" "}
-          <SalesCard />
+          <KidsCard />
         </TETabsPane>
+        {/* --------BABY------- */}
         <TETabsPane show={basicActive === "tab5"}>
           {" "}
-          <SalesCard />
+          <BabyCard />
         </TETabsPane>
+        {/* --------DRESSES------- */}
         <TETabsPane show={basicActive === "tab6"}>
           {" "}
-          <SalesCard />
+          <DressesCard />
         </TETabsPane>
+        {/* -------SALE%-------- */}
         <TETabsPane show={basicActive === "tab7"}>
           {" "}
-          <SalesCard />
+          <SaleCard />
         </TETabsPane>
+        {/* --------------- */}
       </TETabsContent>
     </div>
   );

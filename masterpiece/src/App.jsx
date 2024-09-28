@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/HomePage/Home";
 import Cart from "./pages/Cart/Cart";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import ProductPage from "./pages/Card/ProductPage";
+import DetailsPage from "./pages/DetailsPage/DetailsPage";
 import PaymentCard from "./pages/Card/PaymentCard";
 import ThankYouCard from "./pages/Card/ThankYouCard";
 
@@ -14,11 +14,12 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/ProductPage" element={<ProductPage />} />
+        <Route path="/product/:id" element={<DetailsPage />} />
+
         <Route path="/Cart" element={<Cart />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
         <Route path="/PaymentCard" element={<PaymentCard />} />
-        <Route path="/ThankYouCard" element={<ThankYouCard/>} />
+        <Route path="/ThankYouCard" element={<ThankYouCard />} />
       </Routes>
       {/* Routes */}
     </>
