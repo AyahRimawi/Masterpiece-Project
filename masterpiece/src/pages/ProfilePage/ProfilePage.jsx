@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // استخدمناها لتنقل بين الصفحات ولاحظ useNavigate بتكون ال from تبعتها هي router لأنها اساسا عبارة عن تنقل
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
 import SizePage from "./SizePage";
@@ -27,15 +28,30 @@ const ProfilePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // -----------------------------------------------------------------------
   
-  const [userName, setUserName] = useState("Aya Rimawi"); // Default name
+  const [userName, setUserName] = useState(""); // Default name
 
-  useEffect(() => {
-    // Fetch user name from localStorage
-    const savedName = JSON.parse(
-      localStorage.getItem("personalInfo") || "{}"
-    ).name;
-    if (savedName) setUserName(savedName);
-  }, []);
+  // useEffect(() => {
+  //   // Fetch user name from localStorage
+  //   const savedName = JSON.parse(
+  //     localStorage.getItem("personalInfo") || "{}"
+  //   ).name;
+  //   if (savedName) setUserName(savedName);
+  // }, []);
+
+   useEffect(() => {
+     const fetchUserData = async () => {
+       try {
+         const response = await axios.get("/api/profile/get-PersonalInfo", {
+           withCredentials: true,
+         });
+         setUserName(response.data.name);
+       } catch (error) {
+         console.error("Error fetching user data:", error);
+       }
+     };
+
+     fetchUserData();
+   }, []);
   // ------------------------------------------------
   // اقسام ال section داخل ال sidebar يتم ترتيب البيانات داخل array واعطاء كل قسم منهم:
   // id يعبر معرف لكل قسم ويكون هو ما يميز كل قسم

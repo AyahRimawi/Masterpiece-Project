@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Make sure to install axios if you haven't already
 
 const PersonalInfo = () => {
   const [personalData, setPersonalData] = useState({
     name: "",
     email: "",
     phone: "",
-    dob: "",
+    address: "",
   });
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Load personal data from localStorage on component mount
-    const savedData = JSON.parse(localStorage.getItem("personalInfo") || "{}");
-    setPersonalData(savedData);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("/api/profile/get-PersonalInfo", {
+          withCredentials: true,
+        });
+        setPersonalData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const handleInputChange = (e) => {
@@ -23,12 +33,23 @@ const PersonalInfo = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Save personal data to localStorage
-    localStorage.setItem("personalInfo", JSON.stringify(personalData));
-    setIsEditing(false);
-    alert("Personal information saved successfully!");
+    try {
+      const response = await axios.put(
+        "/api/profile/update-PersonalInfo",
+        personalData,
+        {
+          withCredentials: true,
+        }
+      );
+            setPersonalData(response.data.user);
+      setIsEditing(false);
+      alert("Personal information updated successfully!");
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      alert("Failed to update personal information. Please try again.");
+    }
   };
 
   const handleEdit = () => {
@@ -36,9 +57,6 @@ const PersonalInfo = () => {
   };
 
   const handleCancel = () => {
-    // Reset to saved data and exit edit mode
-    const savedData = JSON.parse(localStorage.getItem("personalInfo") || "{}");
-    setPersonalData(savedData);
     setIsEditing(false);
   };
 
@@ -113,23 +131,23 @@ const PersonalInfo = () => {
         </div>
         <div>
           <label
-            htmlFor="dob"
+            htmlFor="address"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Date of Birth
+            Address
           </label>
           {isEditing ? (
             <input
-              type="date"
-              id="dob"
-              value={personalData.dob}
+              type="text"
+              id="address"
+              value={personalData.address}
               onChange={handleInputChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
               required
             />
           ) : (
             <p className="w-full p-2 bg-gray-100 rounded-md">
-              {personalData.dob || "Not provided"}
+              {personalData.address || "Not provided"}
             </p>
           )}
         </div>
