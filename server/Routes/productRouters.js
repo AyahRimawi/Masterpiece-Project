@@ -17,6 +17,10 @@ router.put("/updateProduct/:id", auth, productController.updateProduct);
 
 router.get("/getProductsByCategory/:category", productController.getProductsByCategory);
 router.get("/getProductsBySubCategory/:subCategory", productController.getProductsBySubCategory);
+router.get(
+  "/getProductsByCategoryAndSubCategory/:category/:subCategory",
+  productController.getProductsByCategoryAndSubCategory
+);
 
 module.exports = router;
 
@@ -24,7 +28,7 @@ module.exports = router;
 //! postman ...
 ////////////////////////
 //? addProduct .. POST
-//* http://localhost:8080/api/product/addProduct
+// * http://localhost:8080/api/product/addProduct
 
 // {
 //   "name": "Example Product",
@@ -75,8 +79,8 @@ module.exports = router;
 //////////////
 
 // ? getProductsByCategory .. GET
-//* http://localhost:8080/api/product/getProductsByCategory/{category}
+// * http://localhost:8080/api/product/getProductsByCategory/{category}
 ////////////////
 
 // ? getProductsBySubCategory .. GET
-//*http://localhost:8080/api/product/getProductsBySubCategory/{subCategory}
+// *http://localhost:8080/api/product/getProductsBySubCategory/{subCategory}

@@ -26,7 +26,7 @@ module.exports = router;
 
 ////////
 //? login .. POST
-//* http://localhost:8080/api/users/login
+// * http://localhost:8080/api/users/login
 
 // {
 //   "email": "johndoe@example.com",
