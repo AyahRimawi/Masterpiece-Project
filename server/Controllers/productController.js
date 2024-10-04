@@ -99,6 +99,104 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+
+// exports.getVariantById = async (req, res) => {
+//   try {
+//     const variantId = req.params.id;
+//     const variant = await Variant.findById(variantId);
+
+//     if (!variant) {
+//       return res.status(404).json({ message: "Variant not found" });
+//     }
+
+//     const product = await Product.findById(variant.productId).populate(
+//       "seller",
+//       "name"
+//     );
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     const allVariants = await Variant.find({ productId: product._id });
+
+//     const response = {
+//       ...product.toObject(),
+//       currentVariant: variant,
+//       variants: allVariants,
+//       availableColors: [...new Set(allVariants.map((v) => v.color))],
+//       availableSizes: [...new Set(allVariants.map((v) => v.size))],
+//     };
+
+//     res.json(response);
+//   } catch (error) {
+//     console.error("Error fetching variant details:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
+exports.getVariantById = async (req, res) => {
+  try {
+    const variantId = req.params.id;
+    const variant = await Variant.findById(variantId);
+
+    if (!variant) {
+      return res.status(404).json({ message: "Variant not found" });
+    }
+
+    const product = await Product.findById(variant.productId).populate(
+      "seller",
+      "name"
+    );
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const allVariants = await Variant.find({ productId: product._id });
+
+    // Gather available colors and sizes
+    const availableColors = [...new Set(allVariants.map((v) => v.color))];
+    const sizesForCurrentColor = allVariants
+      .filter((v) => v.color === variant.color)
+      .flatMap((v) => v.size);
+
+    const response = {
+      ...product.toObject(),
+      currentVariant: variant,
+      variants: allVariants,
+      availableColors: availableColors,
+      availableSizes: [...new Set(sizesForCurrentColor)],
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error("Error fetching variant details:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Add this new function to get available sizes for the selected color
+exports.getSizesForColor = async (req, res) => {
+  try {
+    const { productId, color } = req.params;
+    const variants = await Variant.find({ productId, color });
+
+    if (!variants || variants.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No variants found for this color" });
+    }
+
+    const availableSizes = [...new Set(variants.flatMap((v) => v.size))];
+    res.json({ availableSizes });
+  } catch (error) {
+    console.error("Error fetching available sizes:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getProductsByUser = async (req, res) => {
   try {
     const userId = req.params.userId;

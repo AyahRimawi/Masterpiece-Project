@@ -8,6 +8,8 @@ const auth = require("../Middleware/auth");
 router.post("/addProduct", auth, productController.addProduct);
 router.get("/getAllProducts", productController.getAllProducts);
 router.get("/getProductById/:id", productController.getProductById);
+router.get("/getVariantById/:id", productController.getVariantById);
+router.get("/getSizesForColor/:productId/:color", productController.getSizesForColor);
 router.get("/getProductsByUser/:userId", auth, productController.getProductsByUser);
 
 router.put("/softDeleteProduct/:id", auth, productController.softDeleteProduct);
@@ -31,17 +33,30 @@ module.exports = router;
 // * http://localhost:8080/api/product/addProduct
 
 // {
-//   "name": "Example Product",
-//   "description": "This is a sample product.",
-//   "shein_code": "EX123",
-//   "price": 19.99,
-//   "sizes": ["S", "M", "L"],
-//   "colors": ["Red", "Blue"],
-//   "overviewPicture": "http://example.com/image.jpg",
-//   "images": ["http://example.com/image1.jpg", "http://example.com/image2.jpg"],
-//   "quantity": 100,
-//   "category": "Women",
-//   "subCategory": "Dress"
+//   "name": "Classic Suit",
+//   "description": "A timeless suit for formal occasions.",
+//   "category": "Men",
+//   "subCategory": "Suit",
+//   "variants": [
+//     {
+//       "shein_code": "CSU001-NAVY-40",
+//       "color": "Navy",
+//       "size": "40",
+//       "price": 199.99,
+//       "quantity": 10,
+//       "overviewPicture": "http://example.com/navy-suit.jpg",
+//       "images": ["http://example.com/navy-suit-1.jpg", "http://example.com/navy-suit-2.jpg"]
+//     },
+//     {
+//       "shein_code": "CSU001-BLACK-42",
+//       "color": "Black",
+//       "size": "42",
+//       "price": 199.99,
+//       "quantity": 8,
+//       "overviewPicture": "http://example.com/black-suit.jpg",
+//       "images": ["http://example.com/black-suit-1.jpg", "http://example.com/black-suit-2.jpg"]
+//     }
+//   ]
 // }
 
 // * مع العلم لازم تحط بال header كلمة cookies وتكون مسجل دخول عشان ال token
