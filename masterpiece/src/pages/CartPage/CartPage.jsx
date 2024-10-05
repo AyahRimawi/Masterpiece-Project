@@ -20,6 +20,20 @@ const CartPage = () => {
     }
   };
 
+  const handleQuantityChange = async (itemId, currentQuantity, change) => {
+    const newQuantity = Math.max(1, currentQuantity + change);
+    try {
+      await updateCartItem(itemId, newQuantity);
+      toast.success("Cart updated successfully");
+    } catch (error) {
+      console.error("Error updating cart:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to update cart. Please try again."
+      );
+    }
+  };
+
   if (loading) return <div className="text-center mt-8">Loading...</div>;
   if (error)
     return <div className="text-center mt-8 text-red-500">{error}</div>;
@@ -32,74 +46,26 @@ const CartPage = () => {
     return sum + price * item.quantity;
   }, 0);
 
-const handleQuantityChange = async (itemId, currentQuantity, change) => {
-  const newQuantity = Math.max(1, currentQuantity + change);
-  try {
-    await updateCartItem(itemId, newQuantity);
-    toast.success("Cart updated successfully", {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  } catch (error) {
-    console.error("Error updating cart:", error);
-    toast.error(
-      error.response?.data?.message ||
-        "Failed to update cart. Please try again.",
-      {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      }
-    );
-  }
-};
-
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       {cart.items.map((item) => (
         <div key={item._id} className="flex items-center border-b py-4">
           <img
-            src={
-              item.variantId && item.variantId.overviewPicture
-                ? item.variantId.overviewPicture
-                : "placeholder-image-url"
-            }
-            alt={
-              item.variantId && item.variantId.name
-                ? item.variantId.name
-                : "Product"
-            }
+            src={item.variantId?.overviewPicture || "placeholder-image-url"}
+            alt={item.variantId?.name || "Product"}
             className="w-20 h-20 object-cover mr-4"
           />
           <div className="flex-grow">
             <h2 className="font-semibold">
-              {item.productId && item.productId.name
-                ? item.productId.name
-                : "Product Name"}
+              {item.productId?.name || "Product Name"}
             </h2>
             <p className="text-gray-600">
-              Color:{" "}
-              {item.variantId && item.variantId.color
-                ? item.variantId.color
-                : "N/A"}
-              , Size:{" "}
-              {item.variantId && item.variantId.size
-                ? item.variantId.size
-                : "N/A"}
+              Color: {item.variantId?.color || "N/A"}, Size:{" "}
+              {item.variantId?.size || "N/A"}
             </p>
             <p className="text-gray-600">
-              Price: $
-              {item.variantId && item.variantId.price
-                ? item.variantId.price.toFixed(2)
-                : "0.00"}
+              Price: ${item.variantId?.price?.toFixed(2) || "0.00"}
             </p>
             <div className="flex items-center mt-2">
               <button
@@ -114,7 +80,7 @@ const handleQuantityChange = async (itemId, currentQuantity, change) => {
               <button
                 onClick={() => handleQuantityChange(item._id, item.quantity, 1)}
                 className="bg-gray-200 px-2 py-1 rounded"
-                disabled={item.quantity >= item.variantId.quantity}
+                disabled={item.quantity >= item.variantId?.quantity}
               >
                 +
               </button>

@@ -10,9 +10,12 @@ const useCartStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axios.get("/api/cart");
-      set({ cart: response.data, loading: false });
+      set({ cart: response.data, loading: false, error: null });
     } catch (error) {
-      set({ error: error.message, loading: false });
+      set({
+        error: error.response?.data?.message || "Failed to fetch cart",
+        loading: false,
+      });
     }
   },
 
@@ -50,9 +53,13 @@ const useCartStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axios.delete(`/api/cart/removeCartItem/${itemId}`);
-      set({ cart: response.data.cart, loading: false });
+      set({ cart: response.data.cart, loading: false, error: null });
     } catch (error) {
-      set({ error: error.message, loading: false });
+      set({
+        error:
+          error.response?.data?.message || "Failed to remove item from cart",
+        loading: false,
+      });
       throw error;
     }
   },
@@ -61,9 +68,25 @@ const useCartStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axios.delete("/api/cart/clearCart");
-      set({ cart: response.data.cart, loading: false });
+      set({ cart: response.data.cart, loading: false, error: null });
     } catch (error) {
-      set({ error: error.message, loading: false });
+      set({
+        error: error.response?.data?.message || "Failed to clear cart",
+        loading: false,
+      });
+    }
+  },
+
+  transferGuestCart: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.post("/api/cart/transferGuestCart");
+      set({ cart: response.data.cart, loading: false, error: null });
+    } catch (error) {
+      set({
+        error: error.response?.data?.message || "Failed to transfer guest cart",
+        loading: false,
+      });
     }
   },
 }));

@@ -4,8 +4,8 @@ const { Product, Variant } = require("../Models/Product");
 const CartController = {
   getCart: async (req, res) => {
     try {
-      const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID || "guest";
+      const userId = req.headers["user-id"] || null;
+      const sessionId = req.sessionID;
 
       let cart = await Cart.findOne(userId ? { userId } : { sessionId })
         .populate({
@@ -14,16 +14,25 @@ const CartController = {
         })
         .populate({
           path: "items.variantId",
-          select: "color size overviewPicture price", // أضف price هنا
+          select: "color size overviewPicture price",
         });
 
       if (!cart) {
-        cart = new Cart({ userId, sessionId, items: [] });
+        cart = new Cart({
+          userId: userId,
+          sessionId: userId ? null : sessionId,
+          items: [],
+        });
+        await cart.save();
+      } else if (
+        userId &&
+        (!cart.userId || cart.userId.toString() !== userId)
+      ) {
+        cart.userId = userId;
+        cart.sessionId = null;
+        await cart.save();
       }
-      cart.items = cart.items.map((item) => ({
-        ...item.toObject(),
-        totalPrice: item.quantity * item.variantId.price,
-      }));
+
       res.status(200).json(cart);
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -36,10 +45,9 @@ const CartController = {
   addToCart: async (req, res) => {
     try {
       const { productId, variantId, quantity } = req.body;
-      const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID || "guest";
+      const userId = req.headers["user-id"] || null;
+      const sessionId = req.sessionID;
 
-      // التحقق من المنتج والفاريانت وتوفر الكمية
       const product = await Product.findById(productId);
       const variant = await Variant.findById(variantId);
 
@@ -52,13 +60,21 @@ const CartController = {
         return res.status(400).json({ message: "Not enough stock available" });
       }
 
-      // إيجاد أو إنشاء السلة
       let cart = await Cart.findOne(userId ? { userId } : { sessionId });
       if (!cart) {
-        cart = new Cart({ userId, sessionId, items: [] });
+        cart = new Cart({
+          userId: userId,
+          sessionId: userId ? null : sessionId,
+          items: [],
+        });
+      } else if (
+        userId &&
+        (!cart.userId || cart.userId.toString() !== userId)
+      ) {
+        cart.userId = userId;
+        cart.sessionId = null;
       }
 
-      // إضافة أو تحديث العنصر في السلة
       const existingItemIndex = cart.items.findIndex(
         (item) =>
           item.productId.toString() === productId &&
@@ -73,7 +89,6 @@ const CartController = {
 
       await cart.save();
 
-      // إرجاع السلة مع البيانات المطلوبة
       cart = await Cart.findById(cart._id)
         .populate("items.productId", "name")
         .populate(
@@ -91,13 +106,12 @@ const CartController = {
         .json({ message: "Error adding item to cart", error: error.message });
     }
   },
-  
   updateCartItem: async (req, res) => {
     try {
       const { itemId } = req.params;
       const { quantity } = req.body;
       const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID || "guest";
+      const sessionId = req.sessionID;
 
       let cart = await Cart.findOne(userId ? { userId } : { sessionId });
 
@@ -142,7 +156,7 @@ const CartController = {
     try {
       const { itemId } = req.params;
       const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID || "guest";
+      const sessionId = req.sessionID;
 
       let cart = await Cart.findOne(userId ? { userId } : { sessionId });
 
@@ -153,7 +167,6 @@ const CartController = {
       cart.items = cart.items.filter((item) => item._id.toString() !== itemId);
       await cart.save();
 
-      // Populate the cart before sending the response
       cart = await Cart.findOne(userId ? { userId } : { sessionId }).populate({
         path: "items.variantId",
         select: "name color size price overviewPicture",
@@ -174,7 +187,7 @@ const CartController = {
   clearCart: async (req, res) => {
     try {
       const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID || "guest";
+      const sessionId = req.sessionID;
 
       let cart = await Cart.findOne(userId ? { userId } : { sessionId });
 
@@ -191,6 +204,68 @@ const CartController = {
       res
         .status(500)
         .json({ message: "Error clearing cart", error: error.message });
+    }
+  },
+
+  transferGuestCart: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const sessionId = req.sessionID;
+
+      const guestCart = await Cart.findOne({ sessionId });
+      let userCart = await Cart.findOne({ userId });
+
+      if (guestCart) {
+        if (!userCart) {
+          userCart = new Cart({ userId, items: [] });
+        }
+
+        guestCart.items.forEach((guestItem) => {
+          const existingItem = userCart.items.find(
+            (item) =>
+              item.productId.toString() === guestItem.productId.toString() &&
+              item.variantId.toString() === guestItem.variantId.toString()
+          );
+
+          if (existingItem) {
+            existingItem.quantity += guestItem.quantity;
+          } else {
+            userCart.items.push(guestItem);
+          }
+        });
+
+        await userCart.save();
+        await Cart.deleteOne({ sessionId });
+
+        userCart = await Cart.findOne({ userId })
+          .populate("items.productId", "name")
+          .populate(
+            "items.variantId",
+            "color size price overviewPicture quantity"
+          );
+
+        res
+          .status(200)
+          .json({
+            message: "Guest cart transferred successfully",
+            cart: userCart,
+          });
+      } else {
+        res
+          .status(200)
+          .json({
+            message: "No guest cart found",
+            cart: userCart || { items: [] },
+          });
+      }
+    } catch (error) {
+      console.error("Error transferring guest cart:", error);
+      res
+        .status(500)
+        .json({
+          message: "Error transferring guest cart",
+          error: error.message,
+        });
     }
   },
 };

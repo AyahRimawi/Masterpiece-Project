@@ -83,7 +83,7 @@ exports.loginUser = async (req, res) => {
           sameSite: "strict",
           maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
-        res.json({ message: "Logged in successfully" });
+        res.json({ message: "Logged in successfully", userId: user.id });
       }
     );
   } catch (err) {
