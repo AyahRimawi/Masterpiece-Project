@@ -19,9 +19,9 @@ const CategoryPage = ({ category, subcategories }) => {
     setError(null);
     try {
       const url = `/api/product/getProductsByCategoryAndSubCategory/${category}/${selectedSubcategory}`;
-      console.log("Fetching products from URL:", url);
+      // console.log("Fetching products from URL:", url);
       const response = await axios.get(url);
-      console.log("Response data:", response.data);
+      // console.log("Response data:", response.data);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

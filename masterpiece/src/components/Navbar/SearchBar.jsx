@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import user from "../../assets/user.png";
 import love from "../../assets/love.png";
-import shoppingCart from "../../assets/shoppingCart.png";
+// import shoppingCart from "../../assets/shoppingCart.png";
 import AuthForm from "../../auth/AuthPopup";
 import { logoutUser } from "../../Redux/AuthRedux/authThunks";
+import CartIcon from "../../pages/CartPage/CartIcon";
+
 
 const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -149,12 +151,10 @@ const SearchBar = () => {
           </li>
           <li>
             <Link to="/Cart">
-              <img
-                src={shoppingCart}
-                className="w-7 h-7 md:w-9 md:h-9"
-                alt="Shopping Cart"
-                loading="lazy"
-              />
+              <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+                {" "}
+                <CartIcon />
+              </div>
             </Link>
           </li>
         </ul>

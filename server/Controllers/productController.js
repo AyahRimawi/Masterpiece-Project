@@ -19,7 +19,7 @@ exports.addProduct = async (req, res) => {
     });
 
     await product.save({ session });
-    console.log("Product saved:", product);
+    // console.log("Product saved:", product);
 
     if (req.body.variants && Array.isArray(req.body.variants)) {
       const variants = req.body.variants.map((variant) => ({
@@ -34,7 +34,7 @@ exports.addProduct = async (req, res) => {
       }));
 
       const savedVariants = await Variant.insertMany(variants, { session });
-      console.log("Variants saved:", savedVariants);
+      // console.log("Variants saved:", savedVariants);
     }
 
     await session.commitTransaction();
@@ -98,43 +98,6 @@ exports.getProductById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-// exports.getVariantById = async (req, res) => {
-//   try {
-//     const variantId = req.params.id;
-//     const variant = await Variant.findById(variantId);
-
-//     if (!variant) {
-//       return res.status(404).json({ message: "Variant not found" });
-//     }
-
-//     const product = await Product.findById(variant.productId).populate(
-//       "seller",
-//       "name"
-//     );
-
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
-
-//     const allVariants = await Variant.find({ productId: product._id });
-
-//     const response = {
-//       ...product.toObject(),
-//       currentVariant: variant,
-//       variants: allVariants,
-//       availableColors: [...new Set(allVariants.map((v) => v.color))],
-//       availableSizes: [...new Set(allVariants.map((v) => v.size))],
-//     };
-
-//     res.json(response);
-//   } catch (error) {
-//     console.error("Error fetching variant details:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
 
 exports.getVariantById = async (req, res) => {
   try {
@@ -337,21 +300,21 @@ exports.updateVariant = async (req, res) => {
 
 exports.getProductsByCategory = async (req, res) => {
   try {
-    console.log(`Fetching products for category: ${req.params.category}`);
+    // console.log(`Fetching products for category: ${req.params.category}`);
 
     const products = await Product.find({
       category: req.params.category,
       isDeleted: false,
     }).populate("seller", "name");
 
-    console.log(
-      `Found ${products.length} products for category ${req.params.category}`
-    );
+    // console.log(
+      // `Found ${products.length} products for category ${req.params.category}`
+    // );
 
     const productsWithVariants = await Promise.all(
       products.map(async (product) => {
         const variants = await Variant.find({ productId: product._id });
-        console.log(`Product ${product._id} has ${variants.length} variants`);
+        // console.log(`Product ${product._id} has ${variants.length} variants`);
 
         return {
           ...product.toObject(),
@@ -365,9 +328,9 @@ exports.getProductsByCategory = async (req, res) => {
       })
     );
 
-    console.log(
-      `Returning ${productsWithVariants.length} products with variants`
-    );
+    // console.log(
+    //   `Returning ${productsWithVariants.length} products with variants`
+    // );
     res.json(productsWithVariants);
   } catch (error) {
     console.error("Error in getProductsByCategory:", error);
@@ -376,21 +339,21 @@ exports.getProductsByCategory = async (req, res) => {
 };
 exports.getProductsBySubCategory = async (req, res) => {
   try {
-    console.log(`Fetching products for subcategory: ${req.params.subCategory}`);
+    // console.log(`Fetching products for subcategory: ${req.params.subCategory}`);
 
     const products = await Product.find({
       subCategory: req.params.subCategory,
       isDeleted: false,
     }).populate("seller", "name");
 
-    console.log(
-      `Found ${products.length} products for subcategory ${req.params.subCategory}`
-    );
+    // console.log(
+    //   `Found ${products.length} products for subcategory ${req.params.subCategory}`
+    // );
 
     const productsWithVariants = await Promise.all(
       products.map(async (product) => {
         const variants = await Variant.find({ productId: product._id });
-        console.log(`Product ${product._id} has ${variants.length} variants`);
+        // console.log(`Product ${product._id} has ${variants.length} variants`);
 
         return {
           ...product.toObject(),
@@ -404,9 +367,9 @@ exports.getProductsBySubCategory = async (req, res) => {
       })
     );
 
-    console.log(
-      `Returning ${productsWithVariants.length} products with variants for subcategory ${req.params.subCategory}`
-    );
+    // console.log(
+    //   `Returning ${productsWithVariants.length} products with variants for subcategory ${req.params.subCategory}`
+    // );
     res.json(productsWithVariants);
   } catch (error) {
     console.error("Error in getProductsBySubCategory:", error);
@@ -418,9 +381,9 @@ exports.getProductsBySubCategory = async (req, res) => {
 exports.getProductsByCategoryAndSubCategory = async (req, res) => {
   try {
     const { category, subCategory } = req.params;
-    console.log(
-      `Fetching products for category: ${category} and subcategory: ${subCategory}`
-    );
+    // console.log(
+    //   `Fetching products for category: ${category} and subcategory: ${subCategory}`
+    // );
 
     let query = { category, isDeleted: false };
     if (subCategory !== "all") {
@@ -429,14 +392,14 @@ exports.getProductsByCategoryAndSubCategory = async (req, res) => {
 
     const products = await Product.find(query).populate("seller", "name");
 
-    console.log(
-      `Found ${products.length} products for category ${category} and subcategory ${subCategory}`
-    );
+    // console.log(
+    //   `Found ${products.length} products for category ${category} and subcategory ${subCategory}`
+    // );
 
     const productsWithVariants = await Promise.all(
       products.map(async (product) => {
         const variants = await Variant.find({ productId: product._id });
-        console.log(`Product ${product._id} has ${variants.length} variants`);
+        // console.log(`Product ${product._id} has ${variants.length} variants`);
 
         return {
           ...product.toObject(),
@@ -450,9 +413,9 @@ exports.getProductsByCategoryAndSubCategory = async (req, res) => {
       })
     );
 
-    console.log(
-      `Returning ${productsWithVariants.length} products with variants`
-    );
+    // console.log(
+    //   `Returning ${productsWithVariants.length} products with variants`
+    // );
     res.json(productsWithVariants);
   } catch (error) {
     console.error("Error in getProductsByCategoryAndSubCategory:", error);

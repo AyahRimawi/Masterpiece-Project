@@ -1,15 +1,38 @@
+
 const Order = require("../Models/Order");
 const User = require("../Models/User");
-const Product = require("../Models/Product");
+const { Product, Variant } = require("../Models/Product");
 
 exports.createOrder = async (req, res) => {
   try {
     const { items, totalAmount, paymentMethod, shippingAddress } = req.body;
-    const userId = req.user.id; // This now comes from the authMiddleware
+    const userId = req.user.id;
+
+    // Validate and populate item information
+    const populatedItems = await Promise.all(
+      items.map(async (item) => {
+        const variant = await Variant.findById(item.variantId).populate(
+          "productId"
+        );
+        if (!variant) {
+          throw new Error(`Variant not found: ${item.variantId}`);
+        }
+        return {
+          variantId: variant._id,
+          productId: variant.productId._id,
+          productName: variant.productId.name,
+          color: variant.color,
+          size: variant.size,
+          image: variant.image,
+          price: variant.price,
+          quantity: item.quantity,
+        };
+      })
+    );
 
     const newOrder = new Order({
       userId,
-      items,
+      items: populatedItems,
       totalAmount,
       paymentMethod,
       shippingAddress,
@@ -20,9 +43,9 @@ exports.createOrder = async (req, res) => {
     // Update user's orders array
     await User.findByIdAndUpdate(userId, { $push: { orders: savedOrder._id } });
 
-    // Update product quantities
-    for (let item of items) {
-      await Product.findByIdAndUpdate(item.productId, {
+    // Update variant quantities
+    for (let item of populatedItems) {
+      await Variant.findByIdAndUpdate(item.variantId, {
         $inc: { quantity: -item.quantity },
       });
     }
@@ -30,14 +53,17 @@ exports.createOrder = async (req, res) => {
     res.status(201).json(savedOrder);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error: " + error.message);
   }
 };
 
 exports.getAllOrdersForUser = async (req, res) => {
   try {
-    const userId = req.user.id; // This now comes from the authMiddleware
-    const orders = await Order.find({ userId }).populate("items.productId");
+    const userId = req.user.id;
+    const orders = await Order.find({ userId }).populate({
+      path: "items.variantId",
+      populate: { path: "productId" },
+    });
     res.status(200).json(orders);
   } catch (error) {
     console.error(error.message);
@@ -67,65 +93,6 @@ exports.updateOrderStatus = async (req, res) => {
   }
 };
 
-// exports.getAllOrdersForSeller = async (req, res) => {
-//   try {
-//     const sellerId = req.params.sellerId; // Get sellerId from route parameter
-
-//     // Find all products of the seller
-//     const sellerProducts = await Product.find({ seller: sellerId });
-//     const sellerProductIds = sellerProducts.map((product) => product._id);
-
-//     // Find all orders that contain the seller's products
-//     const orders = await Order.find({
-//       "items.productId": { $in: sellerProductIds },
-//     }).populate("items.productId");
-
-//     // Filter out items in each order that don't belong to the seller
-//     const filteredOrders = orders.map((order) => ({
-//       ...order.toObject(),
-//       items: order.items.filter((item) =>
-//         sellerProductIds.some((id) => id.equals(item.productId._id))
-//       ),
-//     }));
-
-//     res.status(200).json(filteredOrders);
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("Server error");
-//   }
-// };
-// exports.getOrderAmountsForSeller = async (req, res) => {
-//   try {
-//     const sellerId = req.params.sellerId; // Get sellerId from route parameter
-
-//     // Find all products of the seller
-//     const sellerProducts = await Product.find({ seller: sellerId });
-//     const sellerProductIds = sellerProducts.map((product) => product._id);
-
-//     // Find all orders that contain the seller's products
-//     const orders = await Order.find({
-//       "items.productId": { $in: sellerProductIds },
-//     }).populate("items.productId");
-
-//     let totalAmount = 0;
-//     let orderCount = 0;
-
-//     orders.forEach((order) => {
-//       order.items.forEach((item) => {
-//         if (sellerProductIds.some((id) => id.equals(item.productId._id))) {
-//           totalAmount += item.quantity * item.productId.price;
-//           orderCount++;
-//         }
-//       });
-//     });
-
-//     res.status(200).json({ totalAmount, orderCount });
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("Server error");
-//   }
-// };
-
 exports.getAllOrdersForSeller = async (req, res) => {
   try {
     const sellerId = req.params.sellerId;
@@ -137,7 +104,7 @@ exports.getAllOrdersForSeller = async (req, res) => {
     // Find all orders that contain the seller's products
     const orders = await Order.find({
       "items.productId": { $in: sellerProductIds },
-    }).select("items.productId items.quantity totalAmount status createdAt");
+    }).select("items totalAmount status createdAt");
 
     // Filter out items in each order that don't belong to the seller
     const filteredOrders = orders.map((order) => ({
@@ -159,37 +126,31 @@ exports.getOrderAmountsForSeller = async (req, res) => {
     const sellerId = req.params.sellerId;
 
     // Find all products of the seller
-    const sellerProducts = await Product.find(
-      { seller: sellerId },
-      "_id price"
-    );
-    const sellerProductMap = new Map(
-      sellerProducts.map((p) => [p._id.toString(), p.price])
-    );
+    const sellerProducts = await Product.find({ seller: sellerId }, "_id");
+    const sellerProductIds = sellerProducts.map((product) => product._id);
 
     // Find all orders that contain the seller's products
     const orders = await Order.find({
-      "items.productId": { $in: sellerProducts.map((p) => p._id) },
-    }).select("items.productId items.quantity");
+      "items.productId": { $in: sellerProductIds },
+    }).select("items");
 
     let totalAmount = 0;
     let totalQuantity = 0;
     let orderCount = 0;
-    let productSales = {};
+    let variantSales = {};
 
     orders.forEach((order) => {
       order.items.forEach((item) => {
-        if (sellerProductMap.has(item.productId.toString())) {
-          const price = sellerProductMap.get(item.productId.toString());
-          const amount = item.quantity * price;
+        if (sellerProductIds.some((id) => id.equals(item.productId))) {
+          const amount = item.quantity * item.price;
           totalAmount += amount;
           totalQuantity += item.quantity;
 
-          if (!productSales[item.productId]) {
-            productSales[item.productId] = { quantity: 0, amount: 0 };
+          if (!variantSales[item.variantId]) {
+            variantSales[item.variantId] = { quantity: 0, amount: 0 };
           }
-          productSales[item.productId].quantity += item.quantity;
-          productSales[item.productId].amount += amount;
+          variantSales[item.variantId].quantity += item.quantity;
+          variantSales[item.variantId].amount += amount;
         }
       });
       orderCount++;
@@ -199,15 +160,10 @@ exports.getOrderAmountsForSeller = async (req, res) => {
       totalAmount,
       totalQuantity,
       orderCount,
-      productSales,
+      variantSales,
     });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
   }
 };
-
-// totalAmount: إجمالي المبلغ لجميع المبيعات.
-// totalQuantity: إجمالي الكمية المباعة.
-// orderCount: عدد الطلبات.
-// productSales: تفاصيل المبيعات لكل منتج (الكمية والمبلغ).

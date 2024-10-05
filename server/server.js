@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 // ============
 const userRoutes = require("./Routes/userRouters");
 const productRoutes = require("./Routes/productRouters");
+const cartRouters = require("./Routes/cartRouters");
 const orderRouters = require("./Routes/orderRouters");
 const profileRouters = require("./Routes/profileRouters");
 // ============
@@ -28,6 +29,7 @@ connectDB();
 // -------Routes-----------
 app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRouters);
 app.use("/api/order", orderRouters);
 app.use("/api/profile", profileRouters);
 
