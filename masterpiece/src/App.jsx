@@ -10,27 +10,37 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import CartIcon from "./pages/CartPage/CartIcon";
 import CartPage from "./pages/CartPage/CartPage";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 
 function App() {
   return (
     <>
-      <ToastContainer />
-    
-       
-      {/* <PaymentCard/> */}
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<DetailsPage />} />
-        <Route path="/cart" element={<CartPage />} />
+      <PayPalScriptProvider
+        options={{
+          "client-id":
+            "ATh60NQr0fs5ZkrJylhozShzvlUgxtrAtQDblwWQnmwpsuWNIBsqNRQwF5lwRf0VBrNzB80scTW09Eqq",
+        }}
+      >
+        <ToastContainer />
 
-        {/* <Route path="/Cart" element={<Cart />} /> */}
-        <Route path="/ProfilePage" element={<ProfilePage />} />
-        <Route path="/PaymentCard" element={<PaymentCard />} />
-        <Route path="/ThankYouCard" element={<ThankYouCard />} />
-      </Routes>
-      {/* Routes */}
-      <ToastContainer position="bottom-right" autoClose={3000} />
+        {/* <PaymentCard/> */}
+        {/* Routes */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<DetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/CheckoutPage" element={<CheckoutPage />} />
+
+          {/* <Route path="/Cart" element={<Cart />} /> */}
+          <Route path="/ProfilePage" element={<ProfilePage />} />
+          <Route path="/PaymentCard" element={<PaymentCard />} />
+          <Route path="/ThankYouCard" element={<ThankYouCard />} />
+        </Routes>
+        {/* Routes */}
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </PayPalScriptProvider>
     </>
   );
 }

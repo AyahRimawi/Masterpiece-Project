@@ -2,168 +2,93 @@
 const Order = require("../Models/Order");
 const User = require("../Models/User");
 const { Product, Variant } = require("../Models/Product");
+const Cart = require("../Models/Cart");
 
-exports.createOrder = async (req, res) => {
-  try {
-    const { items, totalAmount, paymentMethod, shippingAddress } = req.body;
-    const userId = req.user.id;
+const OrderController = {
+  createOrder: async (req, res) => {
+    try {
+      const { paymentMethod, shippingAddress } = req.body;
+      const userId = req.user.id;
 
-    // Validate and populate item information
-    const populatedItems = await Promise.all(
-      items.map(async (item) => {
-        const variant = await Variant.findById(item.variantId).populate(
-          "productId"
-        );
-        if (!variant) {
-          throw new Error(`Variant not found: ${item.variantId}`);
-        }
+      // Fetch the user's cart
+      const cart = await Cart.findOne({ userId }).populate(
+        "items.productId items.variantId"
+      );
+      if (!cart || cart.items.length === 0) {
+        return res.status(400).json({ message: "Cart is empty" });
+      }
+
+      // Calculate total amount and prepare order items
+      let totalAmount = 0;
+      const orderItems = cart.items.map((item) => {
+        const itemTotal = item.variantId.price * item.quantity;
+        totalAmount += itemTotal;
         return {
-          variantId: variant._id,
-          productId: variant.productId._id,
-          productName: variant.productId.name,
-          color: variant.color,
-          size: variant.size,
-          image: variant.image,
-          price: variant.price,
+          variantId: item.variantId._id,
+          productId: item.productId._id,
+          productName: item.productId.name,
+          color: item.variantId.color,
+          size: item.variantId.size,
+          image: item.variantId.overviewPicture,
+          price: item.variantId.price,
           quantity: item.quantity,
         };
-      })
-    );
-
-    const newOrder = new Order({
-      userId,
-      items: populatedItems,
-      totalAmount,
-      paymentMethod,
-      shippingAddress,
-    });
-
-    const savedOrder = await newOrder.save();
-
-    // Update user's orders array
-    await User.findByIdAndUpdate(userId, { $push: { orders: savedOrder._id } });
-
-    // Update variant quantities
-    for (let item of populatedItems) {
-      await Variant.findByIdAndUpdate(item.variantId, {
-        $inc: { quantity: -item.quantity },
       });
-    }
 
-    res.status(201).json(savedOrder);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error: " + error.message);
-  }
-};
-
-exports.getAllOrdersForUser = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const orders = await Order.find({ userId }).populate({
-      path: "items.variantId",
-      populate: { path: "productId" },
-    });
-    res.status(200).json(orders);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
-  }
-};
-
-exports.updateOrderStatus = async (req, res) => {
-  try {
-    const { orderId } = req.params;
-    const { status } = req.body;
-
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true }
-    );
-
-    if (!updatedOrder) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-
-    res.status(200).json(updatedOrder);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
-  }
-};
-
-exports.getAllOrdersForSeller = async (req, res) => {
-  try {
-    const sellerId = req.params.sellerId;
-
-    // Find all products of the seller
-    const sellerProducts = await Product.find({ seller: sellerId }, "_id");
-    const sellerProductIds = sellerProducts.map((product) => product._id);
-
-    // Find all orders that contain the seller's products
-    const orders = await Order.find({
-      "items.productId": { $in: sellerProductIds },
-    }).select("items totalAmount status createdAt");
-
-    // Filter out items in each order that don't belong to the seller
-    const filteredOrders = orders.map((order) => ({
-      ...order.toObject(),
-      items: order.items.filter((item) =>
-        sellerProductIds.some((id) => id.equals(item.productId))
-      ),
-    }));
-
-    res.status(200).json(filteredOrders);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
-  }
-};
-
-exports.getOrderAmountsForSeller = async (req, res) => {
-  try {
-    const sellerId = req.params.sellerId;
-
-    // Find all products of the seller
-    const sellerProducts = await Product.find({ seller: sellerId }, "_id");
-    const sellerProductIds = sellerProducts.map((product) => product._id);
-
-    // Find all orders that contain the seller's products
-    const orders = await Order.find({
-      "items.productId": { $in: sellerProductIds },
-    }).select("items");
-
-    let totalAmount = 0;
-    let totalQuantity = 0;
-    let orderCount = 0;
-    let variantSales = {};
-
-    orders.forEach((order) => {
-      order.items.forEach((item) => {
-        if (sellerProductIds.some((id) => id.equals(item.productId))) {
-          const amount = item.quantity * item.price;
-          totalAmount += amount;
-          totalQuantity += item.quantity;
-
-          if (!variantSales[item.variantId]) {
-            variantSales[item.variantId] = { quantity: 0, amount: 0 };
-          }
-          variantSales[item.variantId].quantity += item.quantity;
-          variantSales[item.variantId].amount += amount;
-        }
+      // Create the order
+      const newOrder = new Order({
+        userId,
+        items: orderItems,
+        totalAmount,
+        paymentMethod,
+        shippingAddress,
       });
-      orderCount++;
-    });
 
-    res.status(200).json({
-      totalAmount,
-      totalQuantity,
-      orderCount,
-      variantSales,
-    });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
-  }
+      await newOrder.save();
+
+      // Clear the user's cart
+      cart.items = [];
+      await cart.save();
+
+      res
+        .status(201)
+        .json({ message: "Order created successfully", order: newOrder });
+    } catch (error) {
+      console.error("Error creating order:", error);
+      res
+        .status(500)
+        .json({ message: "Error creating order", error: error.message });
+    }
+  },
+
+  getUserOrders: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+      res.status(200).json(orders);
+    } catch (error) {
+      console.error("Error fetching user orders:", error);
+      res
+        .status(500)
+        .json({ message: "Error fetching orders", error: error.message });
+    }
+  },
+
+  getOrderById: async (req, res) => {
+    try {
+      const orderId = req.params.orderId;
+      const order = await Order.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+      res.status(200).json(order);
+    } catch (error) {
+      console.error("Error fetching order:", error);
+      res
+        .status(500)
+        .json({ message: "Error fetching order", error: error.message });
+    }
+  },
 };
+
+module.exports = OrderController;
