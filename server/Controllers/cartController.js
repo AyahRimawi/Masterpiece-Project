@@ -185,28 +185,16 @@ const CartController = {
   },
 
   clearCart: async (req, res) => {
-    try {
-      const userId = req.user ? req.user.id : null;
-      const sessionId = req.sessionID;
-
-      let cart = await Cart.findOne(userId ? { userId } : { sessionId });
-
-      if (!cart) {
-        return res.status(404).json({ message: "Cart not found" });
-      }
-
-      cart.items = [];
-      await cart.save();
-
-      res.status(200).json({ message: "Cart cleared successfully", cart });
-    } catch (error) {
-      console.error("Error clearing cart:", error);
-      res
-        .status(500)
-        .json({ message: "Error clearing cart", error: error.message });
-    }
+     try {
+    const userId = req.user.id; // استخدم معرف المستخدم من التوكن
+    await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
+    res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    res.status(500).json({ message: "Error clearing cart", error: error.message });
+  }
   },
-
+  
   transferGuestCart: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -244,30 +232,25 @@ const CartController = {
             "color size price overviewPicture quantity"
           );
 
-        res
-          .status(200)
-          .json({
-            message: "Guest cart transferred successfully",
-            cart: userCart,
-          });
+        res.status(200).json({
+          message: "Guest cart transferred successfully",
+          cart: userCart,
+        });
       } else {
-        res
-          .status(200)
-          .json({
-            message: "No guest cart found",
-            cart: userCart || { items: [] },
-          });
+        res.status(200).json({
+          message: "No guest cart found",
+          cart: userCart || { items: [] },
+        });
       }
     } catch (error) {
       console.error("Error transferring guest cart:", error);
-      res
-        .status(500)
-        .json({
-          message: "Error transferring guest cart",
-          error: error.message,
-        });
+      res.status(500).json({
+        message: "Error transferring guest cart",
+        error: error.message,
+      });
     }
   },
+  
 };
 
 module.exports = CartController;

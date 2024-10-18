@@ -30,7 +30,7 @@ connectDB();
 app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRouters);
-app.use("/api/order", orderRouters);
+app.use("/api/orders", orderRouters);
 app.use("/api/profile", profileRouters);
 
 // -----------------------------
