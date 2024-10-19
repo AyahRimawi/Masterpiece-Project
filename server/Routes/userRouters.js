@@ -14,7 +14,7 @@ module.exports = router;
 //! postman ...
 /////////
 //? register .. POST
-//* http://localhost:8080/api/users/register
+// * http://localhost:8080/api/users/register
 
 // {
 //   "name": "John Doe",
