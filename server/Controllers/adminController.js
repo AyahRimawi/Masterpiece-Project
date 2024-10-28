@@ -11,7 +11,7 @@ exports.getDashboardStats = async (req, res) => {
     const totalSales = await Order.aggregate([
       { $group: { _id: null, total: { $sum: "$totalAmount" } } },
     ]);
-    const totalProfit = totalSales[0]?.total * 0.1 || 0; // Assuming 10% profit
+    const totalProfit = totalSales[0]?.total * 0.05 || 0; // Assuming 10% profit
 
     // Get sales data for the last 30 days
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);

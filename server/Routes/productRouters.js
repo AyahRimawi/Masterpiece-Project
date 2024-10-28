@@ -11,6 +11,8 @@ router.get("/getProductById/:id", productController.getProductById);
 router.get("/getVariantById/:id", productController.getVariantById);
 router.get("/getSizesForColor/:productId/:color", productController.getSizesForColor);
 router.get("/getProductsByUser/:userId", auth, productController.getProductsByUser);
+router.get("/getUserProducts", auth, productController.getUserProducts);
+
 
 router.put("/softDeleteProduct/:id", auth, productController.softDeleteProduct);
 router.put("/restoreProduct/:id", auth, productController.restoreProduct);

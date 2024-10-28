@@ -8,7 +8,7 @@ const variantSchema = new mongoose.Schema({
   },
   shein_code: { type: String, required: true },
   color: { type: String, required: true },
-  size: [{ type: String, required: true }], // تغيير size إلى sizes
+  size: [{ type: String, required: true }],
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   overviewPicture: { type: String, required: true },

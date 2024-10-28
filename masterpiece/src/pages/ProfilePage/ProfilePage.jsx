@@ -9,6 +9,8 @@ import AddressPage from "./AddressPage";
 import PaymentPage from "./PaymentPage";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../Redux/AuthRedux/authThunks";
+import AddProduct from "./AddProduct";
+import UserProducts from "./UserProducts";
 
 
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
@@ -60,7 +62,8 @@ const ProfilePage = () => {
   const sections = [
     { id: "personal", name: "Personal Info", icon: "👤" },
     { id: "orders", name: "My Orders", icon: "🛍️" },
-    { id: "rentals", name: "My Rentals", icon: "👗" },
+    { id: "addProduct", name: "add Product", icon: "👗" },
+    { id: "userProduct", name: "My Product", icon: "👗" },
     { id: "favorites", name: "Favorites", icon: "❤️" },
     { id: "sizes", name: "My Sizes", icon: "📏" },
     { id: "addresses", name: "Addresses", icon: "🏠" },
@@ -228,6 +231,8 @@ const ProfilePage = () => {
               {activeSection === "sizes" && <SizePage />}
               {activeSection === "addresses" && <AddressPage />}
               {activeSection === "payment" && <PaymentPage />}
+              {activeSection === "addProduct" && <AddProduct />}
+              {activeSection === "userProduct" && <UserProducts/>}
 
               {/* Add other sections here */}
             </div>

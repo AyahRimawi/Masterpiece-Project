@@ -2,54 +2,54 @@ const mongoose = require("mongoose");
 const { Product, Variant } = require("../Models/Product");
 const User = require("../Models/User");
 
-exports.addProduct = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
+// exports.addProduct = async (req, res) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
 
-  try {
-    console.log("Adding new product:", req.body);
+//   try {
+//     console.log("Adding new product:", req.body);
 
-    const product = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      category: req.body.category,
-      subCategory: req.body.subCategory,
-      seller: req.user.id,
-      isUserSubmitted: true,
-    });
+//     const product = new Product({
+//       name: req.body.name,
+//       description: req.body.description,
+//       category: req.body.category,
+//       subCategory: req.body.subCategory,
+//       seller: req.user.id,
+//       isUserSubmitted: true,
+//     });
 
-    await product.save({ session });
-    // console.log("Product saved:", product);
+//     await product.save({ session });
+//     // console.log("Product saved:", product);
 
-    if (req.body.variants && Array.isArray(req.body.variants)) {
-      const variants = req.body.variants.map((variant) => ({
-        productId: product._id,
-        shein_code: variant.shein_code,
-        color: variant.color,
-        size: variant.size,
-        price: variant.price,
-        quantity: variant.quantity,
-        overviewPicture: variant.overviewPicture,
-        images: variant.images,
-      }));
+//     if (req.body.variants && Array.isArray(req.body.variants)) {
+//       const variants = req.body.variants.map((variant) => ({
+//         productId: product._id,
+//         shein_code: variant.shein_code,
+//         color: variant.color,
+//         size: variant.size,
+//         price: variant.price,
+//         quantity: variant.quantity,
+//         overviewPicture: variant.overviewPicture,
+//         images: variant.images,
+//       }));
 
-      const savedVariants = await Variant.insertMany(variants, { session });
-      // console.log("Variants saved:", savedVariants);
-    }
+//       const savedVariants = await Variant.insertMany(variants, { session });
+//       // console.log("Variants saved:", savedVariants);
+//     }
 
-    await session.commitTransaction();
-    session.endSession();
+//     await session.commitTransaction();
+//     session.endSession();
 
-    res
-      .status(201)
-      .json({ message: "Product and variants added successfully", product });
-  } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    console.error("Error adding product:", error);
-    res.status(400).json({ message: error.message });
-  }
-};
+//     res
+//       .status(201)
+//       .json({ message: "Product and variants added successfully", product });
+//   } catch (error) {
+//     await session.abortTransaction();
+//     session.endSession();
+//     console.error("Error adding product:", error);
+//     res.status(400).json({ message: error.message });
+//   }
+// };
 
 
 exports.getAllProducts = async (req, res) => {
@@ -420,5 +420,110 @@ exports.getProductsByCategoryAndSubCategory = async (req, res) => {
   } catch (error) {
     console.error("Error in getProductsByCategoryAndSubCategory:", error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+// -----------------
+exports.addProduct = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const { name, description, category, subCategory, variants } = req.body;
+
+    const product = new Product({
+      name,
+      description,
+      category,
+      subCategory,
+      seller: req.user.id,
+      isUserSubmitted: true,
+      approvalStatus: "Pending",
+      paymentStatus: "Pending",
+    });
+
+    await product.save({ session });
+
+    if (variants && Array.isArray(variants)) {
+      const variantsToAdd = variants.map((variant) => ({
+        productId: product._id,
+        shein_code: variant.shein_code,
+        color: variant.color,
+        size: variant.size,
+        price: variant.price,
+        quantity: variant.quantity,
+        overviewPicture: variant.overviewPicture,
+        images: variant.images || [],
+      }));
+
+      await Variant.insertMany(variantsToAdd, { session });
+    }
+
+    // إضافة المنتج إلى قائمة منتجات المستخدم
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $push: { submittedProducts: product._id } },
+      { session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(201).json({
+      success: true,
+      message: "Product submitted successfully and awaiting approval",
+      product,
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({
+      success: false,
+      message: "Error submitting product",
+      error: error.message,
+    });
+  }
+};
+
+exports.getUserProducts = async (req, res) => {
+  try {
+    const products = await Product.find({
+      seller: req.user.id,
+    }).populate("seller", "name");
+
+    const productsWithDetails = await Promise.all(
+      products.map(async (product) => {
+        const variants = await Variant.find({ productId: product._id });
+        return {
+          ...product.toObject(),
+          variants,
+          totalVariants: variants.length,
+          status: {
+            isPending: product.approvalStatus === "Pending",
+            isApproved: product.approvalStatus === "Approved",
+            isSold: product.isSold,
+          },
+        };
+      })
+    );
+
+    const categorizedProducts = {
+      pending: productsWithDetails.filter((p) => p.status.isPending),
+      active: productsWithDetails.filter(
+        (p) => p.status.isApproved && !p.status.isSold
+      ),
+      sold: productsWithDetails.filter((p) => p.status.isSold),
+    };
+
+    res.json({
+      success: true,
+      products: categorizedProducts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching user products",
+      error: error.message,
+    });
   }
 };
