@@ -46,7 +46,7 @@ const SearchBar = () => {
         <div className="flex items-center mb-4 md:mb-0">
           <Link to="/" className="flex items-center">
             <span className="font-semibold font-cursive text-[#193DB0] text-2xl md:text-4xl">
-              Shein JO
+              Second Chance
             </span>
           </Link>
         </div>

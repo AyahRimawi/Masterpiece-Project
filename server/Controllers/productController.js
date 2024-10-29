@@ -2,56 +2,6 @@ const mongoose = require("mongoose");
 const { Product, Variant } = require("../Models/Product");
 const User = require("../Models/User");
 
-// exports.addProduct = async (req, res) => {
-//   const session = await mongoose.startSession();
-//   session.startTransaction();
-
-//   try {
-//     console.log("Adding new product:", req.body);
-
-//     const product = new Product({
-//       name: req.body.name,
-//       description: req.body.description,
-//       category: req.body.category,
-//       subCategory: req.body.subCategory,
-//       seller: req.user.id,
-//       isUserSubmitted: true,
-//     });
-
-//     await product.save({ session });
-//     // console.log("Product saved:", product);
-
-//     if (req.body.variants && Array.isArray(req.body.variants)) {
-//       const variants = req.body.variants.map((variant) => ({
-//         productId: product._id,
-//         shein_code: variant.shein_code,
-//         color: variant.color,
-//         size: variant.size,
-//         price: variant.price,
-//         quantity: variant.quantity,
-//         overviewPicture: variant.overviewPicture,
-//         images: variant.images,
-//       }));
-
-//       const savedVariants = await Variant.insertMany(variants, { session });
-//       // console.log("Variants saved:", savedVariants);
-//     }
-
-//     await session.commitTransaction();
-//     session.endSession();
-
-//     res
-//       .status(201)
-//       .json({ message: "Product and variants added successfully", product });
-//   } catch (error) {
-//     await session.abortTransaction();
-//     session.endSession();
-//     console.error("Error adding product:", error);
-//     res.status(400).json({ message: error.message });
-//   }
-// };
-
-
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({ isDeleted: false }).populate(

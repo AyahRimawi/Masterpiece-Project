@@ -19,7 +19,7 @@ export function Payment() {
 
             <div className="px-5 pt-2 flex flex-col">
               <h2 className="font-semibold text-[#1F49B6] mx-auto mt-2 text-3xl">
-                Shipping
+                contact us
               </h2>
             </div>
           </div>
@@ -37,7 +37,7 @@ export function Payment() {
 
             <div className="px-5 pt-2 flex flex-col">
               <h2 className="font-semibold text-[#1F49B6] mx-auto mt-2 text-3xl">
-                Payment
+                about us
               </h2>
             </div>
           </div>

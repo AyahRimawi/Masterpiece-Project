@@ -5,6 +5,8 @@ const orderController = require("../Controllers/orderController");
 const auth = require("../Middleware/auth");
 
 router.post("/create", auth, orderController.createOrder);
+router.get("/user-orders", auth, orderController.getUserOrders);
+
 // router.get("/user", auth, orderController.getUserOrders);
 // router.get("/:orderId", auth, orderController.getOrderById);
 

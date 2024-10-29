@@ -78,13 +78,13 @@ export default function SectionBar() {
             >
               DRESSES
             </TETabsItem>
-            <TETabsItem
+            {/* <TETabsItem
               onClick={() => handleBasicClick("tab7")}
               active={basicActive === "tab7"}
               className="flex-shrink-0 px-4 py-2 text-center text-red-500 font-bold border-b-0"
             >
               SALE%
-            </TETabsItem>
+            </TETabsItem> */}
           </div>
         </TETabs>
       </div>

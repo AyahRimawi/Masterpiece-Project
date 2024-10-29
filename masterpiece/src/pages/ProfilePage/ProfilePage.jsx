@@ -67,7 +67,7 @@ const ProfilePage = () => {
     { id: "favorites", name: "Favorites", icon: "❤️" },
     { id: "sizes", name: "My Sizes", icon: "📏" },
     { id: "addresses", name: "Addresses", icon: "🏠" },
-    { id: "payment", name: "Payment", icon: "💳" },
+    // { id: "payment", name: "Payment", icon: "💳" },
   ];
   // ---------------------------------------------------------------
   //  ============ toggleSidebar ============
@@ -230,7 +230,7 @@ const ProfilePage = () => {
               {activeSection === "orders" && <OrdersInfo />}
               {activeSection === "sizes" && <SizePage />}
               {activeSection === "addresses" && <AddressPage />}
-              {activeSection === "payment" && <PaymentPage />}
+              {/* {activeSection === "payment" && <PaymentPage />} */}
               {activeSection === "addProduct" && <AddProduct />}
               {activeSection === "userProduct" && <UserProducts/>}
 

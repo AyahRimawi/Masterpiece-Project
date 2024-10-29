@@ -7,7 +7,7 @@ export function Dress() {
         <div className="flex flex-col items-center justify-between ml-8 mr-12 mt-16 md:flex-row md:w-auto dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
           <div className="flex flex-col justify-between p-4 leading-normal w-auto mx-auto ">
             <h3 className="mb-2 text-4xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
-              Rent a Dress
+              Dresses
             </h3>
             <button className="flex-1 w-32 mt-14 mx-auto duration-300 bg-[rgba(0,0,0)] border border-white text-white font-bold py-1 px-2 rounded hover:bg-white hover:text-black">
               Shop Now

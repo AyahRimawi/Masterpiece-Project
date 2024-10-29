@@ -169,7 +169,7 @@ const Cart = require("../Models/Cart");
 const orderController = {
   // createOrder: async (req, res) => {
   //     try {
-        // console.log("Received order data:", JSON.stringify(req.body, null, 2));
+  // console.log("Received order data:", JSON.stringify(req.body, null, 2));
 
   //       const {
   //         items,
@@ -237,8 +237,8 @@ const orderController = {
       //           "Received order data:",
       //           JSON.stringify(req.body, null, 2)
       // );
-        console.log("Received order creation request");
-        console.log("Request body:", req.body);
+      console.log("Received order creation request");
+      console.log("Request body:", req.body);
 
       const userId = req.user.id;
       const {
@@ -284,6 +284,23 @@ const orderController = {
       res
         .status(500)
         .json({ message: "Error creating order", error: error.message });
+    }
+  },
+
+  getUserOrders: async (req, res) => {
+    try {
+      console.log("Received request for user orders");
+      const orders = await Order.find({ userId: req.user.id }).sort({
+        createdAt: -1,
+      }); // Sort by newest first
+
+      res.json(orders);
+    } catch (error) {
+      console.error("Error fetching user orders:", error);
+      res.status(500).json({
+        message: "Error fetching orders",
+        error: error.message,
+      });
     }
   },
 };
