@@ -1,13 +1,17 @@
+import React, { useState } from "react";
 import shipped from "../../assets/shipped.png";
 import paymentMethod from "../../assets/paymentMethod.png";
 import callCenter from "../../assets/callCenter.png";
+import ContactForm from "./ContactForm";
 
 export function Payment() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <>
       <div className="flex flex-wrap justify-between ml-4 md:ml-16 md:mr-16 mt-10 border-red-100">
         {/* card 1 */}
-        <div>
+        {/* <div>
           <div className="transform transition duration-300 hover:scale-110 rounded-lg shadow-lg p-3 h-[220px] w-[350px] hover:shadow-xl bg-[#F0F2FF] m-6">
             <div className="rounded-lg overflow-hidden">
               <img
@@ -20,6 +24,22 @@ export function Payment() {
             <div className="px-5 pt-2 flex flex-col">
               <h2 className="font-semibold text-[#1F49B6] mx-auto mt-2 text-3xl">
                 contact us
+              </h2>
+            </div>
+          </div>
+        </div> */}
+        <div onClick={() => setIsContactOpen(true)}>
+          <div className="transform transition duration-300 hover:scale-110 rounded-lg shadow-lg p-3 h-[220px] w-[350px] hover:shadow-xl bg-[#F0F2FF] m-6 cursor-pointer">
+            <div className="rounded-lg overflow-hidden">
+              <img
+                src={shipped}
+                alt="Contact Us"
+                className="w-28 h-full object-contain mx-auto mt-1"
+              />
+            </div>
+            <div className="px-5 pt-2 flex flex-col">
+              <h2 className="font-semibold text-[#1F49B6] mx-auto mt-2 text-3xl">
+                Contact Us
               </h2>
             </div>
           </div>
@@ -61,6 +81,7 @@ export function Payment() {
           </div>
         </div>
       </div>
+      <ContactForm isOpen={isContactOpen} setIsOpen={setIsContactOpen} />
     </>
   );
 }

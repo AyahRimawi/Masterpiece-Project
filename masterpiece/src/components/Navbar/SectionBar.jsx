@@ -64,13 +64,13 @@ export default function SectionBar() {
             >
               KIDS
             </TETabsItem>
-            <TETabsItem
+            {/* <TETabsItem
               onClick={() => handleBasicClick("tab5")}
               active={basicActive === "tab5"}
               className="flex-shrink-0 px-4 py-2 text-center"
             >
               BABY
-            </TETabsItem>
+            </TETabsItem> */}
             <TETabsItem
               onClick={() => handleBasicClick("tab6")}
               active={basicActive === "tab6"}

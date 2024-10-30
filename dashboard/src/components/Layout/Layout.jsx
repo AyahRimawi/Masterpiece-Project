@@ -8,6 +8,7 @@ import {
   ClipboardDocumentListIcon,
   Bars3Icon,
   XMarkIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline"; // تأكد من استخدام هذا المسار
 
 const navItems = [
@@ -15,6 +16,7 @@ const navItems = [
   { name: "Users", href: "/users", icon: UsersIcon },
   { name: "Products", href: "/products", icon: ShoppingBagIcon },
   { name: "Orders", href: "/orders", icon: ClipboardDocumentListIcon },
+  { name: "Messages", href: "/messages", icon: EnvelopeIcon }, // أضف هذا السطر
 ];
 
 const Layout = ({ children }) => {

@@ -9,6 +9,7 @@ const cartRouters = require("./Routes/cartRouters");
 const orderRouters = require("./Routes/orderRouters");
 const profileRouters = require("./Routes/profileRouters");
 const adminRoutes = require("./Routes/adminRouters"); // Add this line
+const contactRoutes = require("./Routes/contactRoutes");
 
 // ============
 
@@ -35,6 +36,7 @@ app.use("/api/cart", cartRouters);
 app.use("/api/orders", orderRouters);
 app.use("/api/profile", profileRouters);
 app.use("/api/admin", adminRoutes); // Add this line
+app.use("/api/contact", contactRoutes);
 
 // -----------------------------
 
