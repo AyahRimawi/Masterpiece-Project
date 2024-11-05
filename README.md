@@ -7,6 +7,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/)
+[![Trello](https://img.shields.io/badge/Trello-0052CC?style=flat&logo=trello&logoColor=white)](https://trello.com/b/04nQ8MPy/secondchance-project)
 
 ## 📖 About
 
@@ -49,6 +50,7 @@ SecondChance is an innovative online marketplace that enables users to resell cl
 
 - [Project Brief](https://docs.google.com/document/d/1qUWuiTmPcJaPp96kZ08OGz4up8PAcL4K/edit?usp=drive_link&ouid=109511336490617878868&rtpof=true&sd=true)
 - [Detailed Documentation](https://docs.google.com/document/d/1TcfU1YLCFbkf4zR9PDnCxbPx6eWxfJLv/edit?usp=drive_link&ouid=109511336490617878868&rtpof=true&sd=true)
+- [Trello Board](https://trello.com/b/04nQ8MPy/secondchance-project)
 
 ## 🌟 Key Objectives
 
