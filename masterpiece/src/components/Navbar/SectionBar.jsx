@@ -5,8 +5,8 @@ import {
   TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
-import { HeroSection } from "../../pages/HomePage/HeroSection";
-import { HotSale } from "../../pages/HomePage/HotSale";
+import  HeroSection  from "../../pages/HomePage/HeroSection";
+import  HotSale  from "../../pages/HomePage/HotSale";
 import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
 import { Dress } from "../../pages/HomePage/Dress";
@@ -92,7 +92,7 @@ export default function SectionBar() {
       <TETabsContent>
         {/* -------HOME-------- */}
         <TETabsPane show={basicActive === "tab1"}>
-          <HeroSection />
+          <HeroSection/>
           <HotSale />
           <ShopNow />
           <Sections />
