@@ -33,7 +33,7 @@ export function Dress() {
   }, [text, isTyping]);
 
   return (
-    <div className="bg-gradient-to-b from-[#faf9fce5] via-[#99939b] to-[#312f3008]">
+    <div className="bg-white">
       <div className="flex flex-col items-center justify-between ml-8 mr-12 mt-16 md:flex-row md:w-auto dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
         <div className="flex flex-col justify-between p-4 leading-normal w-auto mx-auto">
           <h3 className="mb-2 text-4xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
