@@ -477,3 +477,38 @@ exports.getUserProducts = async (req, res) => {
     });
   }
 };
+
+// -------------------
+// إضافة وظيفة البحث في controller
+exports.searchProducts = async (req, res) => {
+  try {
+    const { term } = req.query;
+
+    if (!term) {
+      return res.json([]);
+    }
+
+    // البحث عن المنتجات باستخدام regex
+    const products = await Product.find({
+      name: { $regex: term, $options: 'i' },
+      isDeleted: false
+    }).populate('seller', 'name');
+
+    const productsWithRandomVariant = await Promise.all(
+      products.map(async (product) => {
+        const variants = await Variant.find({ productId: product._id });
+        const randomVariant = variants[Math.floor(Math.random() * variants.length)];
+        return {
+          ...product.toObject(),
+          randomVariant: randomVariant,
+          availableColors: [...new Set(variants.map((v) => v.color))],
+        };
+      })
+    );
+
+    res.json(productsWithRandomVariant);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ message: error.message });
+  }
+};

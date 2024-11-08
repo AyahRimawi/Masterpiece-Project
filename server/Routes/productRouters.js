@@ -25,6 +25,7 @@ router.get(
   "/getProductsByCategoryAndSubCategory/:category/:subCategory",
   productController.getProductsByCategoryAndSubCategory
 );
+router.get("/search", productController.searchProducts);
 
 module.exports = router;
 
