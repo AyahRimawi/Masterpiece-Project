@@ -1,4 +1,4 @@
-# SecondChance 🌱
+# SecondChance 👚
 
 > A sustainable fashion resale marketplace revolutionizing the way people buy and resell clothing.
 
