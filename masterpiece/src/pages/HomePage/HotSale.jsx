@@ -136,8 +136,15 @@ const HotSale = () => {
     <div className="w-full bg-white py-8 px-6 md:px-12 lg:px-16 flex items-center">
       <div className="w-full max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+          {/* <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
             Shop By Category
+          </h2> */}
+          <h2 className="inline-flex items-center justify-center gap-3">
+            <span className="h-px w-8 bg-gray-300"></span>
+            <span className="text-sm uppercase tracking-widest text-gray-500 font-medium">
+              Shop By Category
+            </span>
+            <span className="h-px w-8 bg-gray-300"></span>
           </h2>
           {/* <p className="text-gray-600">Discover our collections for everyone</p> */}
         </div>
