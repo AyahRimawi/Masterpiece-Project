@@ -2,16 +2,54 @@ const mongoose = require("mongoose");
 const { Product, Variant } = require("../Models/Product");
 const User = require("../Models/User");
 
+//todoo --------------- getAllProducts ---------------------
+// exports.getAllProducts = async (req, res) => {
+//   try {
+//     const products = await Product.find({ isDeleted: false }).populate(
+//       "seller",
+//       "name"
+//     );
+
+//     const productsWithRandomVariant = await Promise.all(
+//       products.map(async (product) => {
+//         const variants = await Variant.find({ productId: product._id });
+//         const randomVariant =
+//           variants[Math.floor(Math.random() * variants.length)];
+//         return {
+//           ...product.toObject(),
+//           randomVariant: randomVariant,
+//           availableColors: [...new Set(variants.map((v) => v.color))],
+//         };
+//       })
+//     );
+
+//     res.json(productsWithRandomVariant);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isDeleted: false }).populate(
-      "seller",
-      "name"
-    );
+    // تعديل الاستعلام ليستثني المنتجات المباعة والمحذوفة
+    const products = await Product.find({
+      isDeleted: false,
+      isSold: false,
+    }).populate("seller", "name");
 
     const productsWithRandomVariant = await Promise.all(
       products.map(async (product) => {
-        const variants = await Variant.find({ productId: product._id });
+        // البحث عن المتغيرات التي لديها كمية أكبر من صفر فقط
+        const variants = await Variant.find({
+          productId: product._id,
+          quantity: { $gt: 0 },
+        });
+
+        // إذا لم يكن هناك متغيرات متاحة، تخطي هذا المنتج
+        if (variants.length === 0) {
+          return null;
+        }
+
         const randomVariant =
           variants[Math.floor(Math.random() * variants.length)];
         return {
@@ -22,22 +60,56 @@ exports.getAllProducts = async (req, res) => {
       })
     );
 
-    res.json(productsWithRandomVariant);
+    // تصفية المنتجات التي ليس لديها متغيرات متاحة
+    const filteredProducts = productsWithRandomVariant.filter(
+      (product) => product !== null
+    );
+
+    res.json(filteredProducts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+//todoo ----------------- getProductById -------------------
+
+// exports.getProductById = async (req, res) => {
+//   try {
+//     const product = await Product.findOne({
+//       _id: req.params.id,
+//       isDeleted: false,
+//     }).populate("seller", "name");
+
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     const variants = await Variant.find({ productId: product._id });
+
+//     res.json({
+//       ...product.toObject(),
+//       variants: variants,
+//       availableColors: [...new Set(variants.map((v) => v.color))],
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({
       _id: req.params.id,
       isDeleted: false,
+      isSold: false,
     }).populate("seller", "name");
 
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const variants = await Variant.find({ productId: product._id });
+    // البحث عن المتغيرات المتاحة فقط
+    const variants = await Variant.find({
+      productId: product._id,
+      quantity: { $gt: 0 },
+    });
 
     res.json({
       ...product.toObject(),
@@ -48,6 +120,7 @@ exports.getProductById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ------------------- getVariantById -----------------
 
 exports.getVariantById = async (req, res) => {
   try {
@@ -89,6 +162,7 @@ exports.getVariantById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ---------------- getSizesForColor --------------------
 
 // Add this new function to get available sizes for the selected color
 exports.getSizesForColor = async (req, res) => {
@@ -109,6 +183,7 @@ exports.getSizesForColor = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ---------------- getProductsByUser --------------------
 
 exports.getProductsByUser = async (req, res) => {
   try {
@@ -142,6 +217,7 @@ exports.getProductsByUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ----------------- softDeleteProduct -------------------
 
 exports.softDeleteProduct = async (req, res) => {
   try {
@@ -172,6 +248,7 @@ exports.softDeleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ------------------ restoreProduct ------------------
 
 exports.restoreProduct = async (req, res) => {
   try {
@@ -203,6 +280,7 @@ exports.restoreProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ----------------- updateProduct -------------------
 
 exports.updateProduct = async (req, res) => {
   try {
@@ -226,6 +304,7 @@ exports.updateProduct = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+//todoo ----------------- updateVariant -------------------
 
 exports.updateVariant = async (req, res) => {
   try {
@@ -247,6 +326,7 @@ exports.updateVariant = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+//todoo --------------- getProductsByCategory ---------------------
 
 exports.getProductsByCategory = async (req, res) => {
   try {
@@ -287,6 +367,7 @@ exports.getProductsByCategory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//todoo ----------------- getProductsBySubCategory -------------------
 exports.getProductsBySubCategory = async (req, res) => {
   try {
     // console.log(`Fetching products for subcategory: ${req.params.subCategory}`);
@@ -327,53 +408,107 @@ exports.getProductsBySubCategory = async (req, res) => {
   }
 };
 
+//todoo ------------------ getProductsByCategoryAndSubCategory ------------------
+// exports.getProductsByCategoryAndSubCategory = async (req, res) => {
+//   try {
+//     const { category, subCategory } = req.params;
+//     // console.log(
+//     //   `Fetching products for category: ${category} and subcategory: ${subCategory}`
+//     // );
+
+//     let query = { category, isDeleted: false };
+//     if (subCategory !== "all") {
+//       query.subCategory = subCategory;
+//     }
+
+//     const products = await Product.find(query).populate("seller", "name");
+
+//     // console.log(
+//     //   `Found ${products.length} products for category ${category} and subcategory ${subCategory}`
+//     // );
+
+//     const productsWithVariants = await Promise.all(
+//       products.map(async (product) => {
+//         const variants = await Variant.find({ productId: product._id });
+//         // console.log(`Product ${product._id} has ${variants.length} variants`);
+
+//         return {
+//           ...product.toObject(),
+//           variants: variants,
+//           randomVariant:
+//             variants.length > 0
+//               ? variants[Math.floor(Math.random() * variants.length)]
+//               : null,
+//           availableColors: [...new Set(variants.map((v) => v.color))],
+//         };
+//       })
+//     );
+
+//     // console.log(
+//     //   `Returning ${productsWithVariants.length} products with variants`
+//     // );
+//     res.json(productsWithVariants);
+//   } catch (error) {
+//     console.error("Error in getProductsByCategoryAndSubCategory:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 exports.getProductsByCategoryAndSubCategory = async (req, res) => {
   try {
     const { category, subCategory } = req.params;
-    // console.log(
-    //   `Fetching products for category: ${category} and subcategory: ${subCategory}`
-    // );
 
-    let query = { category, isDeleted: false };
+    let query = {
+      category,
+      isDeleted: false,
+      isSold: false, // لا نريد المنتجات المباعة
+    };
+
     if (subCategory !== "all") {
       query.subCategory = subCategory;
     }
 
     const products = await Product.find(query).populate("seller", "name");
 
-    // console.log(
-    //   `Found ${products.length} products for category ${category} and subcategory ${subCategory}`
-    // );
-
-    const productsWithVariants = await Promise.all(
+    const productsWithAvailableVariants = await Promise.all(
       products.map(async (product) => {
-        const variants = await Variant.find({ productId: product._id });
-        // console.log(`Product ${product._id} has ${variants.length} variants`);
+        // البحث عن المتغيرات المتوفرة فقط
+        const variants = await Variant.find({
+          productId: product._id,
+          quantity: { $gt: 0 }, // فقط المتغيرات التي لديها كمية متوفرة
+        });
+
+        // إذا لم يكن هناك متغيرات متوفرة، نرجع null
+        if (variants.length === 0) {
+          return null;
+        }
 
         return {
           ...product.toObject(),
           variants: variants,
-          randomVariant:
-            variants.length > 0
-              ? variants[Math.floor(Math.random() * variants.length)]
-              : null,
+          randomVariant: variants[Math.floor(Math.random() * variants.length)],
           availableColors: [...new Set(variants.map((v) => v.color))],
+          totalAvailableQuantity: variants.reduce(
+            (sum, variant) => sum + variant.quantity,
+            0
+          ),
         };
       })
     );
 
-    // console.log(
-    //   `Returning ${productsWithVariants.length} products with variants`
-    // );
-    res.json(productsWithVariants);
+    // تصفية المنتجات التي ليس لديها متغيرات متوفرة
+    const availableProducts = productsWithAvailableVariants.filter(
+      (product) => product !== null
+    );
+
+    res.json(availableProducts);
   } catch (error) {
     console.error("Error in getProductsByCategoryAndSubCategory:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// -----------------
+//todoo --------------- addProduct ---------------------
 exports.addProduct = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -434,6 +569,7 @@ exports.addProduct = async (req, res) => {
     });
   }
 };
+//todoo ------------------ getUserProducts ------------------
 
 exports.getUserProducts = async (req, res) => {
   try {
@@ -477,9 +613,7 @@ exports.getUserProducts = async (req, res) => {
     });
   }
 };
-
-// -------------------
-// إضافة وظيفة البحث في controller
+//todoo --------------- searchProducts ---------------------
 exports.searchProducts = async (req, res) => {
   try {
     const { term } = req.query;

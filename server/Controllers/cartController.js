@@ -2,6 +2,7 @@ const Cart = require("../Models/Cart");
 const { Product, Variant } = require("../Models/Product");
 
 const CartController = {
+  //todoo ---------------- getCart -----------------------
   getCart: async (req, res) => {
     try {
       const userId = req.headers["user-id"] || null;
@@ -41,7 +42,7 @@ const CartController = {
         .json({ message: "Error fetching cart", error: error.message });
     }
   },
-
+  //todoo ------------------- addToCart --------------------
   addToCart: async (req, res) => {
     try {
       const { productId, variantId, quantity } = req.body;
@@ -106,6 +107,7 @@ const CartController = {
         .json({ message: "Error adding item to cart", error: error.message });
     }
   },
+  //todoo ------------------- updateCartItem --------------------
   updateCartItem: async (req, res) => {
     try {
       const { itemId } = req.params;
@@ -151,7 +153,7 @@ const CartController = {
         .json({ message: "Error updating cart item", error: error.message });
     }
   },
-
+  //todoo -------------------- removeCartItem -------------------
   removeCartItem: async (req, res) => {
     try {
       const { itemId } = req.params;
@@ -183,18 +185,47 @@ const CartController = {
       });
     }
   },
+  //todoo ------------------- clearCart --------------------
+  // clearCart: async (req, res) => {
+  //   try {
+  //     const userId = req.user.id; // استخدم معرف المستخدم من التوكن
+  //     await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
+  //     res.status(200).json({ message: "Cart cleared successfully" });
+  //   } catch (error) {
+  //     console.error("Error clearing cart:", error);
+  //     res
+  //       .status(500)
+  //       .json({ message: "Error clearing cart", error: error.message });
+  //   }
+  // },
 
   clearCart: async (req, res) => {
-     try {
-    const userId = req.user.id; // استخدم معرف المستخدم من التوكن
-    await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
-    res.status(200).json({ message: "Cart cleared successfully" });
-  } catch (error) {
-    console.error("Error clearing cart:", error);
-    res.status(500).json({ message: "Error clearing cart", error: error.message });
-  }
+    try {
+      const userId = req.user.id;
+      // البحث عن السلة وتفريغ المنتجات منها
+      const cart = await Cart.findOne({ userId });
+
+      if (cart) {
+        cart.items = [];
+        await cart.save();
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Cart cleared successfully",
+        cart: { items: [] },
+      });
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error clearing cart",
+        error: error.message,
+      });
+    }
   },
-  
+
+  //todoo ------------------ transferGuestCart ---------------------
   transferGuestCart: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -250,7 +281,6 @@ const CartController = {
       });
     }
   },
-  
 };
 
 module.exports = CartController;
