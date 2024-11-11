@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../Redux/AuthRedux/authThunks";
 import AddProduct from "./AddProduct";
 import UserProducts from "./UserProducts";
+import FavoritesPage from "./FavoritesPage";
 
 
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
@@ -232,7 +233,8 @@ const ProfilePage = () => {
               {activeSection === "addresses" && <AddressPage />}
               {/* {activeSection === "payment" && <PaymentPage />} */}
               {activeSection === "addProduct" && <AddProduct />}
-              {activeSection === "userProduct" && <UserProducts/>}
+              {activeSection === "userProduct" && <UserProducts />}
+              {activeSection === "favorites" && <FavoritesPage />}
 
               {/* Add other sections here */}
             </div>
