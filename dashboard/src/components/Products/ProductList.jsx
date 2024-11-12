@@ -2,7 +2,7 @@ import React from "react";
 
 const ProductList = ({ products, onSelectProduct }) => {
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
       <ul className="divide-y divide-gray-200">
         {products.map((product) => (
           <li key={product._id}>

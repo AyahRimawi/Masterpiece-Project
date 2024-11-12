@@ -5,8 +5,6 @@ import axios from "axios";
 import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
 import SizePage from "./SizePage";
-import AddressPage from "./AddressPage";
-import PaymentPage from "./PaymentPage";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../Redux/AuthRedux/authThunks";
 import AddProduct from "./AddProduct";
@@ -67,7 +65,7 @@ const ProfilePage = () => {
     { id: "userProduct", name: "My Product", icon: "👗" },
     { id: "favorites", name: "Favorites", icon: "❤️" },
     { id: "sizes", name: "My Sizes", icon: "📏" },
-    { id: "addresses", name: "Addresses", icon: "🏠" },
+    // { id: "addresses", name: "Addresses", icon: "🏠" },
     // { id: "payment", name: "Payment", icon: "💳" },
   ];
   // ---------------------------------------------------------------
@@ -230,7 +228,7 @@ const ProfilePage = () => {
               {activeSection === "personal" && <PersonalInfo />}
               {activeSection === "orders" && <OrdersInfo />}
               {activeSection === "sizes" && <SizePage />}
-              {activeSection === "addresses" && <AddressPage />}
+              {/* {activeSection === "addresses" && <AddressPage />} */}
               {/* {activeSection === "payment" && <PaymentPage />} */}
               {activeSection === "addProduct" && <AddProduct />}
               {activeSection === "userProduct" && <UserProducts />}

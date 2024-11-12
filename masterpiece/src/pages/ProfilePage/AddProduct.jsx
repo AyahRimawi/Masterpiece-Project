@@ -2,6 +2,106 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {
+  Info,
+  FormInput,
+  CheckCircle2,
+  X,
+  Package,
+  Upload,
+  DollarSign,
+  Palette,
+  Box,
+  Tag,
+  ListPlus,
+} from "lucide-react";
+
+// FormStepper Component
+const FormStepper = ({ currentStep, onStepClick }) => {
+  const steps = [
+    {
+      key: 1,
+      label: 'Welcome',
+      icon: Info,
+      description: 'Start your journey'
+    },
+    {
+      key: 2,
+      label: 'Instructions',
+      icon: FormInput,
+      description: 'Read guidelines'
+    },
+    {
+      key: 3,
+      label: 'Product Details',
+      icon: CheckCircle2,
+      description: 'Fill product information'
+    }
+  ];
+
+  return (
+    <div className="w-full py-6 px-4 md:px-6 mb-8">
+      <div className="relative">
+        {/* Progress Line */}
+        <div className="absolute left-0 top-1/2 h-1 w-full -translate-y-1/2 bg-gray-200 rounded-full" />
+        <div 
+          className="absolute left-0 top-1/2 h-1 -translate-y-1/2 bg-[#193db0] rounded-full transition-all duration-500"
+          style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+        />
+
+        {/* Steps */}
+        <div className="relative flex justify-between">
+          {steps.map((step, index) => {
+            const isCompleted = index < currentStep - 1;
+            const isActive = index === currentStep - 1;
+            const Icon = step.icon;
+
+            return (
+              <div 
+                key={step.key}
+                onClick={() => onStepClick(step.key)}
+                className={`flex flex-col items-center ${
+                  index === 0 ? 'items-start' : index === steps.length - 1 ? 'items-end' : 'items-center'
+                } cursor-pointer group`}
+              >
+                {/* Step Circle with Icon */}
+                <div
+                  className={`
+                    flex h-12 w-12 items-center justify-center rounded-full
+                    border-4 transition-all duration-500 
+                    ${isCompleted || isActive
+                      ? 'border-[#193db0] bg-[#193db0] text-white' 
+                      : 'border-gray-300 bg-white text-gray-400'
+                    }
+                    ${isActive ? 'ring-4 ring-[#193db0]/20' : ''}
+                    group-hover:scale-110
+                  `}
+                >
+                  <Icon className="h-6 w-6" />
+                </div>
+
+                {/* Label and Description */}
+                <div className={`mt-3 text-center ${
+                  index === 0 ? 'text-left' : index === steps.length - 1 ? 'text-right' : 'text-center'
+                }`}>
+                  <p className={`text-sm font-semibold mb-1
+                    ${isCompleted || isActive ? 'text-[#193db0]' : 'text-gray-500'}
+                    group-hover:text-[#193db0]
+                  `}>
+                    {step.label}
+                  </p>
+                  <p className="text-xs text-gray-500 hidden md:block">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AddProduct = () => {
   const [step, setStep] = useState(1);
@@ -23,7 +123,7 @@ const AddProduct = () => {
     ],
   });
 
-  // تعريف التصنيفات
+  // Categories definition
   const categories = {
     Women: ["Pants", "Dress", "Shirt", "Skirt", "Pajamas"],
     Men: ["Pants", "Shirt", "Suit", "Pajamas"],
@@ -48,7 +148,7 @@ const AddProduct = () => {
 
   const availableSizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
-  // Welcoming messages for the animation
+  // Welcome messages for animation
   const welcomeMessages = [
     "Welcome to SecondChance",
     "Give Your Clothes a New Life",
@@ -56,12 +156,14 @@ const AddProduct = () => {
     "Transform Unwanted Items into Opportunities",
   ];
 
+  // Animation variants
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
 
+  // Form handling functions
   const handleInputChange = (e, variantIndex = 0) => {
     const { name, value } = e.target;
     if (name.includes("variant.")) {
@@ -111,7 +213,6 @@ const AddProduct = () => {
       setFormData({ ...formData, variants: newVariants });
     }
   };
-
   const submitProduct = async () => {
     try {
       Swal.fire({
@@ -173,36 +274,21 @@ const AddProduct = () => {
     >
       <div className="space-y-4">
         {/* Product Basic Info */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Product Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Description
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            rows="4"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-            required
-          />
-        </div>
-
-        {/* Categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Product Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
@@ -222,73 +308,93 @@ const AddProduct = () => {
               ))}
             </select>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Subcategory
-            </label>
-            <select
-              name="subCategory"
-              value={formData.subCategory}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-              required
-              disabled={!formData.category}
-            >
-              <option value="">Select Subcategory</option>
-              {formData.category &&
-                categories[formData.category].map((sub) => (
-                  <option key={sub} value={sub}>
-                    {sub}
-                  </option>
-                ))}
-            </select>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            rows="4"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+            required
+          />
+        </div>
+
+        {/* Categories */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Subcategory
+          </label>
+          <select
+            name="subCategory"
+            value={formData.subCategory}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+            required
+            disabled={!formData.category}
+          >
+            <option value="">Select Subcategory</option>
+            {formData.category &&
+              categories[formData.category].map((sub) => (
+                <option key={sub} value={sub}>
+                  {sub}
+                </option>
+              ))}
+          </select>
         </div>
 
         {/* Variants */}
         {formData.variants.map((variant, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg p-4 space-y-4"
+            className="border border-gray-200 rounded-lg p-6 space-y-4 bg-gray-50"
           >
-            <h3 className="text-lg font-medium text-[#193db0]">
-              Variant Details
-            </h3>
-
-            {/* SHEIN Code */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                SHEIN Code (Optional)
-              </label>
-              <input
-                type="text"
-                name={`variant.shein_code`}
-                value={variant.shein_code}
-                onChange={(e) => handleInputChange(e, index)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-              />
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-[#193db0] flex items-center">
+                <Package className="mr-2 h-5 w-5" />
+                Variant Details
+              </h3>
             </div>
 
-            {/* Color */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Color
-              </label>
-              <select
-                name={`variant.color`}
-                value={variant.color}
-                onChange={(e) => handleInputChange(e, index)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-                required
-              >
-                <option value="">Select Color</option>
-                {availableColors.map((color) => (
-                  <option key={color} value={color}>
-                    {color}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* SHEIN Code */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  SHEIN Code (Optional)
+                </label>
+                <input
+                  type="text"
+                  name={`variant.shein_code`}
+                  value={variant.shein_code}
+                  onChange={(e) => handleInputChange(e, index)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+                />
+              </div>
+
+              {/* Color */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Color
+                </label>
+                <select
+                  name={`variant.color`}
+                  value={variant.color}
+                  onChange={(e) => handleInputChange(e, index)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+                  required
+                >
+                  <option value="">Select Color</option>
+                  {availableColors.map((color) => (
+                    <option key={color} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {/* Sizes */}
@@ -355,13 +461,15 @@ const AddProduct = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Main Image
                 </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImagesChange(e, index, true)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
-                  required
-                />
+                <div className="mt-1 flex items-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImagesChange(e, index, true)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#193db0] focus:border-[#193db0]"
+                    required
+                  />
+                </div>
                 {variant.overviewPicture && (
                   <img
                     src={variant.overviewPicture}
@@ -398,8 +506,8 @@ const AddProduct = () => {
         ))}
       </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-end space-x-4">
+      {/* Navigation Buttons */}
+      <div className="flex justify-end space-x-4 pt-6">
         <motion.button
           type="button"
           onClick={() => setStep(2)}
@@ -425,92 +533,89 @@ const AddProduct = () => {
   return (
     <div className="min-h-screen bg-white p-4">
       <div className="max-w-4xl mx-auto">
-        {step === 1 && (
-          <motion.div
-            className="text-center py-12"
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={fadeInUp}
-          >
-            {welcomeMessages.map((message, index) => (
-              <motion.h2
-                key={index}
-                className="text-3xl font-bold text-[#193db0] mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: index * 0.5 }}
-              >
-                {message}
-              </motion.h2>
-            ))}
-            <motion.button
-              className="mt-8 px-8 py-3 bg-[#193db0] text-white rounded-lg hover:bg-[#142d8a] transition-all"
-              onClick={() => setStep(2)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Started
-            </motion.button>
-          </motion.div>
-        )}
+        {/* Stepper */}
+        <FormStepper currentStep={step} onStepClick={setStep} />
 
-        {/* Instructions Step */}
-        {step === 2 && (
-          <motion.div
-            className="bg-white rounded-lg shadow-lg p-8"
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-          >
-            <h3 className="text-2xl font-bold text-[#193db0] mb-6">
-              Important Instructions
-            </h3>
-            <motion.ul className="space-y-4">
-              <motion.li variants={fadeInUp} className="flex items-center">
-                <span className="mr-3">📝</span>
-                Please fill out the form accurately with all required
-                information
-              </motion.li>
-              <motion.li variants={fadeInUp} className="flex items-center">
-                <span className="mr-3">📸</span>
-                Upload a main product image and additional photos for better
-                visibility
-              </motion.li>
-              <motion.li variants={fadeInUp} className="flex items-center">
-                <span className="mr-3">🏷️</span>
-                Include the SHEIN product code if applicable
-              </motion.li>
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center text-red-500"
-              >
-                <span className="mr-3">ℹ️</span>
-                Note: A 5% platform fee will be applied to each sale
-              </motion.li>
-            </motion.ul>
-            <motion.button
-              className="mt-8 px-8 py-3 bg-[#193db0] text-white rounded-lg hover:bg-[#142d8a] transition-all"
-              onClick={() => setStep(3)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+        {/* Content */}
+        <div className="mt-8">
+          {step === 1 && (
+            <motion.div
+              className="text-center py-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
             >
-              Continue to Form
-            </motion.button>
-          </motion.div>
-        )}
+              {welcomeMessages.map((message, index) => (
+                <motion.h2
+                  key={index}
+                  className="text-3xl font-bold text-[#193db0] mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.5 }}
+                >
+                  {message}
+                </motion.h2>
+              ))}
+              <motion.button
+                className="mt-8 px-8 py-3 bg-[#193db0] text-white rounded-lg hover:bg-[#142d8a] transition-all"
+                onClick={() => setStep(2)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Get Started
+              </motion.button>
+            </motion.div>
+          )}
 
-        {/* Product Form Step */}
-        {step === 3 && (
-          <motion.div
-            className="bg-white rounded-lg shadow-lg p-8"
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-          >
-            {renderProductForm()}
-          </motion.div>
-        )}
+          {step === 2 && (
+            <motion.div
+              className="bg-white rounded-lg shadow-lg p-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <h3 className="text-2xl font-bold text-[#193db0] mb-6">
+                Important Instructions
+              </h3>
+              <motion.ul className="space-y-4">
+                <motion.li className="flex items-center">
+                  <span className="mr-3">📝</span>
+                  Please fill out the form accurately with all required
+                  information
+                </motion.li>
+                <motion.li className="flex items-center">
+                  <span className="mr-3">📸</span>
+                  Upload clear images of your product from multiple angles
+                </motion.li>
+                <motion.li className="flex items-center">
+                  <span className="mr-3">🏷️</span>
+                  Include the SHEIN product code if applicable
+                </motion.li>
+                <motion.li className="flex items-center text-red-500">
+                  <span className="mr-3">ℹ️</span>
+                  Note: A 5% platform fee will be applied to each sale
+                </motion.li>
+              </motion.ul>
+              <motion.button
+                className="mt-8 px-8 py-3 bg-[#193db0] text-white rounded-lg hover:bg-[#142d8a] transition-all"
+                onClick={() => setStep(3)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Continue to Form
+              </motion.button>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div
+              className="bg-white rounded-lg shadow-lg p-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              {renderProductForm()}
+            </motion.div>
+          )}
+        </div>
       </div>
     </div>
   );
