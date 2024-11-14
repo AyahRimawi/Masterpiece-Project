@@ -228,7 +228,7 @@ const handleAddToCart = async () => {
         {/* Tabs */}
         <div className="mt-12">
           <div className="flex border-b">
-            <button
+            {/* <button
               className={`px-4 py-2 ${
                 activeTab === "reviews"
                   ? "text-black border-b-2 border-black"
@@ -237,7 +237,7 @@ const handleAddToCart = async () => {
               onClick={() => setActiveTab("reviews")}
             >
               Reviews
-            </button>
+            </button> */}
             <button
               className={`px-4 py-2 ${
                 activeTab === "related"

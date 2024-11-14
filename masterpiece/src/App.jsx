@@ -64,7 +64,7 @@ import DetailsPage from "./pages/DetailsPage/DetailsPage";
 import PaymentCard from "./pages/Card/PaymentCard";
 import ThankYouCard from "./pages/Card/ThankYouCard";
 import CartPage from "./pages/CartPage/CartPage";
-import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
+// import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -87,7 +87,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<DetailsPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+          {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
           <Route path="/ProfilePage" element={<ProfilePage />} />
           <Route path="/PaymentCard" element={<PaymentCard />} />
           <Route path="/ThankYouCard" element={<ThankYouCard />} />
