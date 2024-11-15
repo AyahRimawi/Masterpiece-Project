@@ -1,5 +1,5 @@
+// ShopNow.js
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -47,17 +47,32 @@ const categories = [
     subcategories: ["Clothing", "Accessories", "Essentials"],
   },
 ];
-// ... باقي الكود يبقى نفسه حتى CategoryCard
 
-const CategoryCard = ({ category }) => {
-  const navigate = useNavigate();
+const CategoryCard = ({ category, setBasicActive, navigateWithFilter }) => {
+  const handleShopNowClick = () => {
+      window.scrollTo(0, 0);
+    switch (category.category) {
+      case "Women":
+        navigateWithFilter("tab2", "all");
+        break;
+      case "Men":
+        navigateWithFilter("tab3", "all");
+        break;
+      case "Kids":
+        navigateWithFilter("tab4", "all");
+        break;
+      case "Baby":
+        navigateWithFilter("tab4", "all");
+        break;
+    }
+  };
 
   return (
     <div className="relative w-full max-w-[320px] h-[280px] rounded-2xl overflow-hidden group">
-      {/* Glassmorphism Base - تعديل الشفافية لتكون أكثر وضوحاً */}
+      {/* Glassmorphism Base */}
       <div className="absolute inset-0 backdrop-blur-md bg-white/50" />
 
-      {/* Animated Background - تحسين التدرج ليكون أكثر وضوحاً */}
+      {/* Animated Background */}
       <div
         className={`
           absolute inset-0 bg-gradient-to-br ${category.gradientColors}
@@ -67,7 +82,7 @@ const CategoryCard = ({ category }) => {
         `}
       />
 
-      {/* Rotating Shine Effect - زيادة التباين */}
+      {/* Rotating Shine Effect */}
       <div
         className="
           absolute inset-0 
@@ -78,87 +93,22 @@ const CategoryCard = ({ category }) => {
         "
       />
 
-      {/* Continuous Shimmer - تحسين تأثير اللمعة */}
-      <div
-        className="
-          absolute inset-0 skew-x-12
-          before:absolute before:inset-0 
-          before:w-1/2 before:bg-gradient-to-r 
-          before:from-transparent 
-          before:via-black/10
-          before:to-transparent
-          [animation:shimmer_2s_linear_infinite]
-          [@keyframes_shimmer]:from-{left:-100%}
-          [@keyframes_shimmer]:to-{left:200%}
-        "
-      />
-
-      {/* إضافة طبقة إضافية للمعة */}
-      <div
-        className="
-          absolute inset-0
-          bg-gradient-to-br from-black/5 via-transparent to-white/10
-          [animation:pulse_3s_ease-in-out_infinite]
-          [@keyframes_pulse]:from-{opacity:0}
-          [@keyframes_pulse]:via-{opacity:1}
-          [@keyframes_pulse]:to-{opacity:0}
-        "
-      />
-
       {/* Content Wrapper */}
       <div className="relative h-full flex flex-col items-center justify-center gap-4 p-6">
-        {/* Static Image Container with Enhanced Shine */}
         <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-black/10 shadow-xl">
           <img
             src={category.image}
             alt={category.title}
             className="w-full h-full object-cover"
           />
-          {/* Image Shine Effect - تحسين تأثير اللمعة */}
-          <div
-            className="
-              absolute inset-0 
-              bg-gradient-to-r from-transparent via-black/10 to-transparent
-              [animation:shine_2s_linear_infinite]
-              [@keyframes_shine]:from-{transform:translateX(-100%)}
-              [@keyframes_shine]:to-{transform:translateX(100%)}
-            "
-          />
-          {/* إضافة طبقة لمعة ثانية */}
-          <div
-            className="
-              absolute inset-0 
-              bg-gradient-to-r from-transparent via-white/20 to-transparent
-              [animation:shine_2s_linear_infinite_500ms]
-              [@keyframes_shine]:from-{transform:translateX(-100%)}
-              [@keyframes_shine]:to-{transform:translateX(100%)}
-            "
-          />
         </div>
 
-        {/* Title with Enhanced Shadow */}
-        <h3
-          className="
-            text-xl font-bold text-gray-800 
-            drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)]
-            [animation:pulse_2s_ease-in-out_infinite]
-            [@keyframes_pulse]:from-{opacity:0.8}
-            [@keyframes_pulse]:to-{opacity:1}
-          "
-        >
+        <h3 className="text-xl font-bold text-gray-800 drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)]">
           {category.title}
         </h3>
 
-        {/* Button with Enhanced Hover */}
         <button
-          onClick={() =>
-            navigate(category.path, {
-              state: {
-                category: category.category,
-                subcategories: category.subcategories,
-              },
-            })
-          }
+          onClick={handleShopNowClick}
           className={`
             relative px-6 py-2 rounded-lg
             bg-gradient-to-r ${category.btnGradient}
@@ -168,45 +118,32 @@ const CategoryCard = ({ category }) => {
             hover:shadow-lg hover:shadow-black/20
             overflow-hidden
             [animation:glow_1.5s_ease-in-out_infinite]
-            [@keyframes_glow]:from-{box-shadow:0_0_5px_rgba(0,0,0,0.2)}
-            [@keyframes_glow]:to-{box-shadow:0_0_20px_rgba(0,0,0,0.1)}
           `}
         >
           <span className="relative z-10">Shop Now</span>
-          {/* Button Shine with Enhanced Contrast */}
-          <div
-            className="
-              absolute inset-0 
-              bg-gradient-to-r from-transparent via-white/40 to-transparent
-              [animation:buttonShine_2s_linear_infinite]
-              [@keyframes_buttonShine]:from-{transform:translateX(-100%)}
-              [@keyframes_buttonShine]:to-{transform:translateX(100%)}
-            "
-          />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent [animation:buttonShine_2s_linear_infinite]" />
         </button>
       </div>
     </div>
   );
 };
 
-// ... باقي الكود يبقى نفسه، لكن مع تغيير خلفية الصفحة
-export function ShopNow() {
+export function ShopNow({ setBasicActive, navigateWithFilter }) {
   return (
     <div className="w-full bg-white">
-      {/* Hidden on Mobile (below sm breakpoint), Visible on Tablet and Above */}
       <div className="hidden sm:block w-full py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
             {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
+              <CategoryCard
+                key={category.id}
+                category={category}
+                setBasicActive={setBasicActive}
+                navigateWithFilter={navigateWithFilter}
+              />
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Optional: You can add alternative mobile content here */}
-      <div className="sm:hidden">
-        {/* يمكنك إضافة محتوى بديل للموبايل هنا إذا أردت */}
       </div>
     </div>
   );

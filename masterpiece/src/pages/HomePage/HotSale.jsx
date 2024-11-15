@@ -1,3 +1,4 @@
+// HotSale.js
 import React, { useState } from "react";
 
 const categories = [
@@ -45,8 +46,32 @@ const categories = [
   },
 ];
 
-const CategoryCircle = ({ category, onHover }) => {
+const CategoryCircle = ({ category, onHover, setBasicActive, navigateWithFilter }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleCategoryClick = () => {
+      window.scrollTo(0, 0);
+    switch (category.title) {
+      case "WOMEN":
+        navigateWithFilter("tab2", "all");
+        break;
+      case "MEN":
+        navigateWithFilter("tab3", "all");
+        break;
+      case "KIDS":
+        navigateWithFilter("tab4", "all");
+        break;
+      case "PANTS":
+        navigateWithFilter("tab2", "Pants");
+        break;
+      case "SHIRTS":
+        navigateWithFilter("tab3", "Shirt");
+        break;
+      case "DRESSES":
+        navigateWithFilter("tab6", "all");
+        break;
+    }
+  };
 
   return (
     <div
@@ -59,6 +84,7 @@ const CategoryCircle = ({ category, onHover }) => {
         setIsHovered(false);
         onHover(null);
       }}
+      onClick={handleCategoryClick}
     >
       <div
         className={`
@@ -129,16 +155,13 @@ const CategoryCircle = ({ category, onHover }) => {
   );
 };
 
-const HotSale = () => {
+const HotSale = ({ setBasicActive, navigateWithFilter }) => {
   const [hoveredId, setHoveredId] = useState(null);
 
   return (
     <div className="w-full bg-white py-8 px-6 md:px-12 lg:px-16 flex items-center">
       <div className="w-full max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          {/* <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-            Shop By Category
-          </h2> */}
           <h2 className="inline-flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gray-300"></span>
             <span className="text-sm uppercase tracking-widest text-gray-500 font-medium">
@@ -146,7 +169,6 @@ const HotSale = () => {
             </span>
             <span className="h-px w-8 bg-gray-300"></span>
           </h2>
-          {/* <p className="text-gray-600">Discover our collections for everyone</p> */}
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-6">
@@ -155,6 +177,8 @@ const HotSale = () => {
               key={category.id}
               category={category}
               onHover={setHoveredId}
+              setBasicActive={setBasicActive}
+              navigateWithFilter={navigateWithFilter}
             />
           ))}
         </div>

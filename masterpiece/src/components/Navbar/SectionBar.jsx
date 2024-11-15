@@ -1,3 +1,4 @@
+// SectionBar.js
 import { React, useState } from "react";
 import {
   TETabs,
@@ -5,8 +6,8 @@ import {
   TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
-import  HeroSection  from "../../pages/HomePage/HeroSection";
-import  HotSale  from "../../pages/HomePage/HotSale";
+import HeroSection from "../../pages/HomePage/HeroSection";
+import HotSale from "../../pages/HomePage/HotSale";
 import { ShopNow } from "../../pages/HomePage/ShopNow";
 import { Sections } from "../../pages/HomePage/Sections";
 import { Dress } from "../../pages/HomePage/Dress";
@@ -20,22 +21,29 @@ import {
   SaleCard,
 } from "../../pages/ProductPage/CategoryComponents/CategoryComponents";
 
-
 export default function SectionBar() {
   const [basicActive, setBasicActive] = useState("tab1");
+  const [categoryFilter, setCategoryFilter] = useState(null);
 
   const handleBasicClick = (value) => {
+      window.scrollTo(0, 0);
     if (value === basicActive) {
       return;
     }
     setBasicActive(value);
+    setCategoryFilter(null);
+  };
+
+  const navigateWithFilter = (tab, filter) => {
+    setBasicActive(tab);
+    setCategoryFilter(filter);
   };
 
   return (
-    <div className="mb-3 ">
+    <div className="mb-3">
       <div className="overflow-x-auto">
         <TETabs>
-          <div className="flex flex-nowrap w-full shadow-lg dark:bg-neutral-700 ">
+          <div className="flex flex-nowrap w-full shadow-lg dark:bg-neutral-700">
             <TETabsItem
               onClick={() => handleBasicClick("tab1")}
               active={basicActive === "tab1"}
@@ -64,13 +72,6 @@ export default function SectionBar() {
             >
               KIDS
             </TETabsItem>
-            {/* <TETabsItem
-              onClick={() => handleBasicClick("tab5")}
-              active={basicActive === "tab5"}
-              className="flex-shrink-0 px-4 py-2 text-center"
-            >
-              BABY
-            </TETabsItem> */}
             <TETabsItem
               onClick={() => handleBasicClick("tab6")}
               active={basicActive === "tab6"}
@@ -78,57 +79,31 @@ export default function SectionBar() {
             >
               DRESSES
             </TETabsItem>
-            {/* <TETabsItem
-              onClick={() => handleBasicClick("tab7")}
-              active={basicActive === "tab7"}
-              className="flex-shrink-0 px-4 py-2 text-center text-red-500 font-bold border-b-0"
-            >
-              SALE%
-            </TETabsItem> */}
           </div>
         </TETabs>
       </div>
 
       <TETabsContent>
-        {/* -------HOME-------- */}
         <TETabsPane show={basicActive === "tab1"}>
-          <HeroSection/>
-          <HotSale />
-          <ShopNow />
-          <Sections />
-          <Dress />
+          <HeroSection setBasicActive={setBasicActive} navigateWithFilter={navigateWithFilter} />
+          <HotSale setBasicActive={setBasicActive} navigateWithFilter={navigateWithFilter} />
+          <ShopNow setBasicActive={setBasicActive} navigateWithFilter={navigateWithFilter} />
+          <Sections setBasicActive={setBasicActive} navigateWithFilter={navigateWithFilter} />
+          <Dress setBasicActive={setBasicActive} />
           <Payment />
         </TETabsPane>
-        {/* ---------WOMEN--------- */}
         <TETabsPane show={basicActive === "tab2"}>
-          <WomenCard />
+          <WomenCard initialSubcategory={categoryFilter} />
         </TETabsPane>
-        {/* --------MEN------- */}
         <TETabsPane show={basicActive === "tab3"}>
-          {" "}
-          <MenCard />
+          <MenCard initialSubcategory={categoryFilter} />
         </TETabsPane>
-        {/* -------KIDS-------- */}
         <TETabsPane show={basicActive === "tab4"}>
-          {" "}
-          <KidsCard />
+          <KidsCard initialSubcategory={categoryFilter} />
         </TETabsPane>
-        {/* --------BABY------- */}
-        <TETabsPane show={basicActive === "tab5"}>
-          {" "}
-          <BabyCard />
-        </TETabsPane>
-        {/* --------DRESSES------- */}
         <TETabsPane show={basicActive === "tab6"}>
-          {" "}
           <DressesCard />
         </TETabsPane>
-        {/* -------SALE%-------- */}
-        <TETabsPane show={basicActive === "tab7"}>
-          {" "}
-          <SaleCard />
-        </TETabsPane>
-        {/* --------------- */}
       </TETabsContent>
     </div>
   );
