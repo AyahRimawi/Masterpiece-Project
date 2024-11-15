@@ -15,14 +15,21 @@ const RelatedProducts = ({ category, subCategory, currentProductId }) => {
       const response = await axios.get(
         `/api/product/getProductsBySubCategory/${subCategory}`
       );
-      setRelatedProducts(
-        response.data
-          .filter(
-            (product) =>
-              product.category === category && product._id !== currentProductId
-          )
-          .slice(0, 20)
-      );
+
+      // Filter out products with zero quantity and current product
+      const productsWithStock = response.data.filter((product) => {
+        // Check if product has variants with quantity > 0
+        const hasAvailableStock = product.variants.some(
+          (variant) => variant.quantity > 0
+        );
+        return (
+          product.category === category &&
+          product._id !== currentProductId &&
+          hasAvailableStock
+        );
+      });
+
+      setRelatedProducts(productsWithStock.slice(0, 20));
     } catch (error) {
       console.error("Error fetching related products:", error);
     }
@@ -32,16 +39,32 @@ const RelatedProducts = ({ category, subCategory, currentProductId }) => {
     navigate(`/product/${selectedVariant._id}`);
   };
 
-  const getRandomVariant = (variants) => {
-    return variants[Math.floor(Math.random() * variants.length)];
+  const getRandomVariantWithStock = (variants) => {
+    // Filter variants with stock > 0
+    const availableVariants = variants.filter(
+      (variant) => variant.quantity > 0
+    );
+    if (availableVariants.length === 0) return null;
+    return availableVariants[
+      Math.floor(Math.random() * availableVariants.length)
+    ];
   };
+
+  if (relatedProducts.length === 0) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        No related products available at the moment.
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4"></h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {relatedProducts.map((product) => {
-          const randomVariant = getRandomVariant(product.variants);
+          const randomVariant = getRandomVariantWithStock(product.variants);
+          if (!randomVariant) return null;
+
           return (
             <div
               key={randomVariant._id}
@@ -54,7 +77,9 @@ const RelatedProducts = ({ category, subCategory, currentProductId }) => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
-                <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                <h3 className="font-semibold text-lg mb-1 truncate">
+                  {product.name}
+                </h3>
                 <p className="text-gray-600">
                   JD {randomVariant.price.toFixed(2)}
                 </p>

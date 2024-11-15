@@ -6,7 +6,6 @@ import SearchBar from "../../components/Navbar/SearchBar";
 import FooterBar from "../../components/Footer/FooterBar";
 import TrackOrder from "../../components/Navbar/TrackOrder";
 import { useParams } from "react-router-dom";
-import Reviews from "./ReviewsComponent";
 import RelatedProducts from "./RelatedProductsComponent";
 import useCartStore from "../CartPage/CartStore";
 
@@ -14,11 +13,10 @@ const DetailsPage = () => {
   const [productData, setProductData] = useState(null);
   const [activeImg, setActiveImage] = useState("");
   const [amount, setAmount] = useState(1);
-  const [activeTab, setActiveTab] = useState("reviews");
+  const [activeTab, setActiveTab] = useState("related");
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
-  // const navigate = useNavigate();
   const { id } = useParams();
   const { addToCart } = useCartStore();
 
@@ -64,29 +62,29 @@ const DetailsPage = () => {
     setSelectedSize(size);
   };
 
-const handleAddToCart = async () => {
-  if (!productData) return;
+  const handleAddToCart = async () => {
+    if (!productData) return;
 
-  const currentVariant =
-    productData.variants.find(
-      (v) => v.color === selectedColor && v.size.includes(selectedSize)
-    ) || productData.currentVariant;
+    const currentVariant =
+      productData.variants.find(
+        (v) => v.color === selectedColor && v.size.includes(selectedSize)
+      ) || productData.currentVariant;
 
-  try {
-    await addToCart({
-      productId: productData._id,
-      variantId: currentVariant._id,
-      quantity: amount,
-    });
-    toast.success("Item added to cart successfully!");
-  } catch (error) {
-    console.error("Error adding item to cart:", error);
-    toast.error(
-      error.response?.data?.message ||
-        "Failed to add item to cart. Please try again."
-    );
-  }
-};
+    try {
+      await addToCart({
+        productId: productData._id,
+        variantId: currentVariant._id,
+        quantity: amount,
+      });
+      toast.success("Item added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to add item to cart. Please try again."
+      );
+    }
+  };
 
   if (!productData) return <div>Loading...</div>;
 
@@ -95,7 +93,6 @@ const handleAddToCart = async () => {
       (v) => v.color === selectedColor && v.size.includes(selectedSize)
     ) || productData.currentVariant;
 
-  
   return (
     <div className="bg-white min-h-screen">
       <TrackOrder />
@@ -225,39 +222,19 @@ const handleAddToCart = async () => {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Related Products Section */}
         <div className="mt-12">
           <div className="flex border-b">
-            {/* <button
-              className={`px-4 py-2 ${
-                activeTab === "reviews"
-                  ? "text-black border-b-2 border-black"
-                  : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("reviews")}
-            >
-              Reviews
-            </button> */}
-            <button
-              className={`px-4 py-2 ${
-                activeTab === "related"
-                  ? "text-black border-b-2 border-black"
-                  : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("related")}
-            >
+            <button className="px-4 py-2 text-black border-b-2 border-black">
               Related Products
             </button>
           </div>
           <div className="mt-4">
-            {activeTab === "reviews" ? (
-              <Reviews productId={productData._id} />
-            ) : (
-              <RelatedProducts
-                category={productData.category}
-                subCategory={productData.subCategory}
-              />
-            )}
+            <RelatedProducts
+              category={productData.category}
+              subCategory={productData.subCategory}
+              currentProductId={productData._id}
+            />
           </div>
         </div>
       </div>

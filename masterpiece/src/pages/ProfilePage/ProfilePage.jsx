@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // استخدمناها لتنقل بين الصفحات ولاحظ useNavigate بتكون ال from تبعتها هي router لأنها اساسا عبارة عن تنقل
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PersonalInfo from "./PersonalInfo";
 import OrdersInfo from "./OrdersInfo";
@@ -11,24 +11,29 @@ import AddProduct from "./AddProduct";
 import UserProducts from "./UserProducts";
 import FavoritesPage from "./FavoritesPage";
 
-
 // عمل sidebar كون على يقين انو ال sidebar هو حالة متغيرة والعادة تكمن باستخدام useState فيها
 // اما تغير الحالة الي عندي هو في شغلتين:
 // فتح واغلاق ال sidebar والثانية هو الانتقال بين section
 const ProfilePage = () => {
   // ---------
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // -------------
+  const location = useLocation(); // Add this import at the top
+  const initialSection = location.state?.initialSection || "personal";
 
   // -------------
 
   // هون القصد انو اول section مفعل عند الدخول على الصفحة هو ال personal
-  const [activeSection, setActiveSection] = useState("personal");
+  // const [activeSection, setActiveSection] = useState("personal");
+  const [activeSection, setActiveSection] = useState(initialSection);
+
   // هون تطبق الحالة الافتراضية وهي العادة انو يكون ال sidebar مغلق لأنو مو دائما بحاجة انو يكون مفتوح
   //  عند عرض الزر، سيتحقق التعبير الشرطي من قيمة isSidebarOpen ويجد أنها false. لذا، سيتم عرض النص "Open Menu" على الزر:
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // -----------------------------------------------------------------------
-  
+
   const [userName, setUserName] = useState(""); // Default name
 
   // useEffect(() => {
@@ -39,20 +44,20 @@ const ProfilePage = () => {
   //   if (savedName) setUserName(savedName);
   // }, []);
 
-   useEffect(() => {
-     const fetchUserData = async () => {
-       try {
-         const response = await axios.get("/api/profile/get-PersonalInfo", {
-           withCredentials: true,
-         });
-         setUserName(response.data.name);
-       } catch (error) {
-         console.error("Error fetching user data:", error);
-       }
-     };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("/api/profile/get-PersonalInfo", {
+          withCredentials: true,
+        });
+        setUserName(response.data.name);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
-     fetchUserData();
-   }, []);
+    fetchUserData();
+  }, []);
   // ------------------------------------------------
   // اقسام ال section داخل ال sidebar يتم ترتيب البيانات داخل array واعطاء كل قسم منهم:
   // id يعبر معرف لكل قسم ويكون هو ما يميز كل قسم
@@ -83,10 +88,10 @@ const ProfilePage = () => {
     navigate("/");
   };
   // ============ handleLogout ============
- const handleLogout = () => {
-   dispatch(logoutUser());
-   navigate("/");
- };
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/");
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen">
