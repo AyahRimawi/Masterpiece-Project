@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
 
-const Reviews = ({ productId }) => {
+// const Reviews = ({ productId }) => {
   // const [reviews, setReviews] = useState([]);
 
   // useEffect(() => {
@@ -37,6 +37,6 @@ const Reviews = ({ productId }) => {
   //     ))}
   //   </div>
   // );
-};
+// };
 
-export default Reviews;
+// export default Reviews;
