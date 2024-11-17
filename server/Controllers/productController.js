@@ -509,13 +509,89 @@ exports.getProductsByCategoryAndSubCategory = async (req, res) => {
 };
 
 //todoo --------------- addProduct ---------------------
+// exports.addProduct = async (req, res) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     const { name, description, category, subCategory, variants } = req.body;
+
+//     const product = new Product({
+//       name,
+//       description,
+//       category,
+//       subCategory,
+//       seller: req.user.id,
+//       isUserSubmitted: true,
+//       approvalStatus: "Pending",
+//       paymentStatus: "Pending",
+//     });
+
+//     await product.save({ session });
+
+//     if (variants && Array.isArray(variants)) {
+//       const variantsToAdd = variants.map((variant) => ({
+//         productId: product._id,
+//         shein_code: variant.shein_code,
+//         color: variant.color,
+//         size: variant.size,
+//         price: variant.price,
+//         quantity: variant.quantity,
+//         overviewPicture: variant.overviewPicture,
+//         images: variant.images || [],
+//       }));
+
+//       await Variant.insertMany(variantsToAdd, { session });
+//     }
+
+//     // إضافة المنتج إلى قائمة منتجات المستخدم
+//     await User.findByIdAndUpdate(
+//       req.user.id,
+//       { $push: { submittedProducts: product._id } },
+//       { session }
+//     );
+
+//     await session.commitTransaction();
+//     session.endSession();
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Product submitted successfully and awaiting approval",
+//       product,
+//     });
+//   } catch (error) {
+//     await session.abortTransaction();
+//     session.endSession();
+//     res.status(500).json({
+//       success: false,
+//       message: "Error submitting product",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
 exports.addProduct = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    console.log("Received product data:", req.body); // Debug log
+
     const { name, description, category, subCategory, variants } = req.body;
 
+    // Validate required fields
+    if (
+      !name ||
+      !category ||
+      !subCategory ||
+      !variants ||
+      variants.length === 0
+    ) {
+      throw new Error("Missing required fields");
+    }
+
+    // Create the product
     const product = new Product({
       name,
       description,
@@ -529,6 +605,7 @@ exports.addProduct = async (req, res) => {
 
     await product.save({ session });
 
+    // Create variants
     if (variants && Array.isArray(variants)) {
       const variantsToAdd = variants.map((variant) => ({
         productId: product._id,
@@ -544,7 +621,7 @@ exports.addProduct = async (req, res) => {
       await Variant.insertMany(variantsToAdd, { session });
     }
 
-    // إضافة المنتج إلى قائمة منتجات المستخدم
+    // Add product to user's submitted products
     await User.findByIdAndUpdate(
       req.user.id,
       { $push: { submittedProducts: product._id } },
@@ -560,6 +637,7 @@ exports.addProduct = async (req, res) => {
       product,
     });
   } catch (error) {
+    console.error("Server error:", error); // Debug log
     await session.abortTransaction();
     session.endSession();
     res.status(500).json({

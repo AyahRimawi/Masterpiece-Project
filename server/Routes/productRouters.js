@@ -4,8 +4,11 @@ const productController = require("../Controllers/productController");
 
 // افترض أن لدينا middleware للمصادقة يسمى auth
 const auth = require("../Middleware/auth");
+const { uploadMultiple } = require("../Middleware/uploadMiddleware");
 
-router.post("/addProduct", auth, productController.addProduct);
+
+router.post("/addProduct", auth, uploadMultiple, productController.addProduct);
+// router.post("/addProduct", auth, productController.addProduct);
 router.get("/getAllProducts", productController.getAllProducts);
 router.get("/getProductById/:id", productController.getProductById);
 router.get("/getVariantById/:id", productController.getVariantById);
