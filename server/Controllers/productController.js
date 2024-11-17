@@ -578,7 +578,14 @@ exports.addProduct = async (req, res) => {
   try {
     console.log("Received product data:", req.body); // Debug log
 
-    const { name, description, category, subCategory, variants } = req.body;
+    const {
+      name,
+      description,
+      category,
+      subCategory,
+      variants,
+      averageRating = 0,
+    } = req.body;
 
     // Validate required fields
     if (
@@ -597,6 +604,7 @@ exports.addProduct = async (req, res) => {
       description,
       category,
       subCategory,
+      averageRating, // تضمين التقييم
       seller: req.user.id,
       isUserSubmitted: true,
       approvalStatus: "Pending",

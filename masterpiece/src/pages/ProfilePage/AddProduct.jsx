@@ -800,6 +800,7 @@ const AddProduct = () => {
     description: "",
     category: "",
     subCategory: "",
+    averageRating: 0, // أضف هذا السطر
     variants: [
       {
         shein_code: "",
@@ -936,64 +937,68 @@ const AddProduct = () => {
   //   }
   // };
 
-const handleImagesChange = async (e, variantIndex = 0, isOverview = false) => {
-  const files = isOverview ? [e.target.files[0]] : Array.from(e.target.files);
+  const handleImagesChange = async (
+    e,
+    variantIndex = 0,
+    isOverview = false
+  ) => {
+    const files = isOverview ? [e.target.files[0]] : Array.from(e.target.files);
 
-  if (files.length > 0) {
-    Swal.fire({
-      title: "Uploading Images",
-      text: "Please wait while we upload your images...",
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    if (files.length > 0) {
+      Swal.fire({
+        title: "Uploading Images",
+        text: "Please wait while we upload your images...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
-    try {
-      const newVariants = [...formData.variants];
-      const uploadPromises = files.map(async (file) => {
-        const formDataFile = new FormData();
-        formDataFile.append("image", file);
+      try {
+        const newVariants = [...formData.variants];
+        const uploadPromises = files.map(async (file) => {
+          const formDataFile = new FormData();
+          formDataFile.append("image", file);
 
-        // تحديث المسار للتوافق مع الباكيند
-        const response = await axios.post("/api/upload/image", formDataFile, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          // تحديث المسار للتوافق مع الباكيند
+          const response = await axios.post("/api/upload/image", formDataFile, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          return response.data.url;
         });
 
-        return response.data.url;
-      });
+        const uploadedUrls = await Promise.all(uploadPromises);
 
-      const uploadedUrls = await Promise.all(uploadPromises);
+        if (isOverview) {
+          newVariants[variantIndex].overviewPicture = uploadedUrls[0];
+        } else {
+          newVariants[variantIndex].images = [
+            ...newVariants[variantIndex].images,
+            ...uploadedUrls,
+          ];
+        }
 
-      if (isOverview) {
-        newVariants[variantIndex].overviewPicture = uploadedUrls[0];
-      } else {
-        newVariants[variantIndex].images = [
-          ...newVariants[variantIndex].images,
-          ...uploadedUrls,
-        ];
+        setFormData({ ...formData, variants: newVariants });
+        Swal.close();
+
+        toast.success(
+          isOverview
+            ? "Main image uploaded successfully!"
+            : "Additional images uploaded successfully!"
+        );
+      } catch (error) {
+        console.error("Error uploading images:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Upload Failed",
+          text: "Failed to upload images. Please try again.",
+        });
       }
-
-      setFormData({ ...formData, variants: newVariants });
-      Swal.close();
-
-      toast.success(
-        isOverview
-          ? "Main image uploaded successfully!"
-          : "Additional images uploaded successfully!"
-      );
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Upload Failed",
-        text: "Failed to upload images. Please try again.",
-      });
     }
-  }
-};
+  };
 
   const handleRemoveImage = (variantIndex, imageIndex, isOverview = false) => {
     const newVariants = [...formData.variants];
@@ -1069,119 +1074,124 @@ const handleImagesChange = async (e, variantIndex = 0, isOverview = false) => {
   //   }
   // };
 
-const submitProduct = async () => {
-  try {
-    // Show loading state
-    Swal.fire({
-      title: "Submitting Product",
-      html: `
+  const submitProduct = async () => {
+    try {
+      // Show loading state
+      Swal.fire({
+        title: "Submitting Product",
+        html: `
         <div class="flex flex-col items-center">
           <div class="w-16 h-16 border-t-4 border-b-4 border-[#193db0] rounded-full animate-spin"></div>
           <p class="mt-4 text-gray-600">Your product is being submitted for approval...</p>
         </div>
       `,
-      showConfirmButton: false,
-      allowOutsideClick: false,
-    });
+        showConfirmButton: false,
+        allowOutsideClick: false,
+      });
 
-    // Basic validation
-    if (!formData.name || !formData.category || !formData.subCategory) {
-      throw new Error("Please fill in all required fields");
-    }
-
-    // Validate variants
-    if (!formData.variants || formData.variants.length === 0) {
-      throw new Error("At least one variant is required");
-    }
-
-    for (const variant of formData.variants) {
-      if (
-        !variant.color ||
-        variant.size.length === 0 ||
-        !variant.price ||
-        !variant.quantity
-      ) {
-        throw new Error("Please complete all variant details");
+      // Basic validation
+      if (!formData.name || !formData.category || !formData.subCategory) {
+        throw new Error("Please fill in all required fields");
       }
-      if (!variant.overviewPicture) {
-        throw new Error("Each variant must have a main image");
+
+      // Validate variants
+      if (!formData.variants || formData.variants.length === 0) {
+        throw new Error("At least one variant is required");
       }
-    }
 
-    // Format the data before sending
-    const productData = {
-      name: formData.name,
-      description: formData.description,
-      category: formData.category,
-      subCategory: formData.subCategory,
-      variants: formData.variants.map((variant) => ({
-        shein_code: variant.shein_code || "",
-        color: variant.color,
-        size: variant.size,
-        price: parseFloat(variant.price),
-        quantity: parseInt(variant.quantity),
-        overviewPicture: variant.overviewPicture,
-        images: variant.images || [],
-      })),
-    };
+      for (const variant of formData.variants) {
+        if (
+          !variant.color ||
+          variant.size.length === 0 ||
+          !variant.price ||
+          !variant.quantity
+        ) {
+          throw new Error("Please complete all variant details");
+        }
+        if (!variant.overviewPicture) {
+          throw new Error("Each variant must have a main image");
+        }
+      }
 
-    console.log("Sending product data:", productData); // Debug log
+      // Format the data before sending
+      const productData = {
+        name: formData.name,
+        description: formData.description,
+        category: formData.category,
+        subCategory: formData.subCategory,
+        averageRating: formData.averageRating, // تأكد من إرسال التقييم
+        variants: formData.variants.map((variant) => ({
+          shein_code: variant.shein_code || "",
+          color: variant.color,
+          size: variant.size,
+          price: parseFloat(variant.price),
+          quantity: parseInt(variant.quantity),
+          overviewPicture: variant.overviewPicture,
+          images: variant.images || [],
+        })),
+      };
 
-    // Get token from localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Authentication required");
-    }
+      console.log("Sending product data:", productData); // Debug log
 
-    const response = await axios.post("/api/product/addProduct", productData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication required");
+      }
 
-    if (response.data.success) {
+      const response = await axios.post(
+        "/api/product/addProduct",
+        productData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Product Submitted!",
+          text: "Your product is now waiting for admin approval.",
+          confirmButtonColor: "#193db0",
+        });
+
+        // Reset form
+        setStep(1);
+        setFormData({
+          name: "",
+          description: "",
+          category: "",
+          subCategory: "",
+          averageRating: 0, // أضف هذا السطر
+          variants: [
+            {
+              shein_code: "",
+              color: "",
+              size: [],
+              price: "",
+              quantity: "",
+              overviewPicture: "",
+              images: [],
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error("Submit error:", error); // Debug log
       Swal.fire({
-        icon: "success",
-        title: "Product Submitted!",
-        text: "Your product is now waiting for admin approval.",
+        icon: "error",
+        title: "Submission Failed",
+        text:
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
         confirmButtonColor: "#193db0",
       });
-
-      // Reset form
-      setStep(1);
-      setFormData({
-        name: "",
-        description: "",
-        category: "",
-        subCategory: "",
-        variants: [
-          {
-            shein_code: "",
-            color: "",
-            size: [],
-            price: "",
-            quantity: "",
-            overviewPicture: "",
-            images: [],
-          },
-        ],
-      });
     }
-  } catch (error) {
-    console.error("Submit error:", error); // Debug log
-    Swal.fire({
-      icon: "error",
-      title: "Submission Failed",
-      text:
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong",
-      confirmButtonColor: "#193db0",
-    });
-  }
-};
-
+  };
 
   const renderProductForm = () => (
     <motion.div
@@ -1227,7 +1237,6 @@ const submitProduct = async () => {
             </select>
           </div>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Description
@@ -1241,7 +1250,88 @@ const submitProduct = async () => {
             required
           />
         </div>
+        {/* Rating Section */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Rating (0-5 stars)
+          </label>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              {[0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((rating) => (
+                <button
+                  key={rating}
+                  type="button"
+                  onClick={() => {
+                    setFormData({ ...formData, averageRating: rating });
+                  }}
+                  className={`px-2 py-1 rounded ${
+                    formData.averageRating === rating
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-gray-600"
+                  } text-sm hover:bg-blue-50 transition-colors`}
+                >
+                  {rating}
+                </button>
+              ))}
+            </div>
 
+            <div className="flex items-center space-x-1">
+              {[1, 2, 3, 4, 5].map((fullStar) => (
+                <div key={fullStar} className="relative">
+                  {/* Empty Star (background) */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#d1d5db"
+                    className="w-8 h-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    />
+                  </svg>
+
+                  {/* Filled Star (overlay) */}
+                  <div
+                    className="absolute top-0 left-0 overflow-hidden"
+                    style={{
+                      width: `${Math.min(
+                        100,
+                        Math.max(
+                          0,
+                          (formData.averageRating - (fullStar - 1)) * 100
+                        )
+                      )}%`,
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="#FFD700"
+                      stroke="#FFD700"
+                      className="w-8 h-8"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+              <span className="ml-2 text-sm text-gray-600">
+                {formData.averageRating
+                  ? `${formData.averageRating} stars`
+                  : "No rating"}
+              </span>
+            </div>
+          </div>
+        </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Subcategory
@@ -1263,7 +1353,6 @@ const submitProduct = async () => {
               ))}
           </select>
         </div>
-
         {/* Variants */}
         {formData.variants.map((variant, index) => (
           <div

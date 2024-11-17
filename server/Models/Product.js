@@ -33,7 +33,17 @@ const productSchema = new mongoose.Schema(
       default: "Pending",
     },
     ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-    averageRating: { type: Number, default: 0 },
+    // averageRating: { type: Number, default: 0 },
+
+    averageRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+      // السماح بأرقام عشرية
+      set: (v) => Math.round(v * 2) / 2, // يقرب إلى أقرب 0.5
+    },
+
     paymentStatus: {
       type: String,
       enum: ["Pending", "Paid"],
