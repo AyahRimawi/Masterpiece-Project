@@ -104,7 +104,7 @@ const ProductCard = ({
     return (
       <div className="w-full max-w-[300px] aspect-[3/4] flex items-center justify-center">
         <div className="animate-bounce">
-          <ShoppingBag size={40} className="text-indigo-500 animate-pulse" />
+          <ShoppingBag size={40} className="text-black animate-pulse" />
         </div>
       </div>
     );
@@ -251,14 +251,14 @@ const ProductCard = ({
                 onClick={handleProductClick}
                 className="w-full py-2 md:py-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm md:text-base font-semibold duration-200 hover:bg-white/30 hover:scale-[1.02] active:scale-[0.98]"
               >
-                Add to Cart
+                View Details
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes floating {
           0%,
           100% {

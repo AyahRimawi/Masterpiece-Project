@@ -9,14 +9,14 @@ import {
   Bars3Icon,
   XMarkIcon,
   EnvelopeIcon,
-} from "@heroicons/react/24/outline"; // تأكد من استخدام هذا المسار
+} from "@heroicons/react/24/outline"; 
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
   { name: "Users", href: "/users", icon: UsersIcon },
   { name: "Products", href: "/products", icon: ShoppingBagIcon },
   { name: "Orders", href: "/orders", icon: ClipboardDocumentListIcon },
-  { name: "Messages", href: "/messages", icon: EnvelopeIcon }, // أضف هذا السطر
+  { name: "Messages", href: "/messages", icon: EnvelopeIcon },
 ];
 
 const Layout = ({ children }) => {
@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
       >
-        <div className="flex items-center justify-center h-16 bg-primary">
+        <div className="flex items-center justify-center h-16 bg-black">
           <span className="text-white text-2xl font-semibold">
             Admin Dashboard
           </span>
@@ -44,8 +44,8 @@ const Layout = ({ children }) => {
               to={item.href}
               className={`flex items-center px-6 py-2 mt-4 duration-200 border-l-4 ${
                 location.pathname === item.href
-                  ? "bg-primary bg-opacity-10 border-primary text-primary"
-                  : "border-transparent hover:bg-gray-100 hover:border-primary"
+                  ? "bg-black bg-opacity-10 border-black text-black"
+                  : "border-transparent hover:bg-gray-100 hover:border-black"
               }`}
             >
               <item.icon className="w-5 h-5" />
@@ -72,7 +72,7 @@ const Layout = ({ children }) => {
             <span className="text-gray-800 text-sm mr-4">{user?.name}</span>
             <button
               onClick={logout}
-              className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className=" border border-black hover:bg-black hover:text-white px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Logout
             </button>

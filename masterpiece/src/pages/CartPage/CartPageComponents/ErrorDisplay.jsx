@@ -20,7 +20,7 @@ const ErrorDisplay = ({ error }) => {
         <p className="text-center text-gray-800 text-lg">{error}</p>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 w-full py-2 bg-[#193db0] text-white rounded-lg hover:bg-[#142d80] transition-colors"
+          className="mt-4 w-full py-2 border border-black hover:bg-black hover:text-white  bg-white rounded-lg transition-colors"
         >
           Return to Home
         </button>

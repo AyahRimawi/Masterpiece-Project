@@ -14,7 +14,6 @@ const FavoritesPage = () => {
   const [itemsPerPage] = useState(6);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // تصفية المنتجات التي لديها كمية أكبر من صفر
   const availableItems = favorites.filter((product) =>
     product.variants.some((variant) => variant.quantity > 0)
   );
@@ -24,7 +23,6 @@ const FavoritesPage = () => {
   const currentItems = availableItems.slice(firstItemIndex, lastItemIndex);
   const totalPages = Math.ceil(availableItems.length / itemsPerPage);
 
-  // تعديل رقم الصفحة الحالية إذا كانت أكبر من العدد الكلي للصفحات
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages);
@@ -80,12 +78,10 @@ const FavoritesPage = () => {
       });
 
       if (response.data) {
-        // حذف المنتجات التي كميتها صفر تلقائياً
         const productsToRemove = response.data.filter(
           (product) => !product.variants.some((variant) => variant.quantity > 0)
         );
 
-        // حذف المنتجات من المفضلة
         for (const product of productsToRemove) {
           try {
             await axios.delete(`/api/favorites/${product._id}`, {
@@ -98,7 +94,6 @@ const FavoritesPage = () => {
           }
         }
 
-        // تحديث القائمة بالمنتجات المتوفرة فقط
         setFavorites(
           response.data.filter((product) =>
             product.variants.some((variant) => variant.quantity > 0)

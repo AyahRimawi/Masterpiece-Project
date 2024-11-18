@@ -30,9 +30,9 @@ const SizePage = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen flex items-center justify-center p-4">
+    <div className="bg-white mt-24 flex items-center justify-center p-4">
       <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-md w-full">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-center text-transparent bg-clip-text bg-[#193db0] mb-6">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-center text-transparent bg-clip-text bg-[#000] mb-6">
           My Size
         </h2>
         <div className="space-y-4">
@@ -48,7 +48,7 @@ const SizePage = () => {
               id="weight"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#193db074] transition duration-200"
+              className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#30313374] transition duration-200"
               placeholder="Enter your weight"
             />
           </div>
@@ -64,35 +64,35 @@ const SizePage = () => {
               id="height"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#193db0] transition duration-200"
+              className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-[#000] transition duration-200"
               placeholder="Enter your height"
             />
           </div>
           <button
             onClick={calculateBMI}
-            className="w-full bg-[#193db0] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#153b91] transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            className="w-full bg-[#000] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#000] transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50"
           >
             Calculate
           </button>
         </div>
         {bmi && (
           <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl shadow-inner">
-            <h3 className="text-lg sm:text-xl font-bold text-[#193db0] mb-3">
+            <h3 className="text-lg sm:text-xl font-bold text-[#000] mb-3">
               Results
             </h3>
             <div className="space-y-2">
               <p className="text-gray-700">
-                BMI: <span className="font-semibold text-[#193db0]">{bmi}</span>
+                BMI: <span className="font-semibold text-[#000]">{bmi}</span>
               </p>
               <p className="text-gray-700">
                 Weight Status:{" "}
-                <span className="font-semibold text-[#193db0]">
+                <span className="font-semibold text-[#000]">
                   {weightStatus}
                 </span>
               </p>
               <p className="text-gray-700">
                 Recommended Size:{" "}
-                <span className="font-semibold text-[#193db0]">{size}</span>
+                <span className="font-semibold text-[#000]">{size}</span>
               </p>
             </div>
           </div>

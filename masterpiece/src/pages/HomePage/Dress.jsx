@@ -135,7 +135,7 @@ export function Dress({ setBasicActive, navigateWithFilter }) {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes shine {
           0% {
             transform: translateX(-100%);

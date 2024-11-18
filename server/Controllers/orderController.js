@@ -45,11 +45,9 @@ const orderController = {
           });
         }
 
-        // تحديث الكمية
         variant.quantity -= item.quantity;
         await variant.save();
 
-        // إذا أصبحت الكمية صفر، قم بتحديث حالة المنتج كمباع
         if (variant.quantity === 0) {
           const product = await Product.findById(variant.productId);
           const otherVariants = await Variant.find({
@@ -81,7 +79,7 @@ const orderController = {
         paymentMethod,
         shippingAddress,
         paymentStatus: paymentMethod === "PayPal" ? "Completed" : "Pending",
-        deliveryStatus: "Pending", // إضافة حالة التوصيل الافتراضية
+        deliveryStatus: "Pending", 
         ...(paypalOrderId && { paypalOrderId }),
       });
 

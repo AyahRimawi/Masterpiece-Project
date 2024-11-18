@@ -79,7 +79,7 @@ const Messages = () => {
                 {message.status === "responded" ? (
                   <EnvelopeOpenIcon className="w-5 h-5 text-green-500" />
                 ) : (
-                  <EnvelopeIcon className="w-5 h-5 text-blue-500" />
+                  <EnvelopeIcon className="w-5 h-5 text-gray-600" />
                 )}
                 <div className="flex-1">
                   <h3 className="font-medium">{message.name}</h3>
@@ -119,13 +119,13 @@ const Messages = () => {
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   placeholder="Type your response..."
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                   rows={4}
                 />
                 <button
                   onClick={handleSendResponse}
                   disabled={sending || !response.trim()}
-                  className="mt-3 bg-primary text-white px-4 py-2 rounded-md disabled:opacity-50"
+                  className="mt-3 bg-black text-white px-4 py-2 rounded-md disabled:opacity-50"
                 >
                   {sending ? "Sending..." : "Send Response"}
                 </button>

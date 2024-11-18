@@ -186,23 +186,9 @@ const CartController = {
     }
   },
   //todoo ------------------- clearCart --------------------
-  // clearCart: async (req, res) => {
-  //   try {
-  //     const userId = req.user.id; // استخدم معرف المستخدم من التوكن
-  //     await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
-  //     res.status(200).json({ message: "Cart cleared successfully" });
-  //   } catch (error) {
-  //     console.error("Error clearing cart:", error);
-  //     res
-  //       .status(500)
-  //       .json({ message: "Error clearing cart", error: error.message });
-  //   }
-  // },
-
   clearCart: async (req, res) => {
     try {
       const userId = req.user.id;
-      // البحث عن السلة وتفريغ المنتجات منها
       const cart = await Cart.findOne({ userId });
 
       if (cart) {

@@ -74,7 +74,7 @@ const OrderStatusStepper = ({ status, onStepClick, isClickable = false }) => {
         {/* Progress Line */}
         <div className="absolute left-0 top-1/2 h-1 w-full -translate-y-1/2 bg-gray-200 rounded-full" />
         <div
-          className="absolute left-0 top-1/2 h-1 -translate-y-1/2 bg-blue-600 rounded-full transition-all duration-500"
+          className="absolute left-0 top-1/2 h-1 -translate-y-1/2 bg-black rounded-full transition-all duration-500"
           style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
         />
 
@@ -85,7 +85,7 @@ const OrderStatusStepper = ({ status, onStepClick, isClickable = false }) => {
             style={{ left: `${(currentStep / (steps.length - 1)) * 100}%` }}
           >
             <div className="animate-bounce">
-              <Truck className="h-8 w-8 text-blue-600 -translate-x-1/2" />
+              <Truck className="h-8 w-8 text-black -translate-x-1/2" />
             </div>
           </div>
         )}
@@ -116,10 +116,10 @@ const OrderStatusStepper = ({ status, onStepClick, isClickable = false }) => {
                     border-4 transition-all duration-500 
                     ${
                       isCompleted
-                        ? "border-blue-600 bg-blue-600 text-white"
+                        ? "border-gray-200 bg-gray-400 text-white"
                         : "border-gray-300 bg-white text-gray-400"
                     }
-                    ${isActive ? "ring-4 ring-blue-100" : ""}
+                    ${isActive ? "ring-4 ring-black" : ""}
                     ${
                       isClickable
                         ? "group-hover:scale-110 group-hover:shadow-lg"
@@ -142,8 +142,8 @@ const OrderStatusStepper = ({ status, onStepClick, isClickable = false }) => {
                 >
                   <p
                     className={`text-sm font-semibold mb-1
-                    ${isCompleted ? "text-blue-600" : "text-gray-500"}
-                    ${isClickable && "group-hover:text-blue-700"}
+                    ${isCompleted ? "text-gray-600" : "text-gray-500"}
+                    ${isClickable && "group-hover:text-black"}
                   `}
                   >
                     {step.label}
@@ -223,7 +223,7 @@ const OrdersInfo = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
       </div>
     );
   }
@@ -291,7 +291,7 @@ const OrdersInfo = () => {
                     {formatDate(order.createdAt)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${order.totalAmount.toFixed(2)}
+                    {order.totalAmount.toFixed(2)} JD
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span

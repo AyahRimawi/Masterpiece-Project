@@ -11,7 +11,7 @@ const LoadingSpinner = () => {
         transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
         className="p-4 bg-white rounded-full shadow-lg"
       >
-        <ShoppingBag className="w-8 h-8 text-[#193db0]" />
+        <ShoppingBag className="w-8 h-8 text-gray-600" />
       </motion.div>
     </div>
   );

@@ -142,7 +142,7 @@ const LuckyWheel = ({ isOpen, onClose, onSpin, totalAmount }) => {
             className={`px-6 py-3 rounded-lg font-medium ${
               isSpinning || spinsLeft <= 0
                 ? "bg-gray-200 text-gray-500"
-                : "bg-[#193db0] text-white hover:bg-[#142d80]"
+                : "border border-black hover:bg-black hover:text-white"
             } transition-colors`}
           >
             {isSpinning ? "Spinning..." : "Spin Now!"}

@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const adminController = {
-  // Dashboard Statistics
   getDashboardStats: async (req, res) => {
     try {
       const totalUsers = await User.countDocuments();
@@ -51,7 +50,6 @@ const adminController = {
     }
   },
 
-  // User Management
   getUsers: async (req, res) => {
     try {
       const users = await User.find().select("-password");
@@ -96,22 +94,12 @@ const adminController = {
     }
   },
 
-  // Product Management
-  // getProducts: async (req, res) => {
-  //   try {
-  //     const products = await Product.find().populate("seller", "name");
-  //     res.json(products);
-  //   } catch (error) {
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // },
+
 
   getProducts: async (req, res) => {
     try {
-      // نجلب المنتجات مع تفاصيل البائع
       const products = await Product.find().populate("seller", "name").lean();
 
-      // نجلب المتغيرات لكل منتج
       const productsWithVariants = await Promise.all(
         products.map(async (product) => {
           const variants = await Variant.find({
@@ -256,7 +244,6 @@ const adminController = {
       const { orderId } = req.params;
       const { status } = req.body;
 
-      // Validate status
       const validStatuses = ["Pending", "Shipped", "Delivered"];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({ message: "Invalid status" });
@@ -271,11 +258,9 @@ const adminController = {
         return res.status(404).json({ message: "Order not found" });
       }
 
-      // Update order status
       order.deliveryStatus = status;
       await order.save();
 
-      // Send email notification for specific statuses
       if (["Shipped", "Delivered"].includes(status)) {
         const emailContent = {
           Shipped: {

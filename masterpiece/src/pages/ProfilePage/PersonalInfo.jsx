@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Make sure to install axios if you haven't already
+import axios from "axios";
 
 const PersonalInfo = () => {
   const [personalData, setPersonalData] = useState({
@@ -164,7 +164,7 @@ const PersonalInfo = () => {
             </button>
             <button
               type="submit"
-              className="bg-[#193db0] text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+              className="bg-[#000] text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-colors"
             >
               Save Changes
             </button>
@@ -173,7 +173,7 @@ const PersonalInfo = () => {
           <button
             type="button"
             onClick={handleEdit}
-            className="bg-[#193db0] text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+            className="bg-[#000] text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-colors"
           >
             Edit Information
           </button>

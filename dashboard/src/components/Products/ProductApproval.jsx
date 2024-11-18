@@ -136,7 +136,7 @@ const ProductApproval = ({ selectedProduct, onAction, onImageClick }) => {
             >
               <p>Color: {variant.color}</p>
               <p>Size: {variant.size.join(", ")}</p>
-              <p>Price: ${variant.price}</p>
+              <p>Price: {variant.price} JD</p>
               <p>Quantity: {variant.quantity}</p>
             </div>
           ))}
@@ -178,7 +178,7 @@ const ProductApproval = ({ selectedProduct, onAction, onImageClick }) => {
             id="reason"
             name="reason"
             rows={3}
-            className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+            className="shadow-sm focus:ring-black focus:border-black mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
             placeholder="Enter reason for action"
             value={reason}
             onChange={(e) => setReason(e.target.value)}

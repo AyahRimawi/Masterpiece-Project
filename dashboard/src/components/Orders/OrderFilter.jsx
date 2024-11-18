@@ -8,7 +8,7 @@ const OrderFilter = ({ statusFilter, onFilterChange }) => {
         onClick={() => onFilterChange("all")}
         className={`px-3 py-2 rounded-md text-sm font-medium ${
           statusFilter === "all"
-            ? "bg-primary text-white"
+            ? "bg-black text-white"
             : "text-gray-700 bg-gray-100 hover:bg-gray-200"
         }`}
       >

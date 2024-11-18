@@ -5,7 +5,6 @@ const adminController = require("../Controllers/adminController");
 const auth = require("../Middleware/auth");
 const adminAuth = require("../Middleware/adminAuth");
 
-// Apply auth and adminAuth middleware to all routes
 router.use(auth, adminAuth);
 
 // Dashboard stats

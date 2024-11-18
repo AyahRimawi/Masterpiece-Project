@@ -16,9 +16,7 @@ const RelatedProducts = ({ category, subCategory, currentProductId }) => {
         `/api/product/getProductsBySubCategory/${subCategory}`
       );
 
-      // Filter out products with zero quantity and current product
       const productsWithStock = response.data.filter((product) => {
-        // Check if product has variants with quantity > 0
         const hasAvailableStock = product.variants.some(
           (variant) => variant.quantity > 0
         );
@@ -40,7 +38,6 @@ const RelatedProducts = ({ category, subCategory, currentProductId }) => {
   };
 
   const getRandomVariantWithStock = (variants) => {
-    // Filter variants with stock > 0
     const availableVariants = variants.filter(
       (variant) => variant.quantity > 0
     );

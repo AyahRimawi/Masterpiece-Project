@@ -11,7 +11,7 @@ const UserList = ({ users, onSelectUser }) => {
               onClick={() => onSelectUser(user)}
             >
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-primary truncate">
+                <p className="text-sm font-medium text-black truncate">
                   {user.name}
                 </p>
                 <div className="ml-2 flex-shrink-0 flex">

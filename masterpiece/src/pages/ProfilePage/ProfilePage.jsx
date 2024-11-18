@@ -102,7 +102,7 @@ const ProfilePage = () => {
             {/* هاد الزر موجود في حال ال response  */}
             {/* ----------------------------------------------------------------- */}
             <button
-              className="md:hidden bg-[#193db0] text-white p-2 rounded-md mb-4"
+              className="md:hidden bg-[#000] text-white p-2 rounded-md mb-4"
               onClick={toggleSidebar}
             >
               {/* هلأ متفقين بالشرط بال class بستخدم القيمة الحالية من usestste
@@ -126,10 +126,10 @@ const ProfilePage = () => {
                 <img
                   src="https://via.placeholder.com/150"
                   alt="Profile"
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-[#193db0]"
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-[#000]"
                 />
               </div>
-              <h2 className="text-[#193db0] text-xl font-bold mb-4 text-center">
+              <h2 className="text-[#000] text-xl font-bold mb-4 text-center">
                 {userName}
               </h2>
               {/* =========================== */}
@@ -148,7 +148,7 @@ const ProfilePage = () => {
                     // الي بصير انو القسم الي انا في اذا شغال ياخد تنسيق معين اذا لأ ياخد تنسيق
                     className={`w-full text-left p-3 rounded flex items-center ${
                       activeSection === section.id
-                        ? "bg-[#193db0] text-white"
+                        ? "bg-gray-500 text-white"
                         : "text-gray-600 hover:bg-gray-200"
                     }`}
                     onClick={() => {
@@ -227,7 +227,7 @@ const ProfilePage = () => {
             {/* -------------------------------- */}
             {/* Main Content */}
             <div className="md:w-3/4 p-4 md:p-8">
-              <h1 className="text-2xl md:text-3xl font-bold text-[#193db0] mb-6">
+              <h1 className="text-2xl md:text-3xl font-bold text-black mb-6">
                 {sections.find((s) => s.id === activeSection).name}
               </h1>
               {activeSection === "personal" && <PersonalInfo />}

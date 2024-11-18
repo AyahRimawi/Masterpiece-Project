@@ -20,8 +20,8 @@ const CheckoutForm = ({
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <MapPin className="w-5 h-5 text-[#193db0]" />
+            <div className="p-2 bg-slate-100 rounded-lg">
+              <MapPin className="w-5 h-5 text-gray-600" />
             </div>
             <h2 className="text-xl font-semibold text-gray-800">
               Shipping Details
@@ -39,7 +39,7 @@ const CheckoutForm = ({
                   value={shippingAddress.governorate}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#193db0] focus:border-transparent transition-all appearance-none"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-slate-200 focus:border-transparent transition-all appearance-none"
                 >
                   <option value="">Select Governorate</option>
                   <option value="Amman">Amman</option>
@@ -71,7 +71,7 @@ const CheckoutForm = ({
                 onChange={handleInputChange}
                 required
                 placeholder="Enter your detailed address..."
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#193db0] focus:border-transparent transition-all resize-none h-32"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-slate-200 focus:border-transparent transition-all resize-none h-32"
               />
             </div>
 
@@ -87,21 +87,21 @@ const CheckoutForm = ({
                   onClick={() => setPaymentMethod("PayPal")}
                   className={`relative p-4 flex flex-col items-center gap-2 rounded-lg border-2 ${
                     paymentMethod === "PayPal"
-                      ? "border-[#193db0] bg-blue-50"
+                      ? "border-gray-600 bg-gray-100"
                       : "border-gray-200 hover:border-gray-300"
                   } transition-all group`}
                 >
                   <CreditCard
                     className={`w-6 h-6 ${
                       paymentMethod === "PayPal"
-                        ? "text-[#193db0]"
+                        ? "text-[#000]"
                         : "text-gray-400 group-hover:text-gray-500"
                     }`}
                   />
                   <span
                     className={`text-sm font-medium ${
                       paymentMethod === "PayPal"
-                        ? "text-[#193db0]"
+                        ? "text-[#000]"
                         : "text-gray-700"
                     }`}
                   >
@@ -116,21 +116,21 @@ const CheckoutForm = ({
                   onClick={() => setPaymentMethod("CashOnDelivery")}
                   className={`relative p-4 flex flex-col items-center gap-2 rounded-lg border-2 ${
                     paymentMethod === "CashOnDelivery"
-                      ? "border-[#193db0] bg-blue-50"
+                      ? "border-gray-600 bg-gray-100"
                       : "border-gray-200 hover:border-gray-300"
                   } transition-all group`}
                 >
                   <Truck
                     className={`w-6 h-6 ${
                       paymentMethod === "CashOnDelivery"
-                        ? "text-[#193db0]"
+                        ? "text-[#000]"
                         : "text-gray-400 group-hover:text-gray-500"
                     }`}
                   />
                   <span
                     className={`text-sm font-medium ${
                       paymentMethod === "CashOnDelivery"
-                        ? "text-[#193db0]"
+                        ? "text-[#000]"
                         : "text-gray-700"
                     }`}
                   >
@@ -152,8 +152,10 @@ const CheckoutForm = ({
                   whileTap={{ scale: 0.99 }}
                   type="submit"
                   disabled={!isAddressValid}
-                  className="w-full py-3 px-4 bg-[#193db0] text-white text-sm font-semibold rounded-lg 
-                           hover:bg-[#142d80] disabled:opacity-50 disabled:cursor-not-allowed 
+                  className="w-full py-3 px-4 
+                  border border-black hover:bg-black hover:text-white 
+                  bg-[#fff] text-sm font-semibold rounded-lg 
+                          disabled:opacity-50 disabled:cursor-not-allowed 
                            shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
                 >
                   <Truck className="w-4 h-4" />

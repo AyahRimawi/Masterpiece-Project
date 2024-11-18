@@ -106,7 +106,7 @@ const DetailsPage = () => {
                 key={activeImg}
                 src={activeImg}
                 alt="Active product image"
-                className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md"
+                className="w-full h-64 sm:h-96 object-fit rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -119,7 +119,7 @@ const DetailsPage = () => {
                       src={image}
                       alt={`Thumbnail ${index + 1}`}
                       className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md cursor-pointer object-cover ${
-                        activeImg === image ? "ring-2 ring-[#193db0]" : ""
+                        activeImg === image ? "ring-2 ring-[#000]" : ""
                       }`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -133,7 +133,7 @@ const DetailsPage = () => {
             {/* Product Details Section */}
             <div className="lg:w-1/2 p-4 sm:p-8">
               <div className="mb-4">
-                <span className="text-[#193db0] font-semibold text-sm uppercase tracking-wide">
+                <span className="text-gray-600 font-semibold text-sm uppercase tracking-wide">
                   {currentVariant.shein_code}
                 </span>
                 <h1 className="text-3xl sm:text-4xl font-bold mt-2 text-gray-800">
@@ -153,7 +153,7 @@ const DetailsPage = () => {
                     <button
                       key={color}
                       className={`w-8 h-8 rounded-full border ${
-                        selectedColor === color ? "ring-2 ring-[#193db0]" : ""
+                        selectedColor === color ? "ring-2 ring-[#000]" : ""
                       }`}
                       style={{ backgroundColor: color.toLowerCase() }}
                       onClick={() => handleColorChange(color)}
@@ -169,7 +169,7 @@ const DetailsPage = () => {
                       key={size}
                       className={`px-3 py-1 border rounded-md ${
                         selectedSize === size
-                          ? "bg-[#193db0] text-white"
+                          ? "bg-[#000] text-white"
                           : "hover:bg-gray-100"
                       }`}
                       onClick={() => handleSizeChange(size)}
@@ -208,7 +208,7 @@ const DetailsPage = () => {
               </div>
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#193db0] text-white font-semibold py-3 rounded-lg hover:bg-[#142d80] transition-colors"
+                className="w-full border border-black  hover:bg-black hover:text-white font-semibold py-3 rounded-lg transition-colors"
                 disabled={amount > currentVariant.quantity}
               >
                 Add to Cart

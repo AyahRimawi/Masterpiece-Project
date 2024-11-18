@@ -18,9 +18,9 @@ const EmptyCart = () => {
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.3 }}
-          className="inline-block p-4 bg-blue-50 rounded-full mb-4"
+          className="inline-block p-4 bg-slate-100 rounded-full mb-4"
         >
-          <ShoppingBag className="w-10 h-10 text-[#193db0]" />
+          <ShoppingBag className="w-10 h-10 text-[#000]" />
         </motion.div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">
           Your cart is empty
@@ -32,7 +32,7 @@ const EmptyCart = () => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate("/")}
-          className="px-6 py-3 bg-[#193db0] text-white rounded-lg hover:bg-[#142d80] transition-all"
+          className="px-6 py-3 bg-[#fff] border border-black hover:bg-black hover:text-white rounded-lg  transition-all"
         >
           Continue Shopping
         </motion.button>

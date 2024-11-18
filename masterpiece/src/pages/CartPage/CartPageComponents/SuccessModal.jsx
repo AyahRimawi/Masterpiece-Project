@@ -69,7 +69,7 @@ const SuccessModal = ({ isOpen, onClose }) => {
               onClose();
               window.location.href = "/";
             }}
-            className="px-6 py-3 bg-[#193db0] text-white rounded-lg font-medium hover:bg-[#142d80] transition-all"
+            className="px-6 py-3  border border-black hover:bg-black hover:text-white bg-[#fff]  rounded-lg font-medium  transition-all"
           >
             Return to Home
           </motion.button>

@@ -14,7 +14,7 @@ const CartItems = ({
   return (
     <div className="flex-1">
       <div className="flex items-center space-x-3 mb-6">
-        <ShoppingBag className="w-6 h-6 text-[#193db0]" />
+        <ShoppingBag className="w-6 h-6 text-gray-600" />
         <h1 className="text-2xl font-medium text-gray-800">Shopping Cart</h1>
         <span className="text-base text-gray-500">
           ({cart.items.length} items)
@@ -69,7 +69,7 @@ const CartItems = ({
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
-                  <span className="text-xl font-semibold text-[#193db0]">
+                  <span className="text-xl font-semibold text-gray-600">
                     JD{(item.variantId?.price || 0).toFixed(2)}
                   </span>
 
@@ -80,7 +80,7 @@ const CartItems = ({
                       onClick={() =>
                         handleQuantityChange(item._id, item.quantity, -1)
                       }
-                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-[#193db0] hover:bg-blue-50 rounded-lg transition-colors"
+                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-[#000] hover:bg-slate-200 rounded-lg transition-colors"
                     >
                       <Minus className="w-4 h-4" />
                     </motion.button>
@@ -94,7 +94,7 @@ const CartItems = ({
                         handleQuantityChange(item._id, item.quantity, 1)
                       }
                       disabled={item.quantity >= item.variantId?.quantity}
-                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-[#193db0] hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-[#000] hover:bg-slate-200 rounded-lg transition-colors disabled:opacity-50"
                     >
                       <Plus className="w-4 h-4" />
                     </motion.button>
@@ -144,7 +144,7 @@ const CartItems = ({
           )}
           <div className="flex justify-between items-center pt-4 border-t">
             <span className="text-lg font-semibold text-gray-900">Total</span>
-            <span className="text-2xl font-bold text-[#193db0]">
+            <span className="text-2xl font-bold text-[#000]">
               JD{calculateTotalAmount()}
             </span>
           </div>

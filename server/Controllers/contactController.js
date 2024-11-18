@@ -2,7 +2,6 @@ const Contact = require("../Models/Contact");
 const EmailService = require("../utils/emailService");
 const nodemailer = require("nodemailer");
 
-// إعداد النقل للبريد الإلكتروني
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {

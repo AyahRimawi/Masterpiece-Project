@@ -30,7 +30,6 @@ export default function SectionBar() {
       return;
     }
 
-    // Reset categoryFilter to "all" for Men and Women tabs
     if (value === "tab2" || value === "tab3") {
       setCategoryFilter("all");
     } else {
